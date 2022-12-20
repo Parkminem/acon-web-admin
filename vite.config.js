@@ -12,5 +12,12 @@ export default defineConfig({
         replacement: 'node_modules/$1'
       }
     ]
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./src/style/_vars.scss"; @import "./src/style/_mixin.scss";`
+      }
+    }
   }
 });
