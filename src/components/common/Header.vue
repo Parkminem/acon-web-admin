@@ -1,5 +1,5 @@
 <template>
-  <div class="sideMenu" :style="{ transform: 'translateX(' + changeTransform() + 'px)' }">
+  <div class="sideMenu" :style="{ left: moveLeft() + 'px' }">
     <div class="header">
       <div class="top">
         <div class="logo">
@@ -93,7 +93,7 @@
         </ul>
       </div>
     </div>
-    <div class="hamberger" @click="headerToggle" :class="{ close: !headerSlide }">
+    <div class="hamberger" @click="headerStore.sideToggleAct" :class="{ close: slideState }">
       <span></span>
       <span></span>
       <span></span>
@@ -102,15 +102,14 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useHeaderStore } from '../../store/header';
+const headerStore = useHeaderStore();
+const { slideState } = storeToRefs(headerStore);
 
-const headerSlide = ref(true);
-const headerToggle = () => {
-  if (headerSlide.value) return (headerSlide.value = false);
-  else return (headerSlide.value = true);
-};
-const changeTransform = () => {
-  if (headerSlide.value) return -365;
-  else return 0;
+const moveLeft = () => {
+  if (slideState.value) return 0;
+  else return -280;
 };
 
 //문의, 재물관리 토글 함수
@@ -129,8 +128,9 @@ const height = (item, num) => {
 </script>
 <style lang="scss" scoped>
 .sideMenu {
-  position: relative;
-  width: 365px;
+  position: fixed;
+  z-index: 99;
+  width: 280px;
   background-color: #303641;
   height: 100vh;
   transition: all 0.3s ease-in-out;
@@ -250,13 +250,16 @@ const height = (item, num) => {
 .hamberger {
   position: fixed;
   z-index: 99;
-  left: 363px;
+  left: 0;
   padding: 14px;
   top: 0;
   margin: 0;
   background: none;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
   &.close {
+    left: 280px;
     background: #303641;
     span {
       background-color: #fffbfb;

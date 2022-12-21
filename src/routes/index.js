@@ -28,7 +28,7 @@ const routes = [
       },
       {
         path: '/questionlist',
-        component: () => import('../views/Question/questionListView.vue')
+        component: () => import('../views/Question/QuestionListView.vue')
       },
       {
         path: '/question',
