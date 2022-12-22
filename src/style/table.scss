@@ -1,0 +1,47 @@
+.tableBox {
+  margin: 20px 0;
+  text-align: center;
+  .tHead {
+    width: 100%;
+    display: flex;
+    background-color: #444444;
+    color: #fff;
+    padding: 10px 0;
+    font-size: 13px;
+    > li:not(.w10) {
+      flex-grow: 1;
+    }
+    li {
+      cursor: pointer;
+    }
+  }
+  .tbody {
+    .td {
+      display: flex;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      font-size: 13px;
+      align-items: center;
+      > li:not(.w10) {
+        flex-grow: 1;
+      }
+      li {
+        button {
+          background-color: #444444;
+          color: #fff;
+          padding: 2px 3px;
+          font-size: 12px;
+        }
+      }
+    }
+    .empty {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      font-size: 13px;
+    }
+  }
+}
+/* 테이블 width */
+.w10 {
+  width: 10%;
+}

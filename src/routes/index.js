@@ -28,7 +28,7 @@ const routes = [
       },
       {
         path: '/questionlist',
-        component: () => import('../views/Question/questionListView.vue')
+        component: () => import('../views/Question/QuestionListView.vue')
       },
       {
         path: '/question',
@@ -79,7 +79,13 @@ const routes = [
   {
     path: '/',
     name: 'loginLayout',
-    component: () => import('../layout/LoginLayout.vue')
+    component: () => import('../layout/LoginLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('../views/LoginView.vue')
+      }
+    ]
   }
 ];
 
