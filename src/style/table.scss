@@ -13,6 +13,37 @@
     }
     li {
       cursor: pointer;
+      position: relative;
+      &::before {
+        content: '\e5c7';
+        font-family: 'Material Icons';
+        position: absolute;
+        right: 10px;
+        top: -5px;
+      }
+      &:after {
+        content: '\e5c5';
+        font-family: 'Material Icons';
+        position: absolute;
+        right: 10px;
+        bottom: -5px;
+      }
+      &.up {
+        &::before {
+          opacity: 1;
+        }
+        &::after {
+          opacity: 0;
+        }
+      }
+      &.down {
+        &::before {
+          opacity: 0;
+        }
+        &:after {
+          opacity: 1;
+        }
+      }
     }
   }
   .tbody {
