@@ -37,8 +37,10 @@ input {
   background-color: #fff;
   padding: 30px;
 }
-/* 테이블 위의 셀렉트, search input을 묶어주는 div */
-.tableTop {
+/* 테이블 위의 셀렉트, search input을 묶어주는 div, 
+테이블 밑의 글 갯수, 페이지네이션을 묶어주는 div */
+.tableTop,
+.tableBottom {
   display: flex;
   justify-content: space-between;
   color: #333;

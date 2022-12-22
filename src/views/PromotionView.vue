@@ -10,6 +10,10 @@
       <Table :theadData="theadData">
         <div class="empty"><p>No data available in table</p></div>
       </Table>
+      <div class="tableBottom">
+        <AllEntries />
+        <Pagination />
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +23,8 @@ import ResisterBtn from '../components/utils/ResisterBtn.vue';
 import ShowList from '../components/utils/ShowList.vue';
 import SearchBox from '../components/utils/SearchBox.vue';
 import Table from '../components/utils/Table.vue';
+import AllEntries from '../components/utils/AllEntries.vue';
+import Pagination from '../components/utils/Pagination.vue';
 
 const theadData = [
   { width: 'w10', name: '번호' },
