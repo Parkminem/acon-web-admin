@@ -1,6 +1,11 @@
 <template>
   <div class="loginWrap">
+<<<<<<< HEAD
     <!-- <div class="loginBox">
+=======
+    <!-- v-if로 로그인 전, 후 박스 교체 -->
+    <div class="loginBox">
+>>>>>>> dev
       <div class="title">
         <h1>LOGIN</h1>
       </div>
@@ -29,23 +34,40 @@
           <button><span>LOGIN</span><span class="material-icons"> arrow_forward </span></button>
         </div>
       </div>
+<<<<<<< HEAD
     </div> -->
     <!-- v-if 작업 -->
     <div class="loginBox">
+=======
+    </div>
+    <!-- v-if 작업 -->
+    <!-- <div class="loginBox">
+>>>>>>> dev
       <div class="title">
         <h1>IDEACONCERT</h1>
       </div>
       <div class="inputBox">
+<<<<<<< HEAD
         <!-- 아이디 데이터바인딩 -->
+=======
+>>>>>>> dev
         <div class="desc">
           <p>안녕하세요 <strong>ideaconcert</strong> 님</p>
         </div>
         <div class="btns">
+<<<<<<< HEAD
           <button><span>Back To Main</span></button>
           <button><span>LOGOUT</span></button>
         </div>
       </div>
     </div>
+=======
+          <router-link to="/main"><span>Back To Main</span></router-link>
+          <button><span>LOGOUT</span></button>
+        </div>
+      </div>
+    </div> -->
+>>>>>>> dev
   </div>
 </template>
 <script setup>
@@ -164,11 +186,22 @@ onUpdated(() => {
       }
       .btns {
         display: flex;
+<<<<<<< HEAD
         button {
           width: 160px;
           height: 43px;
           border-radius: 40px;
           line-height: 43px;
+=======
+        a,
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 160px;
+          height: 43px;
+          border-radius: 40px;
+>>>>>>> dev
           font-weight: 600;
           font-size: 12px;
           box-shadow: 0 0 22px rgb(0 0 0 / 7%);
