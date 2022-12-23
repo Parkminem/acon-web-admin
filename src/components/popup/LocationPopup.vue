@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <div class="cover" @click="popupStore.locationClose"></div>
   <div class="inner">
@@ -67,6 +68,10 @@ const popupStore = usePopupStore();
 
 // close 와 함께 값 빈칸 만들어야함
 </script>
+=======
+<template></template>
+<script setup></script>
+>>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
 <style lang="scss" scoped>
 @import '../../style/popup.scss';
 </style>

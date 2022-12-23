@@ -3,10 +3,14 @@ import { defineStore } from 'pinia';
 export const usePopupStore = defineStore('popup', {
   state: () => ({
     historyState: false,
+<<<<<<< HEAD
     partnerState: false,
     locationState: false,
     questionTypeState: false,
     promotionState: false
+=======
+    partnerState: false
+>>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
   }),
   actions: {
     historyOpen() {
@@ -14,6 +18,7 @@ export const usePopupStore = defineStore('popup', {
     },
     historyClose() {
       this.historyState = false;
+<<<<<<< HEAD
     },
     partnerOpen() {
       this.partnerState = true;
@@ -38,6 +43,8 @@ export const usePopupStore = defineStore('popup', {
     },
     promotionClose() {
       this.promotionState = false;
+=======
+>>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
     }
   }
 });
