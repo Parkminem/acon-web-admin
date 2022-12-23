@@ -24,7 +24,8 @@ a {
   color: inherit;
   text-decoration: none;
 }
-input {
+input,
+select {
   outline: none;
 }
 /* 각 뷰의 subtitle 밑 컨텐츠들을 묶어주는 div */

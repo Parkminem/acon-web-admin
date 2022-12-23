@@ -1,0 +1,88 @@
+.cover {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.inner {
+  width: 500px;
+  background-color: #fff;
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  left: 50%;
+  .popupHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    h1 {
+      font-size: calc($fontTitle - 2px);
+      font-weight: 300;
+    }
+    .material-icons {
+      font-size: 18px;
+      color: #777;
+    }
+  }
+  .popupBody {
+    padding: 30px;
+    .inputBox {
+      display: flex;
+      color: #666;
+      flex-direction: column;
+      &:not(&:last-child) {
+        margin-bottom: 20px;
+      }
+      label {
+        margin-bottom: 10px;
+      }
+      input[type='text'],
+      select {
+        padding: 12px;
+        border-radius: 5px;
+        border: 1px solid rgba(170, 170, 170, 0.3);
+        &:focus {
+          border-color: #80bdff;
+        }
+      }
+      .radioBox {
+        font-size: $fontL;
+        &:not(&:last-child) {
+          margin-bottom: 5px;
+        }
+        input[type='radio'] {
+          vertical-align: middle;
+          appearance: none;
+          background-color: #ddd;
+          width: 17px;
+          height: 17px;
+          margin: 0;
+          margin-right: 10px;
+          border-radius: 100px;
+          &:checked {
+            border: 5px solid #333;
+            background-color: #fff;
+          }
+        }
+      }
+    }
+  }
+  .popupFooter {
+    padding: 20px;
+    text-align: end;
+    border-top: 1px solid #e9ecef;
+    button {
+      background-color: #000;
+      color: #fff;
+      padding: 7px;
+      font-size: 15px;
+      border-radius: 2px;
+    }
+  }
+}

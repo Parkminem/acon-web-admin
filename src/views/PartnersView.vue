@@ -31,10 +31,9 @@ import ResisterBtn from '../components/utils/ResisterBtn.vue';
   flex-wrap: wrap;
   .item {
     box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
-    &:not(&:nth-child(5n)) {
-      margin-right: 20px;
-    }
-    width: calc(25% - 15px);
+    width: 248px;
+    margin: 0 20px 20px 0;
+
     .box {
       min-height: 120px;
       text-align: center;

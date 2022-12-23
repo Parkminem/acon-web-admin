@@ -6,14 +6,24 @@
       <Footer />
     </div>
   </div>
+  <HistoryPopup v-if="historyState" />
 </template>
 <script setup>
 import Header from '../components/common/Header.vue';
 import Footer from '../components/common/Footer.vue';
+import HistoryPopup from '../components/popup/HistoryPopup.vue';
+import LocationPopup from '../components/popup/LocationPopup.vue';
+import PartnersPopup from '../components/popup/PartnersPopup.vue';
+import QuestionListPopup from '../components/popup/QuestionListPopup.vue';
+import QuestionPopup from '../components/popup/QuestionPopup.vue';
+
 import { useHeaderStore } from '../store/header';
+import { usePopupStore } from '../store/popup';
 import { storeToRefs } from 'pinia';
 const headerStore = useHeaderStore();
+const popupStore = usePopupStore();
 const { slideState } = storeToRefs(headerStore);
+const { historyState } = storeToRefs(popupStore);
 
 const movePadding = () => {
   if (slideState.value) return 280;
