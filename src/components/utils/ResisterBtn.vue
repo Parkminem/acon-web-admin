@@ -1,6 +1,6 @@
 <template>
   <div class="registerBtn">
-    <button><span>등록하기</span></button>
+    <button @click="$emit('clickRegister')"><span>등록하기</span></button>
   </div>
 </template>
 <script setup></script>

@@ -27,8 +27,8 @@ const routes = [
         component: () => import('../views/LocationView.vue')
       },
       {
-        path: '/questionlist',
-        component: () => import('../views/Question/QuestionListView.vue')
+        path: '/questiontype',
+        component: () => import('../views/Question/QuestionTypeView.vue')
       },
       {
         path: '/question',
