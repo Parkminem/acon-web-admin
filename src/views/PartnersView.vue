@@ -2,7 +2,7 @@
   <SubTitle>파트너사</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn />
+      <ResisterBtn @clickRegister="usePopupStore().partnerOpen" />
       <div class="partnersBox">
         <!-- item v-for 사용하면 됨 -->
         <div class="item">
@@ -22,6 +22,7 @@
 <script setup>
 import SubTitle from '../components/common/SubTitle.vue';
 import ResisterBtn from '../components/utils/ResisterBtn.vue';
+import { usePopupStore } from '../store/popup';
 </script>
 <style lang="scss" scoped>
 .partnersBox {
@@ -31,10 +32,9 @@ import ResisterBtn from '../components/utils/ResisterBtn.vue';
   flex-wrap: wrap;
   .item {
     box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
-    &:not(&:nth-child(5n)) {
-      margin-right: 20px;
-    }
-    width: calc(25% - 15px);
+    width: 248px;
+    margin: 0 20px 20px 0;
+
     .box {
       min-height: 120px;
       text-align: center;

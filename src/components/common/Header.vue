@@ -28,7 +28,7 @@
               </div>
               <ul class="depth02" :style="{ height: height(slide[1], 96) + 'px' }">
                 <li>
-                  <router-link to="/questionlist"><span>문의유형</span></router-link>
+                  <router-link to="/questiontype"><span>문의유형</span></router-link>
                 </li>
                 <li>
                   <router-link to="/question"><span>문의내역</span></router-link>

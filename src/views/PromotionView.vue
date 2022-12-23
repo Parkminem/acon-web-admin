@@ -2,7 +2,7 @@
   <SubTitle>홍보영상</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn />
+      <ResisterBtn @clickRegister="usePopupStore().promotionOpen" />
       <div class="tableTop">
         <ShowList />
         <SearchBox />
@@ -25,6 +25,7 @@ import SearchBox from '../components/utils/SearchBox.vue';
 import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
+import { usePopupStore } from '../store/popup';
 
 const theadData = [
   { width: 'w10', name: '번호' },

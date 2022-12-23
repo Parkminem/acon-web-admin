@@ -6,21 +6,35 @@
       <Footer />
     </div>
   </div>
+  <HistoryPopup v-if="historyState" />
+  <PartnersPopup v-if="partnerState" />
+  <LocationPopup v-if="locationState" />
+  <QuestionTypePopup v-if="questionTypeState" />
+  <PromotionPopup v-if="promotionState" />
 </template>
 <script setup>
 import Header from '../components/common/Header.vue';
 import Footer from '../components/common/Footer.vue';
+import HistoryPopup from '../components/popup/HistoryPopup.vue';
+import PartnersPopup from '../components/popup/PartnersPopup.vue';
+import LocationPopup from '../components/popup/LocationPopup.vue';
+import QuestionTypePopup from '../components/popup/QuestionTypePopup.vue';
+import PromotionPopup from '../components/popup/PromotionPopup.vue';
+
 import { useHeaderStore } from '../store/header';
+import { usePopupStore } from '../store/popup';
 import { storeToRefs } from 'pinia';
 const headerStore = useHeaderStore();
+const popupStore = usePopupStore();
 const { slideState } = storeToRefs(headerStore);
+const { historyState, partnerState, locationState, questionTypeState, promotionState } = storeToRefs(popupStore);
 
 const movePadding = () => {
   if (slideState.value) return 280;
   else return 0;
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .main {
   width: 100%;
   height: 100%;
