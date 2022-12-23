@@ -1,5 +1,8 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> popup
   <div class="cover" @click="popupStore.partnerClose"></div>
   <div class="inner">
     <div class="popupHeader">
@@ -33,6 +36,7 @@
           <input type="file" name="" id="file" ref="file" @change="fileUpload" />
           <label for="file"><span ref="fileName" class="fileName"></span><span class="btn">Browse</span></label>
         </div>
+<<<<<<< HEAD
 =======
   <div class="cover" @click="popupStore.historyClose"></div>
   <div class="inner">
@@ -78,6 +82,8 @@
         <label>내용(영어)</label>
         <input type="text" placeholder="IDEACONCERT" />
 >>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
+=======
+>>>>>>> popup
       </div>
     </div>
     <div class="popupFooter">
@@ -87,6 +93,9 @@
 </template>
 <script setup>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> popup
 import { ref } from 'vue';
 import { usePopupStore } from '../../store/popup';
 const popupStore = usePopupStore();
@@ -98,11 +107,14 @@ function fileUpload() {
   fileName.value.innerText = file.value.files[0].name;
   console.log(file.value.files[0].name);
 }
+<<<<<<< HEAD
 =======
 import { usePopupStore } from '../../store/popup';
 const popupStore = usePopupStore();
 
 >>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
+=======
+>>>>>>> popup
 //년도 옵션 값
 const currentYear = new Date().getFullYear();
 let yearArr = [];
