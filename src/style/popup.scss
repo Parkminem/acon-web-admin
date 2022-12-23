@@ -9,16 +9,8 @@
 }
 .inner {
   width: 500px;
-<<<<<<< HEAD
-<<<<<<< HEAD
   overflow-y: auto;
   max-height: calc(100vh - 100px);
-=======
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
->>>>>>> popup
   background-color: #fff;
   border-radius: 5px;
   position: fixed;
@@ -26,21 +18,12 @@
   transform: translate(-50%, -50%);
   z-index: 1001;
   left: 50%;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> popup
   transition: all 0.3s ease-in-out;
   -ms-overflow-style: none; /* 인터넷 익스플로러 */
   scrollbar-width: none; /* 파이어폭스 */
   &::-webkit-scrollbar {
     display: none; /* 크롬, 사파리, 오페라, 엣지 */
   }
-<<<<<<< HEAD
-=======
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
->>>>>>> popup
   .popupHeader {
     display: flex;
     justify-content: space-between;
@@ -61,14 +44,7 @@
       display: flex;
       color: #666;
       flex-direction: column;
-<<<<<<< HEAD
-<<<<<<< HEAD
       font-size: $fontM;
-=======
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
-      font-size: $fontM;
->>>>>>> popup
       &:not(&:last-child) {
         margin-bottom: 20px;
       }
@@ -80,15 +56,7 @@
         padding: 12px;
         border-radius: 5px;
         border: 1px solid rgba(170, 170, 170, 0.3);
-<<<<<<< HEAD
-<<<<<<< HEAD
         &:focus:not(.address) {
-=======
-        &:focus {
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
-        &:focus:not(.address) {
->>>>>>> popup
           border-color: #80bdff;
         }
       }
@@ -112,10 +80,6 @@
           }
         }
       }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> popup
       .fileBox {
         width: 100%;
         label {
@@ -171,11 +135,6 @@
           margin-top: 10px;
         }
       }
-<<<<<<< HEAD
-=======
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
->>>>>>> popup
     }
   }
   .popupFooter {
@@ -191,10 +150,6 @@
     }
   }
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> popup
 @keyframes coverAnimation {
   0% {
     opacity: 0;
@@ -203,8 +158,3 @@
     opacity: 1;
   }
 }
-<<<<<<< HEAD
-=======
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
->>>>>>> popup

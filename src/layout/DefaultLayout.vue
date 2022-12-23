@@ -7,41 +7,19 @@
     </div>
   </div>
   <HistoryPopup v-if="historyState" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> popup
   <PartnersPopup v-if="partnerState" />
   <LocationPopup v-if="locationState" />
   <QuestionTypePopup v-if="questionTypeState" />
   <PromotionPopup v-if="promotionState" />
-<<<<<<< HEAD
-=======
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
->>>>>>> popup
 </template>
 <script setup>
 import Header from '../components/common/Header.vue';
 import Footer from '../components/common/Footer.vue';
 import HistoryPopup from '../components/popup/HistoryPopup.vue';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> popup
 import PartnersPopup from '../components/popup/PartnersPopup.vue';
 import LocationPopup from '../components/popup/LocationPopup.vue';
 import QuestionTypePopup from '../components/popup/QuestionTypePopup.vue';
 import PromotionPopup from '../components/popup/PromotionPopup.vue';
-<<<<<<< HEAD
-=======
-import LocationPopup from '../components/popup/LocationPopup.vue';
-import PartnersPopup from '../components/popup/PartnersPopup.vue';
-import QuestionListPopup from '../components/popup/QuestionListPopup.vue';
-import QuestionPopup from '../components/popup/QuestionPopup.vue';
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
->>>>>>> popup
 
 import { useHeaderStore } from '../store/header';
 import { usePopupStore } from '../store/popup';
@@ -49,15 +27,7 @@ import { storeToRefs } from 'pinia';
 const headerStore = useHeaderStore();
 const popupStore = usePopupStore();
 const { slideState } = storeToRefs(headerStore);
-<<<<<<< HEAD
-<<<<<<< HEAD
 const { historyState, partnerState, locationState, questionTypeState, promotionState } = storeToRefs(popupStore);
-=======
-const { historyState } = storeToRefs(popupStore);
->>>>>>> 6ed0604ef485d98934f21dee45943d9d40fa5274
-=======
-const { historyState, partnerState, locationState, questionTypeState, promotionState } = storeToRefs(popupStore);
->>>>>>> popup
 
 const movePadding = () => {
   if (slideState.value) return 280;
