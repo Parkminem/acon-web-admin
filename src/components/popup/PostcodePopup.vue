@@ -8,7 +8,11 @@
   </div>
 </template>
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import { usePopupStore } from '../../store/popup';
+const popupStore = usePopupStore();
+const { locationState } = storeToRefs(popupStore);
 // close 와 함께 값 빈칸 만들어야함
 
 const post = ref('');
@@ -43,6 +47,13 @@ function search() {
       address01.value = roadAddr;
     }
   }).open();
+}
+function closePost() {
+  new window.daum.Postcode({}).close();
+}
+
+if (!locationState.value) {
+  closePost();
 }
 </script>
 <style lang="scss" scoped>

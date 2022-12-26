@@ -59,10 +59,8 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
 import PostcodePopup from './PostcodePopup.vue';
 import { usePopupStore } from '../../store/popup';
-
 const popupStore = usePopupStore();
 
 // close 와 함께 값 빈칸 만들어야함
