@@ -277,8 +277,6 @@
               justify-content: center;
               align-items: center;
               border-radius: 7px;
-              &:hover {
-              }
             }
           }
           ul li {
