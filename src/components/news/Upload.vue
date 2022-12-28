@@ -21,7 +21,10 @@
       </div>
       <div class="inputBox">
         <label>썸네일</label>
-        <input type="file" />
+        <div class="fileBox">
+          <input type="file" name="" id="file" ref="file" @change="fileUpload" />
+          <label for="file"><span ref="fileName" class="fileName"></span><span class="btn">Browse</span></label>
+        </div>
       </div>
       <div class="inputBox">
         <label>활성화 여부</label>
@@ -55,8 +58,16 @@
 <script setup>
 import SubTitle from '../common/SubTitle.vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ref } from 'vue';
 
 const editor = ClassicEditor;
+const file = ref();
+const fileName = ref();
+
+function fileUpload() {
+  fileName.value.innerText = file.value.files[0].name;
+  if (file.value.files[0].type.split('/')[0] !== 'image') alert('이미지 파일만 선택할 수 있습니다.');
+}
 </script>
 <style lang="scss" scoped>
 * {
@@ -92,23 +103,58 @@ const editor = ClassicEditor;
           border-color: #80bdff;
         }
       }
-      .radioBox {
-        font-size: $fontL;
-        &:not(&:last-child) {
-          margin-bottom: 5px;
+      .fileBox {
+        width: 100%;
+        label {
+          display: flex;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid rgba(170, 170, 170, 0.3);
+          align-items: center;
+          justify-content: space-between;
+          height: 41px;
+          background-color: transparent;
+          .fileName {
+            padding-left: 10px;
+            font-size: 12px;
+          }
+          .btn {
+            height: 41px;
+            display: inline-block;
+            font-size: 13px;
+            line-height: 41px;
+            padding: 0 10px;
+            border-radius: 0 5px 5px 0;
+            background-color: #dedede;
+            border-left: 1px solid #ced4da;
+          }
         }
-        input[type='radio'] {
-          vertical-align: middle;
-          appearance: none;
-          background-color: #ddd;
-          width: 17px;
-          height: 17px;
-          margin: 0;
-          margin-right: 10px;
-          border-radius: 100px;
-          &:checked {
-            border: 5px solid #333;
-            background-color: #fff;
+        input[type='file'] {
+          position: absolute;
+          z-index: 2;
+          width: 0;
+          height: 0;
+          padding: 0;
+          border: none;
+        }
+        .radioBox {
+          font-size: $fontL;
+          &:not(&:last-child) {
+            margin-bottom: 5px;
+          }
+          input[type='radio'] {
+            vertical-align: middle;
+            appearance: none;
+            background-color: #ddd;
+            width: 17px;
+            height: 17px;
+            margin: 0;
+            margin-right: 10px;
+            border-radius: 100px;
+            &:checked {
+              border: 5px solid #333;
+              background-color: #fff;
+            }
           }
         }
       }
