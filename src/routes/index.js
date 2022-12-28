@@ -20,6 +20,16 @@ const routes = [
         path: '/news',
         name: 'news',
         component: () => import('../views/NewsView.vue')
+        // children: [
+        //   {
+        //     path: '/upload',
+        //     component: () => import('../components/news/Upload.vue')
+        //   }
+        // ]
+      },
+      {
+        path: '/news/upload',
+        component: () => import('../components/news/Upload.vue')
       },
       {
         path: '/partners',
