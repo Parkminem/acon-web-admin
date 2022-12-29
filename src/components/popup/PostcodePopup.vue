@@ -3,17 +3,28 @@
     <label>주소(한국어)</label>
     <input type="text" class="address" v-model="post" placeholder="우편번호" readonly />
     <input type="text" class="address" v-model="address01" placeholder="도로명주소(한국어)" readonly />
-    <input type="text" v-model="address02" placeholder="상세주소(한국어)" style="margin-bottom: 10px" />
-    <button class="addressBtn" @click="search"><span>주소 검색</span></button>
+    <input
+      type="text"
+      v-model="address02"
+      placeholder="상세주소(한국어)"
+      style="margin-bottom: 10px"
+      @input="$emit('address02', $event.target.value)"
+    />
+    <button class="addressBtn" @click="search" type="button"><span>주소 검색</span></button>
   </div>
 </template>
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-// close 와 함께 값 빈칸 만들어야함
+import { usePopupStore } from '../../store/popup';
+const popupStore = usePopupStore();
+const { locationState } = storeToRefs(popupStore);
 
 const post = ref('');
 const address01 = ref('');
 const address02 = ref('');
+
+const emit = defineEmits();
 function search() {
   new window.daum.Postcode({
     oncomplete: (data) => {
@@ -41,8 +52,17 @@ function search() {
       // 우편번호와 주소 정보를 해당 필드에 넣는다.
       post.value = data.zonecode;
       address01.value = roadAddr;
+      emit('post', post.value);
+      emit('address01', address01.value);
     }
   }).open();
+}
+function closePost() {
+  new window.daum.Postcode({}).close();
+}
+
+if (!locationState.value) {
+  closePost();
 }
 </script>
 <style lang="scss" scoped>

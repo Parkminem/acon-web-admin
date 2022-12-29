@@ -8,7 +8,9 @@
         <SearchBox />
       </div>
       <Table :theadData="theadData">
-        <div class="empty"><p>No data available in table</p></div>
+        <!-- t-body -->
+        <empty />
+        <!-- t-body -->
       </Table>
       <div class="tableBottom">
         <AllEntries />
@@ -25,6 +27,7 @@ import SearchBox from '../components/utils/SearchBox.vue';
 import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
+import empty from '../components/utils/empty.vue';
 import { usePopupStore } from '../store/popup';
 
 const theadData = [

@@ -5,33 +5,33 @@
       <h1>프로모션 영상 등록</h1>
       <button @click="popupStore.promotionClose"><span class="material-icons"> close </span></button>
     </div>
-    <div class="popupBody">
-      <div class="inputBox">
-        <label>홍보영상 이름</label>
-        <input type="text" placeholder="쿠키런" />
+    <form action="">
+      <div class="popupBody">
+        <Input title="홍보영상 이름" placeholder="쿠키런" v-model="name" />
+        <Input title="홍보영상 유튜브 주소" placeholder="https://www.youtube.com/watch?v=VHo2U9lqV4Y" v-model="url" />
+        <Checkbox title="홍보영상 공개 여부" v-model="openCheck" />
       </div>
-      <div class="inputBox">
-        <label>홍보영상 유튜브 주소</label>
-        <input type="text" placeholder="https://www.youtube.com/watch?v=VHo2U9lqV4Y" />
+      <div class="popupFooter">
+        <button @click.prevent="submit"><span>등록</span></button>
       </div>
-      <div class="inputBox">
-        <div class="checkBox">
-          <label>홍보영상 공개 여부</label>
-          <input type="checkbox" name="" id="" />
-        </div>
-      </div>
-    </div>
-    <div class="popupFooter">
-      <button><span>등록</span></button>
-    </div>
+    </form>
   </div>
 </template>
 <script setup>
+import Input from '../../form/Input.vue';
+import Checkbox from '../../form/Checkbox.vue';
 import { usePopupStore } from '../../store/popup';
+import { ref } from 'vue';
 
 const popupStore = usePopupStore();
 
-// close 와 함께 값 빈칸 만들어야함
+const name = ref('');
+const url = ref('');
+const openCheck = ref('');
+
+function submit() {
+  //axios
+}
 </script>
 <style lang="scss" scoped>
 @import '../../style/popup.scss';

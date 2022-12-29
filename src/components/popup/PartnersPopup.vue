@@ -5,60 +5,43 @@
       <h1>파트너사 등록</h1>
       <button @click="popupStore.partnerClose"><span class="material-icons"> close </span></button>
     </div>
-    <div class="popupBody">
-      <div class="inputBox">
-        <label>파트너사명(한국어)</label>
-        <input type="text" placeholder="IDEACONCERT" />
+    <form action="" enctype="multipart/form-data">
+      <div class="popupBody">
+        <Input title="파트너사명(한국어)" placeholder="IDEACONCERT" v-model="krPartner" />
+        <Input title="파트너사명(인도네시아어)" placeholder="IDEACONCERT" v-model="idPartner" />
+        <Input title="파트너사명(포르투갈어)" placeholder="IDEACONCERT" v-model="ptPartner" />
+        <Input title="파트너사명(영어)" placeholder="IDEACONCERT" v-model="enPartner" />
+        <Input title="파트너사 홈페이지" placeholder="http://ideaconcert.com" v-model="homepage" />
+        <File title="로고" @fileValue="emitFile" />
       </div>
-      <div class="inputBox">
-        <label>파트너사명(인도네시아어)</label>
-        <input type="text" placeholder="IDEACONCERT" />
+      <div class="popupFooter">
+        <button @click.prevent="submit"><span>등록</span></button>
       </div>
-      <div class="inputBox">
-        <label>파트너사명(포르투갈어)</label>
-        <input type="text" placeholder="IDEACONCERT" />
-      </div>
-      <div class="inputBox">
-        <label>파트너사명(영어)</label>
-        <input type="text" placeholder="IDEACONCERT" />
-      </div>
-      <div class="inputBox">
-        <label>파트너사 홈페이지</label>
-        <input type="text" placeholder="http://ideaconcert.com" />
-      </div>
-      <div class="inputBox">
-        <label>로고</label>
-        <div class="fileBox">
-          <input type="file" name="" id="file" ref="file" @change="fileUpload" />
-          <label for="file"><span ref="fileName" class="fileName"></span><span class="btn">Browse</span></label>
-        </div>
-      </div>
-    </div>
-    <div class="popupFooter">
-      <button><span>등록</span></button>
-    </div>
+    </form>
   </div>
 </template>
 <script setup>
+import Input from '../../form/Input.vue';
+import File from '../../form/File.vue';
 import { ref } from 'vue';
 import { usePopupStore } from '../../store/popup';
+
 const popupStore = usePopupStore();
 
+const krPartner = ref('');
+const idPartner = ref('');
+const ptPartner = ref('');
+const enPartner = ref('');
+const homepage = ref('');
 const file = ref();
-const fileName = ref();
 
-function fileUpload() {
-  fileName.value.innerText = file.value.files[0].name;
-  console.log(file.value.files[0].name);
+function emitFile(val) {
+  file.value = val;
 }
-//년도 옵션 값
-const currentYear = new Date().getFullYear();
-let yearArr = [];
-for (let i = 2015; i <= currentYear; i++) {
-  yearArr.push(i);
-  yearArr.reverse();
+function submit() {
+  //axios
+  console.log(file.value.files);
 }
-// close 와 함께 값 빈칸 만들어야함
 </script>
 <style lang="scss" scoped>
 @import '../../style/popup.scss';

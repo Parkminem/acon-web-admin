@@ -2,12 +2,13 @@
   <SubTitle>소식</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn />
+      <ResisterBtn @clickRegister="goUpload" />
       <div class="tableTop">
         <ShowList />
         <SearchBox />
       </div>
       <Table :theadData="theadData">
+        <!-- t-body -->
         <ul class="td">
           <li class="w10">1</li>
           <li>아이디어콘서트 설립</li>
@@ -21,6 +22,7 @@
             <button><span>삭제</span></button>
           </li>
         </ul>
+        <!-- t-body -->
       </Table>
       <div class="tableBottom">
         <AllEntries />
@@ -37,6 +39,8 @@ import SearchBox from '../components/utils/SearchBox.vue';
 import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
+import empty from '../components/utils/empty.vue';
+import { useRouter } from 'vue-router';
 
 const theadData = [
   { width: 'w10', name: '번호' },
@@ -47,5 +51,10 @@ const theadData = [
   { width: 'w10', name: '수정' },
   { width: 'w10', name: '삭제' }
 ];
+const router = useRouter();
+
+function goUpload() {
+  router.push('/news/upload');
+}
 </script>
 <style lang="scss" scoped></style>

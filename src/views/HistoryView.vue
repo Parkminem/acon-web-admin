@@ -8,6 +8,7 @@
         <SearchBox />
       </div>
       <Table :theadData="theadData">
+        <!-- t-body -->
         <ul class="td">
           <li class="w10">2014</li>
           <li class="w10">2</li>
@@ -20,6 +21,7 @@
             <button><span>삭제</span></button>
           </li>
         </ul>
+        <!-- t-body -->
       </Table>
       <div class="tableBottom">
         <AllEntries />
@@ -36,6 +38,7 @@ import SearchBox from '../components/utils/SearchBox.vue';
 import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
+import empty from '../components/utils/empty.vue';
 import { usePopupStore } from '../store/popup';
 
 const theadData = [
