@@ -2,7 +2,7 @@
   <SubTitle>소식</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn />
+      <ResisterBtn @click="goUpload" />
       <div class="tableTop">
         <ShowList />
         <SearchBox />
@@ -37,6 +37,7 @@ import SearchBox from '../components/utils/SearchBox.vue';
 import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
+import { useRouter } from 'vue-router';
 
 const theadData = [
   { width: 'w10', name: '번호' },
@@ -47,5 +48,10 @@ const theadData = [
   { width: 'w10', name: '수정' },
   { width: 'w10', name: '삭제' }
 ];
+const router = useRouter();
+
+function goUpload() {
+  router.push('/news/upload');
+}
 </script>
 <style lang="scss" scoped></style>
