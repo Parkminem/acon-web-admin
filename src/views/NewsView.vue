@@ -2,7 +2,7 @@
   <SubTitle>소식</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @click="goUpload" />
+      <ResisterBtn @clickRegister="goUpload" />
       <div class="tableTop">
         <ShowList />
         <SearchBox />
