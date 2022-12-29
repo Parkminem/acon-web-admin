@@ -8,6 +8,7 @@
         <SearchBox />
       </div>
       <Table :theadData="theadData">
+        <!-- t-body -->
         <ul class="td">
           <li class="w10">1</li>
           <li>아이디어콘서트 설립</li>
@@ -21,6 +22,7 @@
             <button><span>삭제</span></button>
           </li>
         </ul>
+        <!-- t-body -->
       </Table>
       <div class="tableBottom">
         <AllEntries />

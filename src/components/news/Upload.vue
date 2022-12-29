@@ -3,73 +3,62 @@
   <div class="container">
     <div class="section">
       <div class="title">소식 업로드</div>
-      <div class="inputBox">
-        <label>제목(한국어)</label>
-        <input type="text" />
-      </div>
-      <div class="inputBox">
-        <label>제목(인도네시아어)</label>
-        <input type="text" />
-      </div>
-      <div class="inputBox">
-        <label>제목(포르투갈어)</label>
-        <input type="text" />
-      </div>
-      <div class="inputBox">
-        <label>제목(영어)</label>
-        <input type="text" />
-      </div>
-      <div class="inputBox">
-        <label>썸네일</label>
-        <div class="fileBox">
-          <input type="file" name="" id="file" ref="file" @change="fileUpload" />
-          <label for="file"><span ref="fileName" class="fileName"></span><span class="btn">Browse</span></label>
-        </div>
-      </div>
-      <div class="inputBox">
-        <label>활성화 여부</label>
-        <div class="radioBox">
-          <label for="active01"><input type="radio" name="active" id="active01" /><span>예</span></label>
-        </div>
-        <div class="radioBox">
-          <label for="active02"><input type="radio" name="active" id="active02" /><span>아니오</span></label>
-        </div>
-      </div>
-      <div class="inputBox">
-        <label>내용(한국어)</label>
-        <ckeditor :editor="editor"></ckeditor>
-      </div>
-      <div class="inputBox">
-        <label>내용(인도네시아어)</label>
-        <ckeditor :editor="editor"></ckeditor>
-      </div>
-      <div class="inputBox">
-        <label>내용(포르투갈어)</label>
-        <ckeditor :editor="editor"></ckeditor>
-      </div>
-      <div class="inputBox">
-        <label>내용(영어)</label>
-        <ckeditor :editor="editor"></ckeditor>
-      </div>
-      <button @click="">완료</button>
+      <form action="" enctype="multipart/form-data">
+        <Input title="제목(한국어)" v-model="krTitle" />
+        <Input title="제목(인도네시아어)" v-model="idTitle" />
+        <Input title="제목(포르투갈어)" v-model="ptTitle" />
+        <Input title="제목(영어)" v-model="enTitle" />
+        <File title="썸네일" @fileValue="emitFile" />
+        <Radio title="활성화 여부" value01="yes" value02="no" v-model="active" />
+        <Editor title="내용(한국어)" @write="emitKrDesc" />
+        <Editor title="내용(인도네시아어)" @write="emitIdDesc" />
+        <Editor title="내용(포르투갈어)" @write="emitPtDesc" />
+        <Editor title="내용(영어)" @write="emitEnDesc" />
+        <button class="submitBtn" @click.prevent="submit">완료</button>
+      </form>
     </div>
   </div>
 </template>
 <script setup>
+import Input from '../../form/Input.vue';
+import File from '../../form/File.vue';
+import Radio from '../../form/Radio.vue';
+import Editor from '../../form/Editor.vue';
 import SubTitle from '../common/SubTitle.vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ref } from 'vue';
 
-const editor = ClassicEditor;
-const file = ref();
-const fileName = ref();
+const krTitle = ref('');
+const idTitle = ref('');
+const ptTitle = ref('');
+const enTitle = ref('');
+const thumbnail = ref('');
+const active = ref('');
+const krDesc = ref('');
+const idDesc = ref('');
+const ptDesc = ref('');
+const enDesc = ref('');
 
-function fileUpload() {
-  fileName.value.innerText = file.value.files[0].name;
-  if (file.value.files[0].type.split('/')[0] !== 'image') alert('이미지 파일만 선택할 수 있습니다.');
+function emitFile(val) {
+  thumbnail.value = val;
+}
+function emitKrDesc(val) {
+  krDesc.value = val.value;
+}
+function emitIdDesc(val) {
+  idDesc.value = val.value;
+}
+function emitPtDesc(val) {
+  ptDesc.value = val.value;
+}
+function emitEnDesc(val) {
+  enDesc.value = val.value;
+}
+function submit() {
+  //axios
+  console.log(thumbnail.value.files);
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 * {
   font-family: 'Lato', sans-serif;
 }
@@ -94,8 +83,7 @@ function fileUpload() {
       label {
         margin-bottom: 10px;
       }
-      input[type='text'],
-      select {
+      input[type='text'] {
         padding: 12px;
         border-radius: 5px;
         border: 1px solid rgba(170, 170, 170, 0.3);
@@ -137,29 +125,29 @@ function fileUpload() {
           padding: 0;
           border: none;
         }
-        .radioBox {
-          font-size: $fontL;
-          &:not(&:last-child) {
-            margin-bottom: 5px;
-          }
-          input[type='radio'] {
-            vertical-align: middle;
-            appearance: none;
-            background-color: #ddd;
-            width: 17px;
-            height: 17px;
-            margin: 0;
-            margin-right: 10px;
-            border-radius: 100px;
-            &:checked {
-              border: 5px solid #333;
-              background-color: #fff;
-            }
+      }
+      .radioBox {
+        font-size: $fontL;
+        &:not(&:last-child) {
+          margin-bottom: 5px;
+        }
+        input[type='radio'] {
+          vertical-align: middle;
+          appearance: none;
+          background-color: #ddd;
+          width: 17px;
+          height: 17px;
+          margin: 0;
+          margin-right: 10px;
+          border-radius: 100px;
+          &:checked {
+            border: 5px solid #333;
+            background-color: #fff;
           }
         }
       }
     }
-    button {
+    .submitBtn {
       padding: 11px 17px;
       background-color: #343a40;
       color: #fff;

@@ -8,7 +8,9 @@
         <SearchBox />
       </div>
       <Table :theadData="theadData">
+        <!-- t-body -->
         <empty />
+        <!-- t-body -->
       </Table>
       <div class="tableBottom">
         <AllEntries />
