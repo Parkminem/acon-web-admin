@@ -15,7 +15,7 @@
           <li>아이디어콘서트 설립</li>
           <li class="w10">활성화</li>
           <li class="w10">
-            <button><span>수정</span></button>
+            <button @click="historyStore.detailHistoryAct(pk)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button><span>삭제</span></button>
@@ -40,6 +40,9 @@ import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
 import empty from '../components/utils/empty.vue';
 import { usePopupStore } from '../store/popup';
+import { useHistory } from '../store/history';
+
+const historyStore = useHistory();
 
 const theadData = [
   { width: 'w10', name: '년도' },

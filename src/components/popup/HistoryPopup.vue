@@ -27,8 +27,12 @@ import Input from '../../form/Input.vue';
 import Radio from '../../form/Radio.vue';
 import Select from '../../form/Select.vue';
 import { ref } from 'vue';
-const popupStore = usePopupStore();
+import { useHistory } from '../../store/history';
+import { storeToRefs } from 'pinia';
 
+const popupStore = usePopupStore();
+const historyStore = useHistory();
+const { detailHistory } = storeToRefs(historyStore);
 const krDesc = ref('');
 const idDesc = ref('');
 const ptDesc = ref('');
@@ -36,6 +40,22 @@ const enDesc = ref('');
 const isActive = ref('');
 const year = ref('');
 const month = ref('');
+
+if (detailHistory === null) {
+  return;
+} else {
+  krDesc.value = detailHistory.value.content_kr;
+  idDesc.value = detailHistory.value.content_id;
+  ptDesc.value = detailHistory.value.content_pt;
+  enDesc.value = detailHistory.value.content_us;
+  month.value = detailHistory.value.month;
+  year.value = detailHistory.value.year;
+  if (detailHistory.value.active_flag == 1) {
+    isActive.value = 'yes';
+  } else {
+    isActive.value = 'no';
+  }
+}
 
 //년도, 월 옵션 값
 const currentYear = new Date().getFullYear();
