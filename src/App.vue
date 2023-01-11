@@ -2,7 +2,7 @@
   <router-view></router-view>
 </template>
 <script setup></script>
-<style>
+<style lang="scss">
 @import 'reset-css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 * {
@@ -45,5 +45,8 @@ select {
   display: flex;
   justify-content: space-between;
   color: #333;
+  .left {
+    display: flex;
+  }
 }
 </style>

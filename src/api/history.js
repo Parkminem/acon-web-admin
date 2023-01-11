@@ -10,10 +10,13 @@ function fetchDetailHistory(pk) {
 
 /**
  * 연혁 리스트 조희
- * parameter : 페이지 넘버
+ * parameter : 페이지 넘버, 한 페이지 안의 게시물 수
  */
-function fetchHistoryList(page) {
-  return instance.post('/history/list');
+function fetchHistoryList(page, count) {
+  return instance.post('/history/list', {
+    nowpage: page,
+    listpage: count
+  });
 }
 
 const historyApi = { fetchDetailHistory, fetchHistoryList };

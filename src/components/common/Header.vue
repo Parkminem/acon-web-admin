@@ -84,14 +84,6 @@
           </ul>
         </div>
       </div>
-      <div class="langauge">
-        <ul class="list">
-          <li><button class="active">KR</button></li>
-          <li><button>EN</button></li>
-          <li><button>ID</button></li>
-          <li><button>PT</button></li>
-        </ul>
-      </div>
     </div>
     <div class="hamberger" @click="headerStore.sideToggleAct" :class="{ close: slideState }">
       <span></span>
