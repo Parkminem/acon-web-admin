@@ -4,7 +4,10 @@
     <div class="section">
       <ResisterBtn @clickRegister="usePopupStore().locationOpen" />
       <div class="tableTop">
-        <ShowList />
+        <div class="left">
+          <ShowList />
+          <LocaleList />
+        </div>
         <SearchBox />
       </div>
       <Table :theadData="theadData.location">
@@ -12,7 +15,10 @@
         <ul class="td">
           <li class="w10">1</li>
           <li class="w10">판교</li>
-          <li>경기 성남시 수정구 대왕판교로 815 판교기업지원허브 ICT문화융합센터 430호</li>
+          <li v-if="locale === 'kr'">경기 성남시 수정구 대왕판교로 815 판교기업지원허브 ICT문화융합센터 430호</li>
+          <li v-if="locale === 'en'">경기 성남시 수정구 대왕판교로 815 판교기업지원허브 ICT문화융합센터 430호</li>
+          <li v-if="locale === 'id'">경기 성남시 수정구 대왕판교로 815 판교기업지원허브 ICT문화융합센터 430호</li>
+          <li v-if="locale === 'pt'">경기 성남시 수정구 대왕판교로 815 판교기업지원허브 ICT문화융합센터 430호</li>
           <li class="w10">000-000-0000</li>
           <li class="w10">000-000-0000</li>
           <li class="w10">Y</li>
@@ -41,7 +47,13 @@ import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
 import empty from '../components/utils/empty.vue';
+import LocaleList from '../components/utils/LocaleList.vue';
+import { useSelect } from '../store/utils';
 import { theadData } from '../utils/theadData';
 import { usePopupStore } from '../store/popup';
+import { storeToRefs } from 'pinia';
+
+const selectStore = useSelect();
+const { locale } = storeToRefs(selectStore);
 </script>
 <style lang="scss" scoped></style>
