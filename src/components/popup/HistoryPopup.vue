@@ -10,17 +10,15 @@
       <div class="popupBody">
         <Select title="년도" id="year" :arr="yearArr" v-model="year" />
         <Select title="월" id="month" :arr="monthArr" v-model="month" />
-        <Radio title="활성화 여부" v-model="isActive" value01="yes" value02="no" />
+        <Radio title="활성화 여부" v-model="isActive" value01="1" value02="-1" />
         <Input title="내용(한국어)" v-model="krDesc" placeholder="IDEACONCERT" />
         <Input title="내용(인도네시아어)" v-model="idDesc" placeholder="IDEACONCERT" />
         <Input title="내용(포르투갈어)" v-model="ptDesc" placeholder="IDEACONCERT" />
         <Input title="내용(영어)" v-model="enDesc" placeholder="IDEACONCERT" />
       </div>
       <div class="popupFooter">
-        <button>
-          <span v-if="!detailHistory">등록</span>
-          <span v-if="detailHistory">수정</span>
-        </button>
+        <button v-if="!detailHistory" @click="uploadHistory"><span>등록</span></button>
+        <button v-if="detailHistory" @click="editHistory"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -45,6 +43,7 @@ const isActive = ref('');
 const year = ref('');
 const month = ref('');
 
+//수정일 때 팝업 랜더링 시 데이터 삽입
 if (detailHistory.value) {
   krDesc.value = detailHistory.value.content_kr;
   idDesc.value = detailHistory.value.content_id;
@@ -53,11 +52,17 @@ if (detailHistory.value) {
   month.value = detailHistory.value.month;
   year.value = detailHistory.value.year;
   if (detailHistory.value.active_flag == 1) {
-    isActive.value = 'yes';
+    isActive.value = '1';
   } else {
-    isActive.value = 'no';
+    isActive.value = '-1';
   }
 }
+
+//연혁 등록
+function uploadHistory() {}
+
+//연혁 수정
+function editHistory() {}
 
 //년도, 월 옵션 값
 const currentYear = new Date().getFullYear();

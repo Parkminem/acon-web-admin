@@ -10,7 +10,7 @@
         <Input title="제목(포르투갈어)" v-model="ptTitle" />
         <Input title="제목(영어)" v-model="enTitle" />
         <File title="썸네일" @fileValue="emitFile" />
-        <Radio title="활성화 여부" value01="yes" value02="no" v-model="active" />
+        <Radio title="활성화 여부" value01="1" value02="-1" v-model="active" />
         <Editor title="내용(한국어)" @write="emitKrDesc" />
         <Editor title="내용(인도네시아어)" @write="emitIdDesc" />
         <Editor title="내용(포르투갈어)" @write="emitPtDesc" />
