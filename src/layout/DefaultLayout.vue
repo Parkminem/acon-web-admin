@@ -6,11 +6,11 @@
       <Footer />
     </div>
   </div>
-  <HistoryPopup v-if="historyState" />
-  <PartnersPopup v-if="partnerState" />
-  <LocationPopup v-if="locationState" />
-  <QuestionTypePopup v-if="questionTypeState" />
-  <PromotionPopup v-if="promotionState" />
+  <HistoryPopup v-if="historyPopupState" />
+  <PartnersPopup v-if="partnerPopupState" />
+  <LocationPopup v-if="locationPopupState" />
+  <QuestionTypePopup v-if="questionTypePopupState" />
+  <PromotionPopup v-if="promotionPopupState" />
 </template>
 <script setup>
 import Header from '../components/common/Header.vue';
@@ -27,7 +27,8 @@ import { storeToRefs } from 'pinia';
 const headerStore = useHeaderStore();
 const popupStore = usePopupStore();
 const { slideState } = storeToRefs(headerStore);
-const { historyState, partnerState, locationState, questionTypeState, promotionState } = storeToRefs(popupStore);
+const { historyPopupState, partnerPopupState, locationPopupState, questionTypePopupState, promotionPopupState } =
+  storeToRefs(popupStore);
 
 const movePadding = () => {
   if (slideState.value) return 280;

@@ -13,6 +13,7 @@ import { useSelect } from '../../store/utils';
 const selectStore = useSelect();
 const locale = ref();
 
+//스토어의 언어state를 바뀐 언어로 변경
 watch(locale, (newLocale) => {
   selectStore.changeLocale(newLocale);
 });

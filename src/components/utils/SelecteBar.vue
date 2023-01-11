@@ -9,6 +9,7 @@
 defineProps({
   options: Array
 });
+//바로 위의 컴포넌트로 값을 올려줌
 const emit = defineEmits(['update:modelValue']);
 function optionChange(e) {
   const value = e.target.value;

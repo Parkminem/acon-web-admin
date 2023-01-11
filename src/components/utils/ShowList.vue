@@ -14,6 +14,7 @@ const selectStore = useSelect();
 
 const showVal = ref();
 
+//스토어의 갯수 state를 바뀐 value로 변경
 watch(showVal, (newShowVal) => {
   selectStore.changeShow(newShowVal);
 });

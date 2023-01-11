@@ -2,7 +2,7 @@
   <div class="cover" @click="popupStore.historyClose"></div>
   <div class="inner">
     <div class="popupHeader">
-      <h1>연혁 등록</h1>
+      <h1>연혁 {{ historyState }}</h1>
       <button @click="popupStore.historyClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" @submit.prevent="submit">
@@ -16,7 +16,9 @@
         <Input title="내용(영어)" v-model="enDesc" placeholder="IDEACONCERT" />
       </div>
       <div class="popupFooter">
-        <button><span>등록</span></button>
+        <button>
+          <span>{{ historyState }}</span>
+        </button>
       </div>
     </form>
   </div>
@@ -33,6 +35,7 @@ import { storeToRefs } from 'pinia';
 const popupStore = usePopupStore();
 const historyStore = useHistory();
 const { detailHistory } = storeToRefs(historyStore);
+const { historyState } = storeToRefs(popupStore);
 const krDesc = ref('');
 const idDesc = ref('');
 const ptDesc = ref('');
@@ -41,7 +44,7 @@ const isActive = ref('');
 const year = ref('');
 const month = ref('');
 
-if (detailHistory) {
+if (detailHistory.value) {
   krDesc.value = detailHistory.value.content_kr;
   idDesc.value = detailHistory.value.content_id;
   ptDesc.value = detailHistory.value.content_pt;

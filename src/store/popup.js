@@ -2,42 +2,57 @@ import { defineStore } from 'pinia';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
-    historyState: false,
-    partnerState: false,
-    locationState: false,
-    questionTypeState: false,
-    promotionState: false
+    historyPopupState: false,
+    historyState: null,
+    partnerPopupState: false,
+    partnerState: null,
+    locationPopupState: false,
+    locationState: null,
+    questionTypePopupState: false,
+    questionTypeState: null,
+    promotionPopupState: false,
+    promotionState: null
   }),
   actions: {
-    historyOpen() {
-      this.historyState = true;
+    historyOpen(state) {
+      this.historyState = state;
+      this.historyPopupState = true;
     },
     historyClose() {
-      this.historyState = false;
+      this.historyState = null;
+      this.historyPopupState = false;
     },
-    partnerOpen() {
-      this.partnerState = true;
+    partnerOpen(state) {
+      this.partnerState = state;
+      this.partnerPopupState = true;
     },
     partnerClose() {
-      this.partnerState = false;
+      this.partnerState = null;
+      this.partnerPopupState = false;
     },
-    locationOpen() {
-      this.locationState = true;
+    locationOpen(state) {
+      this.locationState = state;
+      this.locationPopupState = true;
     },
     locationClose() {
-      this.locationState = false;
+      this.locationState = null;
+      this.locationPopupState = false;
     },
-    questionTypeOpen() {
-      this.questionTypeState = true;
+    questionTypeOpen(state) {
+      this.questionTypeState = state;
+      this.questionTypePopupState = true;
     },
     questionTypeClose() {
-      this.questionTypeState = false;
+      this.questionTypeState = null;
+      this.questionTypePopupState = false;
     },
-    promotionOpen() {
-      this.promotionState = true;
+    promotionOpen(state) {
+      this.promotionState = state;
+      this.promotionPopupState = true;
     },
     promotionClose() {
-      this.promotionState = false;
+      this.promotionState = null;
+      this.promotionPopupState = false;
     }
   }
 });

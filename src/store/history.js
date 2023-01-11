@@ -20,7 +20,7 @@ export const useHistory = defineStore('history', {
         .then((res) => {
           // console.log(res.data);
           this.detailHistory = res.data.data;
-          popupStore.historyOpen();
+          popupStore.historyOpen('수정');
         })
         .catch((err) => console.log(err));
     }

@@ -18,7 +18,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { usePopupStore } from '../../store/popup';
 const popupStore = usePopupStore();
-const { locationState } = storeToRefs(popupStore);
+const { locationPopupState } = storeToRefs(popupStore);
 
 const post = ref('');
 const address01 = ref('');
@@ -61,7 +61,7 @@ function closePost() {
   new window.daum.Postcode({}).close();
 }
 
-if (!locationState.value) {
+if (!locationPopupState.value) {
   closePost();
 }
 </script>
