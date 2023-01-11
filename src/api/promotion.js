@@ -1,5 +1,5 @@
 import instance from './instance';
 
-const {} = promotionApi;
+const promotionApi = {};
 
 export default promotionApi;

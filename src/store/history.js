@@ -6,7 +6,8 @@ const popupStore = usePopupStore();
 
 export const useHistory = defineStore('history', {
   state: () => ({
-    detailHistory: null
+    detailHistory: null,
+    historyList: null
   }),
   actions: {
     /**
@@ -21,6 +22,18 @@ export const useHistory = defineStore('history', {
           // console.log(res.data);
           this.detailHistory = res.data.data;
           popupStore.historyOpen();
+        })
+        .catch((err) => console.log(err));
+    },
+    /**
+     * 연혁 리스트 조회
+     * @param (페이지 넘버, 한 페이지 안의 게시물 수)
+     */
+    async historyListAct(page, count) {
+      await historyApi
+        .fetchHistoryList(page, count)
+        .then((res) => {
+          this.historyList = res.data.data;
         })
         .catch((err) => console.log(err));
     }

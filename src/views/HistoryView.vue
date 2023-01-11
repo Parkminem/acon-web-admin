@@ -62,11 +62,7 @@ const { locale, showNum } = storeToRefs(selectStore);
 watch(
   showNum,
   (newShowNum) => {
-    //연혁 리스트 호출(showNum(한 페이지 당 게시물 수) 사용))
-    // await historyApi
-    //   .fetchHistoryList(1, 10)
-    //   .then((res) => console.log(res.data))
-    //   .catch((err) => console.log(err));
+    //연혁 리스트 조회 액션 호출(showNum(한 페이지 당 게시물 수) 사용))
   },
   { immediate: true }
 );

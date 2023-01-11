@@ -1,14 +1,6 @@
 import instance from './instance';
 
 /**
- * 연헉 상세 정보 반환
- * @param 고유번호
- */
-function fetchDetailHistory(pk) {
-  return instance.get(`/history/${pk}`);
-}
-
-/**
  * 연혁 리스트 조희
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
@@ -17,6 +9,14 @@ function fetchHistoryList(page, count) {
     nowpage: page,
     listpage: count
   });
+}
+
+/**
+ * 연헉 상세 정보 반환
+ * @param 고유번호
+ */
+function fetchDetailHistory(pk) {
+  return instance.get(`/history/${pk}`);
 }
 
 /**

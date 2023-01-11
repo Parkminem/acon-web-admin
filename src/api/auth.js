@@ -1,5 +1,5 @@
 import instance from './instance';
 
-const {} = authApi;
+const authApi = {};
 
 export default authApi;

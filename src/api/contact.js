@@ -1,5 +1,5 @@
 import instance from './instance';
 
-const {} = contactApi;
+const contactApi = {};
 
 export default contactApi;
