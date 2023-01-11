@@ -1,7 +1,7 @@
 <template>
   <div class="loginWrap">
     <!-- v-if로 로그인 전, 후 박스 교체 -->
-    <div class="loginBox">
+    <div class="loginBox" v-if="!token">
       <div class="title">
         <h1>LOGIN</h1>
       </div>
@@ -27,12 +27,12 @@
           </div>
         </div>
         <div class="loginBtn">
-          <button><span>LOGIN</span><span class="material-icons"> arrow_forward </span></button>
+          <button @click="onLogin"><span>LOGIN</span><span class="material-icons"> arrow_forward </span></button>
         </div>
       </div>
     </div>
     <!-- v-if 작업 -->
-    <!-- <div class="loginBox">
+    <div class="loginBox" v-else>
       <div class="title">
         <h1>IDEACONCERT</h1>
       </div>
@@ -42,14 +42,16 @@
         </div>
         <div class="btns">
           <router-link to="/main"><span>Back To Main</span></router-link>
-          <button><span>LOGOUT</span></button>
+          <button @click="onLogout"><span>LOGOUT</span></button>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
+
 <script setup>
 import { ref, onUpdated } from 'vue';
+import { useAuthStore } from '../store/auth';
 
 const idVal = ref('');
 const pwVal = ref('');
@@ -60,6 +62,19 @@ onUpdated(() => {
   if (idVal.value.length > 0) return (upDown.value[1] = true);
   if (pwVal.value.length > 0) return (upDown.value[2] = true);
 });
+
+const authStore = useAuthStore();
+
+let token = localStorage.getItem('token');
+
+const onLogin = () => {
+  authStore.loginAct(idVal.value, pwVal.value);
+};
+
+const onLogout = () => {
+  token = localStorage.removeItem('token');
+  location.reload();
+};
 </script>
 <style lang="scss" scoped>
 .loginWrap {
