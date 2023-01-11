@@ -58,14 +58,15 @@ import { storeToRefs } from 'pinia';
 const historyStore = useHistory();
 const selectStore = useSelect();
 const { locale, showNum } = storeToRefs(selectStore);
+const { historyList } = storeToRefs(historyStore);
 
-watch(
-  showNum,
-  (newShowNum) => {
-    //연혁 리스트 조회 액션 호출(showNum(한 페이지 당 게시물 수) 사용))
-  },
-  { immediate: true }
-);
+//연혁 리스트 조회
+await historyStore.historyListAct(1, showNum.value);
+
+// 게시물 갯수 변경
+watch(showNum, (newShowNum) => {
+  historyStore.historyListAct(historyList.value[0].nowpage, newShowNum);
+});
 
 // 연혁 삭제
 function deleteHistory(pk) {

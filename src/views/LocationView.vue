@@ -54,10 +54,22 @@ import LocaleList from '../components/utils/LocaleList.vue';
 import { useSelect } from '../store/utils';
 import { theadData } from '../utils/theadData';
 import { usePopupStore } from '../store/popup';
+import { useLocation } from '../store/location';
 import { storeToRefs } from 'pinia';
 import { location } from '../utils/dummy';
+import { watch } from 'vue';
 
 const selectStore = useSelect();
-const { locale } = storeToRefs(selectStore);
+const locationStore = useLocation();
+const { locale, showNum } = storeToRefs(selectStore);
+const { locationList } = storeToRefs(locationStore);
+
+//자사 위치 리스트 조회
+// await locationStore.locationListAct(1, showNum.value);
+
+//게시물 갯수 변경
+watch(showNum, (newShowNum) => {
+  locationStore.locationListAct(locationList.value[0].nowpage, newShowNum);
+});
 </script>
 <style lang="scss" scoped></style>
