@@ -21,10 +21,10 @@
           <li v-if="locale === 'pt'">{{ item.content_pt }}</li>
           <li class="w10">{{ item.active_flag === 1 ? '활성화' : '비활성화' }}</li>
           <li class="w10">
-            <button @click="historyStore.detailHistoryAct(pk)"><span>수정</span></button>
+            <button @click="historyStore.detailHistoryAct(item.history_pk)"><span>수정</span></button>
           </li>
           <li class="w10">
-            <button><span>삭제</span></button>
+            <button @click="deleteHistory(item.history_pk)"><span>삭제</span></button>
           </li>
         </ul>
         <!-- t-body -->
@@ -70,5 +70,17 @@ watch(
   },
   { immediate: true }
 );
+
+// 연혁 삭제
+function deleteHistory(pk) {
+  historyApi
+    .fecthDeleteHistory(pk)
+    .then((res) => {
+      if (res.data.status === 200) {
+        window.location.href = '/history';
+      }
+    })
+    .catch((err) => console.log(err));
+}
 </script>
 <style lang="scss" scoped></style>
