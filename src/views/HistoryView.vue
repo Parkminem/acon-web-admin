@@ -15,11 +15,10 @@
         <ul class="td" v-for="item in history.list" :key="item.rownum">
           <li class="w10">{{ item.year }}</li>
           <li class="w10">{{ item.month }}</li>
-          <li>{{ item.content_kr }}</li>
-          <!-- 언어변경작업 후 v-if 작업 하는 게 좋을 듯... -->
-          <!-- <li>{{item.content_id}}</li>
-          <li>{{item.content_us}}</li>
-          <li>{{item.content_pt}}</li> -->
+          <li v-if="locale === 'kr'">{{ item.content_kr }}</li>
+          <li v-if="locale === 'id'">{{ item.content_id }}</li>
+          <li v-if="locale === 'en'">{{ item.content_us }}</li>
+          <li v-if="locale === 'pt'">{{ item.content_pt }}</li>
           <li class="w10">{{ item.active_flag === 1 ? '활성화' : '비활성화' }}</li>
           <li class="w10">
             <button @click="historyStore.detailHistoryAct(pk)"><span>수정</span></button>
@@ -50,11 +49,14 @@ import empty from '../components/utils/empty.vue';
 import historyApi from '../api/history';
 import { usePopupStore } from '../store/popup';
 import { useHistory } from '../store/history';
+import { useSelect } from '../store/utils';
 import { theadData } from '../utils/theadData';
 import { history } from '../utils/dummy';
+import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
-
+const selectStore = useSelect();
+const { locale } = storeToRefs(selectStore);
 //연혁 리스트 호출
 // await historyApi
 //   .fetchHistoryList(1, 10)

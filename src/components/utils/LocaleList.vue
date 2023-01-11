@@ -1,12 +1,25 @@
 <template>
   <div class="LocaleList">
     <span>language</span>
-    <SeleteBar :options="select.locale" />
+    <SeleteBar :options="select.locale" v-model="locale" />
   </div>
 </template>
 <script setup>
+import { ref, watch } from 'vue';
 import SeleteBar from './SelecteBar.vue';
 import { select } from '../../utils/select';
+import { useSelect } from '../../store/utils';
+
+const selectStore = useSelect();
+const locale = ref('kr');
+
+watch(
+  locale,
+  (newLocale) => {
+    selectStore.changeLocale(newLocale);
+  },
+  { immediate: true }
+);
 </script>
 <style lang="scss">
 .LocaleList {
