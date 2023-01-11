@@ -11,15 +11,11 @@ import { select } from '../../utils/select';
 import { useSelect } from '../../store/utils';
 
 const selectStore = useSelect();
-const locale = ref('kr');
+const locale = ref();
 
-watch(
-  locale,
-  (newLocale) => {
-    selectStore.changeLocale(newLocale);
-  },
-  { immediate: true }
-);
+watch(locale, (newLocale) => {
+  selectStore.changeLocale(newLocale);
+});
 </script>
 <style lang="scss">
 .LocaleList {

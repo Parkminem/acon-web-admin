@@ -37,6 +37,7 @@
   </div>
 </template>
 <script setup>
+import { watch } from 'vue';
 import SubTitle from '../components/common/SubTitle.vue';
 import ResisterBtn from '../components/utils/ResisterBtn.vue';
 import ShowList from '../components/utils/ShowList.vue';
@@ -56,11 +57,18 @@ import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
 const selectStore = useSelect();
-const { locale } = storeToRefs(selectStore);
-//연혁 리스트 호출
-// await historyApi
-//   .fetchHistoryList(1, 10)
-//   .then((res) => console.log(res.data))
-//   .catch((err) => console.log(err));
+const { locale, showNum } = storeToRefs(selectStore);
+
+watch(
+  showNum,
+  (newShowNum) => {
+    //연혁 리스트 호출(showNum(한 페이지 당 게시물 수) 사용))
+    // await historyApi
+    //   .fetchHistoryList(1, 10)
+    //   .then((res) => console.log(res.data))
+    //   .catch((err) => console.log(err));
+  },
+  { immediate: true }
+);
 </script>
 <style lang="scss" scoped></style>
