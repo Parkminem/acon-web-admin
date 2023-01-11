@@ -2,7 +2,7 @@
   <SubTitle>연혁</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().historyOpen('등록')" />
+      <ResisterBtn @clickRegister="usePopupStore().historyOpen" />
       <div class="tableTop">
         <div class="left">
           <ShowList />

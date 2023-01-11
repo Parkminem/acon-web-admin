@@ -2,7 +2,8 @@
   <div class="cover" @click="popupStore.historyClose"></div>
   <div class="inner">
     <div class="popupHeader">
-      <h1>연혁 {{ historyState }}</h1>
+      <h1 v-if="!detailHistory">연혁 등록</h1>
+      <h1 v-if="detailHistory">연혁 수정</h1>
       <button @click="popupStore.historyClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" @submit.prevent="submit">
@@ -17,7 +18,8 @@
       </div>
       <div class="popupFooter">
         <button>
-          <span>{{ historyState }}</span>
+          <span v-if="!detailHistory">등록</span>
+          <span v-if="detailHistory">수정</span>
         </button>
       </div>
     </form>
@@ -35,7 +37,6 @@ import { storeToRefs } from 'pinia';
 const popupStore = usePopupStore();
 const historyStore = useHistory();
 const { detailHistory } = storeToRefs(historyStore);
-const { historyState } = storeToRefs(popupStore);
 const krDesc = ref('');
 const idDesc = ref('');
 const ptDesc = ref('');
