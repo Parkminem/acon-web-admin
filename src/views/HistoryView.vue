@@ -9,6 +9,7 @@
       </div>
       <Table :theadData="theadData">
         <!-- t-body -->
+
         <ul class="td">
           <li class="w10">2014</li>
           <li class="w10">2</li>
@@ -39,6 +40,7 @@ import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
 import empty from '../components/utils/empty.vue';
+import historyApi from '../api/history';
 import { usePopupStore } from '../store/popup';
 import { useHistory } from '../store/history';
 
@@ -52,5 +54,8 @@ const theadData = [
   { width: 'w10', name: '수정' },
   { width: 'w10', name: '삭제' }
 ];
+
+//연혁 리스트 호출
+// await historyApi.fetchHistoryList(1);
 </script>
 <style lang="scss" scoped></style>

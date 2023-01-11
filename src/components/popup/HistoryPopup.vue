@@ -41,9 +41,7 @@ const isActive = ref('');
 const year = ref('');
 const month = ref('');
 
-if (detailHistory === null) {
-  return;
-} else {
+if (detailHistory) {
   krDesc.value = detailHistory.value.content_kr;
   idDesc.value = detailHistory.value.content_id;
   ptDesc.value = detailHistory.value.content_pt;

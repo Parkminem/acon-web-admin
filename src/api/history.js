@@ -8,6 +8,14 @@ function fetchDetailHistory(pk) {
   return instance.get(`/history/${pk}`);
 }
 
-const historyApi = { fetchDetailHistory };
+/**
+ * 연혁 리스트 조희
+ * parameter : 페이지 넘버
+ */
+function fetchHistoryList(page) {
+  return instance.post('/history/list');
+}
+
+const historyApi = { fetchDetailHistory, fetchHistoryList };
 
 export default historyApi;
