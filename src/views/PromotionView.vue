@@ -7,7 +7,7 @@
         <ShowList />
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.promotion">
         <!-- t-body -->
         <empty />
         <!-- t-body -->
@@ -29,15 +29,6 @@ import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
 import empty from '../components/utils/empty.vue';
 import { usePopupStore } from '../store/popup';
-
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: '', name: '영상 이름' },
-  { width: '', name: '영상 유튜브 주소' },
-  { width: 'w10', name: '등록일' },
-  { width: '', name: '영상 공개 여부' },
-  { width: 'w10', name: '수정' },
-  { width: 'w10', name: '삭제' }
-];
+import { theadData } from '../utils/theadData';
 </script>
 <style lang="scss" scoped></style>

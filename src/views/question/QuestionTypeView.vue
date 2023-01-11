@@ -7,7 +7,7 @@
         <ShowList />
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.questionType">
         <ul class="td">
           <li class="w10">1</li>
           <li>데이터 가공</li>
@@ -35,12 +35,6 @@ import Table from '../../components/utils/Table.vue';
 import AllEntries from '../../components/utils/AllEntries.vue';
 import Pagination from '../../components/utils/Pagination.vue';
 import { usePopupStore } from '../../store/popup';
-
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: '', name: '문의유형명' },
-  { width: 'w10', name: '수정' },
-  { width: 'w10', name: '삭제' }
-];
+import { theadData } from '../../utils/theadData';
 </script>
 <style lang="scss" scoped></style>

@@ -7,7 +7,7 @@
         <ShowList />
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.history">
         <!-- t-body -->
 
         <ul class="td">
@@ -43,17 +43,9 @@ import empty from '../components/utils/empty.vue';
 import historyApi from '../api/history';
 import { usePopupStore } from '../store/popup';
 import { useHistory } from '../store/history';
+import { theadData } from '../utils/theadData';
 
 const historyStore = useHistory();
-
-const theadData = [
-  { width: 'w10', name: '년도' },
-  { width: 'w10', name: '월' },
-  { width: '', name: '내용' },
-  { width: 'w10', name: '활성화 여부' },
-  { width: 'w10', name: '수정' },
-  { width: 'w10', name: '삭제' }
-];
 
 //연혁 리스트 호출
 // await historyApi.fetchHistoryList(1);

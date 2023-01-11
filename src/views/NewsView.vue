@@ -7,7 +7,7 @@
         <ShowList />
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.news">
         <!-- t-body -->
         <ul class="td">
           <li class="w10">1</li>
@@ -40,17 +40,9 @@ import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
 import empty from '../components/utils/empty.vue';
+import { theadData } from '../utils/theadData';
 import { useRouter } from 'vue-router';
 
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: '', name: '내용' },
-  { width: 'w10', name: '작성자' },
-  { width: 'w10', name: '활성화 여부' },
-  { width: 'w10', name: '등록일' },
-  { width: 'w10', name: '수정' },
-  { width: 'w10', name: '삭제' }
-];
 const router = useRouter();
 
 function goUpload() {

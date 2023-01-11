@@ -7,7 +7,7 @@
         <ShowList />
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.location">
         <!-- t-body -->
         <ul class="td">
           <li class="w10">1</li>
@@ -41,16 +41,7 @@ import Table from '../components/utils/Table.vue';
 import AllEntries from '../components/utils/AllEntries.vue';
 import Pagination from '../components/utils/Pagination.vue';
 import empty from '../components/utils/empty.vue';
+import { theadData } from '../utils/theadData';
 import { usePopupStore } from '../store/popup';
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: 'w10', name: '위치명' },
-  { width: '', name: '주소' },
-  { width: 'w10', name: '연락처' },
-  { width: 'w10', name: '팩스' },
-  { width: 'w10', name: '주소 공개 여부' },
-  { width: 'w10', name: '수정' },
-  { width: 'w10', name: '삭제' }
-];
 </script>
 <style lang="scss" scoped></style>
