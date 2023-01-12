@@ -1,4 +1,4 @@
-import instance from './instance';
+import instance from '@/api/instance';
 
 /**
  * 연혁 리스트 조희

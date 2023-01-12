@@ -8,7 +8,7 @@
           <ShowList />
           <LocaleList />
         </div>
-        <!-- <SearchBox /> -->
+        <SearchBox />
       </div>
       <Table :theadData="theadData.history">
         <!-- t-body -->

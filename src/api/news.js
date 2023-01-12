@@ -1,4 +1,4 @@
-import instance from './instance';
+import instance from '@/api/instance';
 
 const newsApi = {};
 
