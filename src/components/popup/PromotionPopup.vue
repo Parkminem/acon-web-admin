@@ -20,13 +20,13 @@
   </div>
 </template>
 <script setup>
-import Input from '../../form/Input.vue';
-import Checkbox from '../../form/Checkbox.vue';
-import { usePopupStore } from '../../store/popup';
-import { usePromotion } from '../../store/promotion';
+import Input from '@/components/form/Input.vue';
+import Checkbox from '@/components/form/Checkbox.vue';
+import { usePopupStore } from '@/store/popup';
+import { usePromotion } from '@/store/promotion';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import promotionApi from '../../api/promotion';
+import promotionApi from '@/api/promotion';
 
 const popupStore = usePopupStore();
 const promotionStore = usePromotion();
@@ -91,5 +91,5 @@ function editPromotion() {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../style/popup.scss';
+@import '@/components/style/popup.scss';
 </style>

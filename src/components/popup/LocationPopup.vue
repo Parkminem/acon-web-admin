@@ -34,14 +34,14 @@
   </div>
 </template>
 <script setup>
-import Input from '../../form/Input.vue';
+import Input from '@/components/form/Input.vue';
 import PostcodePopup from './PostcodePopup.vue';
-import Checkbox from '../../form/Checkbox.vue';
-import { usePopupStore } from '../../store/popup';
-import { useLocation } from '../../store/location';
+import Checkbox from '@/components/form/Checkbox.vue';
+import { usePopupStore } from '@/store/popup';
+import { useLocation } from '@/store/location';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import locationApi from '../../api/location';
+import locationApi from '@/api/location';
 const popupStore = usePopupStore();
 const locationStore = useLocation();
 const { detailLocation } = storeToRefs(locationStore);
@@ -110,7 +110,7 @@ function uploadLocation() {
     enAddress01.value.length == 0 ||
     post.value.length == 0
   ) {
-    alert('모든 내용을 등록해주세요');
+    alert('모든 내용을 입력해주세요');
   } else {
     const inputObj = {
       name_kr: krArea.value,
@@ -192,5 +192,5 @@ function editLocation() {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../style/popup.scss';
+@import '@/components/style/popup.scss';
 </style>

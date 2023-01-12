@@ -21,11 +21,11 @@
   </div>
 </template>
 <script setup>
-import Input from '../../form/Input.vue';
-import File from '../../form/File.vue';
-import Radio from '../../form/Radio.vue';
-import Editor from '../../form/Editor.vue';
-import SubTitle from '../common/SubTitle.vue';
+import Input from '@/components/form/Input.vue';
+import File from '@/components/form/File.vue';
+import Radio from '@/components/form/Radio.vue';
+import Editor from '@/components/form/Editor.vue';
+import SubTitle from '@/components/common/SubTitle.vue';
 import { ref } from 'vue';
 
 const krTitle = ref('');

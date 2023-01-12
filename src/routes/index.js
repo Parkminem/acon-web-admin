@@ -4,108 +4,108 @@ const routes = [
   {
     path: '/main',
     name: 'defaultLayout',
-    component: () => import('../layout/DefaultLayout.vue'),
+    component: () => import('@/layout/DefaultLayout.vue'),
     children: [
       {
         path: '',
         name: 'main',
-        component: () => import('../views/MainView.vue')
+        component: () => import('@/views/MainView.vue')
       },
       {
         path: '/history',
         name: 'history',
-        component: () => import('../views/HistoryView.vue')
+        component: () => import('@/views/HistoryView.vue')
       },
       {
         path: '/news',
         name: 'news',
-        component: () => import('../views/NewsView.vue')
+        component: () => import('@/views/NewsView.vue')
       },
       {
         path: '/news/upload',
-        component: () => import('../components/news/Upload.vue')
+        component: () => import('@/components/news/Upload.vue')
       },
       {
         path: '/partners',
         name: 'partners',
-        component: () => import('../views/PartnersView.vue')
+        component: () => import('@/views/PartnersView.vue')
       },
       {
         path: '/location',
         name: 'location',
-        component: () => import('../views/LocationView.vue')
+        component: () => import('@/views/LocationView.vue')
       },
       {
         path: '/questiontype',
         name: 'questiontype',
-        component: () => import('../views/Question/QuestionTypeView.vue')
+        component: () => import('@/views/Question/QuestionTypeView.vue')
       },
       {
         path: '/question',
         name: 'question',
-        component: () => import('../views/question/QuestionView.vue')
+        component: () => import('@/views/question/QuestionView.vue')
       },
       {
         path: '/promotion',
         name: 'promotion',
-        component: () => import('../views/PromotionView.vue')
+        component: () => import('@/views/PromotionView.vue')
       },
       {
         path: '/employee',
         name: 'employee',
-        component: () => import('../views/management/EmployeeView.vue')
+        component: () => import('@/views/management/EmployeeView.vue')
       },
       {
         path: '/computer',
         name: 'computer',
-        component: () => import('../views/management/ComputerView.vue')
+        component: () => import('@/views/management/ComputerView.vue')
       },
       {
         path: '/monitor',
         name: 'monitor',
-        component: () => import('../views/management/MonitorView.vue')
+        component: () => import('@/views/management/MonitorView.vue')
       },
       {
         path: '/peripheral',
         name: 'peripheral',
-        component: () => import('../views/management/PeripheralsView.vue')
+        component: () => import('@/views/management/PeripheralsView.vue')
       },
       {
         path: '/book',
         name: 'book',
-        component: () => import('../views/management/BookView.vue')
+        component: () => import('@/views/management/BookView.vue')
       },
       {
         path: '/program',
         name: 'program',
-        component: () => import('../views/management/ProgramView.vue')
+        component: () => import('@/views/management/ProgramView.vue')
       },
       {
         path: '/organization',
         name: 'organization',
-        component: () => import('../views/OrganizationView.vue')
+        component: () => import('@/views/OrganizationView.vue')
       },
       {
         path: '/cooperation',
         name: 'cooperation',
-        component: () => import('../views/CooperationView.vue')
+        component: () => import('@/views/CooperationView.vue')
       },
       {
         path: '/toonflix',
         name: 'toonflix',
-        component: () => import('../views/ToonflixView.vue')
+        component: () => import('@/views/ToonflixView.vue')
       }
     ]
   },
   {
     path: '/',
     name: 'loginLayout',
-    component: () => import('../layout/LoginLayout.vue'),
+    component: () => import('@/layout/LoginLayout.vue'),
     children: [
       {
         path: '/',
         nama: 'login',
-        component: () => import('../views/LoginView.vue')
+        component: () => import('@/views/LoginView.vue')
       }
     ]
   }

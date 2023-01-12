@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://222.239.218.187:9100/admin'
+  baseURL: 'http://222.239.218.187:9100/admin',
+  headers: {
+    'content-Type': 'application/json'
+  }
 });
 
 instance.interceptors.request.use(

@@ -4,6 +4,7 @@ import instance from './instance';
  * 연혁 리스트 조희
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
+
 function fetchHistoryList(page, count) {
   return instance.post('/history/list', {
     nowpage: page,

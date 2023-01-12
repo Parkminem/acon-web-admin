@@ -16,7 +16,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import { usePopupStore } from '../../store/popup';
+import { usePopupStore } from '@/store/popup';
 const popupStore = usePopupStore();
 const { locationPopupState } = storeToRefs(popupStore);
 
@@ -66,5 +66,5 @@ if (!locationPopupState.value) {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../style/popup.scss';
+@import '@/components/style/popup.scss';
 </style>
