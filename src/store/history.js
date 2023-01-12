@@ -11,8 +11,8 @@ export const useHistory = defineStore('history', {
   }),
   actions: {
     /**
-     * 연혁 리스트 조회
-     * @param (페이지 넘버, 한 페이지 안의 게시물 수)
+     * 연혁 리스트 조회 액션
+     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수)
      */
     async historyListAct(page, count) {
       await historyApi
@@ -21,12 +21,11 @@ export const useHistory = defineStore('history', {
           this.historyList = res.data.data;
         })
         .catch((err) => console.log(err));
-    }
+    },
     /**
      * 연혁 상세 정보 조회 액션
      * @param 고유번호
-     */,
-    async detailHistoryAct(pk) {
+     */ async detailHistoryAct(pk) {
       this.detailHistory = null;
       await historyApi
         .fetchDetailHistory(pk)
