@@ -9,20 +9,34 @@ instance.interceptors.request.use(
     const token = localStorage.getItem('token');
 
     if (token) {
-      // console.log(eval(`user = ${user}`));
-      // console.log(user);
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-    config.headers[
-      'AuthorizationAccess'
-    ] = `Access eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUb29uZmxpeCJ9.RO2W1p8GAlgByB_hhlYLln-ldD7pFw8TDr5Xf7h0ez8`;
 
     return config;
   },
   function (error) {
     // Do something with request error
     // 요청 시 에러 처리
+
     return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use(
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  function (response) {
+    console.log({ API_URL: response.config.url, DATA: response.data.data });
+    return response;
+  },
+  function (error) {
+    console.log(error.response?.data);
+    if (error.response.data.status === 500) {
+      alert('500 서버 에러');
+    } else {
+      alert('로그인을 다시 해주세요');
+      router.push('/');
+    }
   }
 );
 

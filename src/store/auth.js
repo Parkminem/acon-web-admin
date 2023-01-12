@@ -16,7 +16,12 @@ export const useAuthStore = defineStore('auth', {
         })
         .catch((error) => {
           console.log(error);
-          alert(error);
+          const status = error.response.status;
+          if (status === 404) {
+            alert('User Not Found');
+          } else {
+            alert('Server Error');
+          }
         });
     }
   }
