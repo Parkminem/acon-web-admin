@@ -29,7 +29,7 @@
             <button><span>수정</span></button>
           </li>
           <li class="w10">
-            <button><span>삭제</span></button>
+            <button @click="deleteLocation(area.location_pk)"><span>삭제</span></button>
           </li>
         </ul>
         <!-- t-body -->
@@ -58,6 +58,7 @@ import { useLocation } from '../store/location';
 import { storeToRefs } from 'pinia';
 import { location } from '../utils/dummy';
 import { watch } from 'vue';
+import locationApi from '../api/location';
 
 const selectStore = useSelect();
 const locationStore = useLocation();
@@ -71,5 +72,17 @@ const { locationList } = storeToRefs(locationStore);
 watch(showNum, (newShowNum) => {
   locationStore.locationListAct(locationList.value[0].nowpage, newShowNum);
 });
+
+//자사 위치 삭제
+function deleteLocation(pk) {
+  locationApi
+    .fetchDeleteLocation(pk)
+    .then((res) => {
+      if (res.data.status === 200) {
+        window.location.href = '/location';
+      }
+    })
+    .catch((err) => console.log(err));
+}
 </script>
 <style lang="scss" scoped></style>

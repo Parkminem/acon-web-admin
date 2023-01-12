@@ -2,7 +2,8 @@
   <div class="cover" @click="popupStore.locationClose"></div>
   <div class="inner">
     <div class="popupHeader">
-      <h1>위치 등록</h1>
+      <h1 v-if="!detailLocation">위치 등록</h1>
+      <h1 v-if="detailLocation">위치 수정</h1>
       <button @click="popupStore.locationClose"><span class="material-icons"> close </span></button>
     </div>
     <form @submit.prevent="submit">
@@ -26,7 +27,8 @@
         <Checkbox title="공개 여부(푸터 정보란)" v-model="openCheck" />
       </div>
       <div class="popupFooter">
-        <button><span>등록</span></button>
+        <button v-if="!detailLocation" @click="uploadLocation"><span>등록</span></button>
+        <button v-if="detailLocation" @click="editLocation"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -36,8 +38,13 @@ import Input from '../../form/Input.vue';
 import PostcodePopup from './PostcodePopup.vue';
 import Checkbox from '../../form/Checkbox.vue';
 import { usePopupStore } from '../../store/popup';
+import { useLocation } from '../../store/location';
 import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import locationApi from '../../api/location';
 const popupStore = usePopupStore();
+const locationStore = useLocation();
+const { detailLocation } = storeToRefs(locationStore);
 
 const krArea = ref('');
 const idArea = ref('');
@@ -65,8 +72,123 @@ function emitAddress01(address01Val) {
 function emitAddress02(address02Val) {
   address02.value = address02Val;
 }
-function submit() {
-  //axios
+
+//수정 팝업 랜더링 시 데이터 삽입
+if (detailLocation.value) {
+  krArea.value = detailLocation.value.name_kr;
+  idArea.value = detailLocation.value.name_id;
+  ptArea.value = detailLocation.value.name_pt;
+  enArea.value = detailLocation.value.name_us;
+  tel.value = detailLocation.value.contact;
+  fax.value = detailLocation.value.fax;
+  ptAddress01.value = detailLocation.value.road_address_pt;
+  ptAddress02.value = detailLocation.value.detail_address_pt;
+  idAddress01.value = detailLocation.value.road_address_id;
+  idAddress02.value = detailLocation.value.detail_address_id;
+  enAddress01.value = detailLocation.value.road_address_us;
+  enAddress02.value = detailLocation.value.detail_address_us;
+  post.value = detailLocation.value.post_code;
+  address01.value = detailLocation.value.road_address_kr;
+  address02.value = detailLocation.value.detail_address_kr;
+  if (detailLocation.value.check_open === 'Y') openCheck.value = true;
+  else openCheck.value = false;
+}
+
+//자사 위치 등록
+function uploadLocation() {
+  if (
+    krArea.value.length == 0 ||
+    idArea.value.length == 0 ||
+    ptArea.value == 0 ||
+    enArea.value.length == 0 ||
+    tel.value.length == 0 ||
+    fax.value.length == 0 ||
+    address01.value.length == 0 ||
+    address02.value.length == 0 ||
+    ptAddress01.value.length == 0 ||
+    idAddress01.value.length == 0 ||
+    enAddress01.value.length == 0 ||
+    post.value.length == 0
+  ) {
+    alert('모든 내용을 등록해주세요');
+  } else {
+    const inputObj = {
+      name_kr: krArea.value,
+      name_id: idArea.value,
+      name_pt: ptArea.value,
+      name_us: enArea.value,
+      post_code: post.value,
+      road_address_kr: address01.value,
+      road_address_id: idAddress01.value,
+      road_address_pt: ptAddress01.value,
+      road_address_us: enAddress01.value,
+      detail_address_kr: address02.value,
+      detail_address_id: idAddress02.value,
+      detail_address_pt: ptAddress02.value,
+      detail_address_us: enAddress02.value,
+      contact: tel.value,
+      fax: fax.value,
+      check_open: !check_open.value ? 'N' : 'Y'
+    };
+    locationApi
+      .fetchUploadLocation(inputObj)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.locationClose();
+          window.location.href = '/location';
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+}
+
+//자사 위치 수정
+function editLocation() {
+  if (
+    krArea.value.length == 0 ||
+    idArea.value.length == 0 ||
+    ptArea.value == 0 ||
+    enArea.value.length == 0 ||
+    tel.value.length == 0 ||
+    fax.value.length == 0 ||
+    address01.value.length == 0 ||
+    address02.value.length == 0 ||
+    ptAddress01.value.length == 0 ||
+    idAddress01.value.length == 0 ||
+    enAddress01.value.length == 0 ||
+    post.value.length == 0
+  ) {
+    alert('모든 내용을 등록해주세요');
+  } else {
+    const inputObj = {
+      location_pk: detailLocation.value.location_pk,
+      name_kr: krArea.value,
+      name_id: idArea.value,
+      name_pt: ptArea.value,
+      name_us: enArea.value,
+      post_code: post.value,
+      road_address_kr: address01.value,
+      road_address_id: idAddress01.value,
+      road_address_pt: ptAddress01.value,
+      road_address_us: enAddress01.value,
+      detail_address_kr: address02.value,
+      detail_address_id: idAddress02.value,
+      detail_address_pt: ptAddress02.value,
+      detail_address_us: enAddress02.value,
+      contact: tel.value,
+      fax: fax.value,
+      check_open: !check_open.value ? 'N' : 'Y'
+    };
+    locationApi
+      .fetchEditLocation(inputObj)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.locationClose();
+          window.location.href = '/location';
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 }
 </script>
 <style lang="scss" scoped>

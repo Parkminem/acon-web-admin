@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import locationApi from './../api/location';
+import { usePopupStore } from './popup';
+
+const popupStore = usePopupStore();
 
 export const useLocation = defineStore('location', {
   state: () => ({
@@ -16,6 +19,21 @@ export const useLocation = defineStore('location', {
         .fetchLocationList(page, count)
         .then((res) => {
           this.locationList = res.data.data;
+        })
+        .catch((err) => console.log(err));
+    },
+    /**
+     * 자사 위치 상세 조회
+     * @param 고유번호
+     */
+    async detailLocaleAct(pk) {
+      this.detailLocation = null;
+      await locationApi
+        .fetchDetailLocation(pk)
+        .then((res) => {
+          // console.log(res.data.data);
+          this.detailLocation = res.data.data;
+          popupStore.locationOpen();
         })
         .catch((err) => console.log(err));
     }
