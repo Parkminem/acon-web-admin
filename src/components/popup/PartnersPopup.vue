@@ -21,10 +21,10 @@
   </div>
 </template>
 <script setup>
-import Input from '../../form/Input.vue';
-import File from '../../form/File.vue';
+import Input from '@/components/form/Input.vue';
+import File from '@/components/form/File.vue';
 import { ref } from 'vue';
-import { usePopupStore } from '../../store/popup';
+import { usePopupStore } from '@/store/popup';
 
 const popupStore = usePopupStore();
 
@@ -44,5 +44,5 @@ function submit() {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../style/popup.scss';
+@import '@/components/style/popup.scss';
 </style>

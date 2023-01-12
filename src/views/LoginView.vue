@@ -51,7 +51,7 @@
 
 <script setup>
 import { ref, onUpdated } from 'vue';
-import { useAuthStore } from '../store/auth';
+import { useAuthStore } from '@/store/auth';
 
 const idVal = ref('');
 const pwVal = ref('');

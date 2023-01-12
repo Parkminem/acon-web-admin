@@ -28,12 +28,12 @@
   </div>
 </template>
 <script setup>
-import SubTitle from '../../components/common/SubTitle.vue';
-import ShowList from '../../components/utils/ShowList.vue';
-import SearchBox from '../../components/utils/SearchBox.vue';
-import Table from '../../components/utils/Table.vue';
-import AllEntries from '../../components/utils/AllEntries.vue';
-import Pagination from '../../components/utils/Pagination.vue';
-import { theadData } from '../../utils/theadData';
+import SubTitle from '@/components/common/SubTitle.vue';
+import ShowList from '@/components/utils/ShowList.vue';
+import SearchBox from '@/components/utils/SearchBox.vue';
+import Table from '@/components/utils/Table.vue';
+import AllEntries from '@/components/utils/AllEntries.vue';
+import Pagination from '@/components/utils/Pagination.vue';
+import { theadData } from '@/components/utils/theadData';
 </script>
 <style lang="scss" scoped></style>

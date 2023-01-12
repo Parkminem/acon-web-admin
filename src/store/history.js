@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import historyApi from '../api/history';
+import historyApi from '@/api/history';
 import { usePopupStore } from './popup';
 
 const popupStore = usePopupStore();
@@ -18,7 +18,8 @@ export const useHistory = defineStore('history', {
       await historyApi
         .fetchHistoryList(page, count)
         .then((res) => {
-          this.historyList = res.data.data;
+          console.log(res);
+          // this.historyList = res.data.data;
         })
         .catch((err) => console.log(err));
     },

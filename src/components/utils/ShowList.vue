@@ -7,8 +7,8 @@
 <script setup>
 import { ref, watch } from 'vue';
 import Selete from './SelecteBar.vue';
-import { select } from '../../utils/select';
-import { useSelect } from '../../store/utils';
+import { select } from '@/components/utils/select';
+import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
 
 const selectStore = useSelect();

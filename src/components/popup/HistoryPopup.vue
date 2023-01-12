@@ -24,14 +24,14 @@
   </div>
 </template>
 <script setup>
-import { usePopupStore } from '../../store/popup';
-import Input from '../../form/Input.vue';
-import Radio from '../../form/Radio.vue';
-import Select from '../../form/Select.vue';
+import { usePopupStore } from '@/store/popup';
+import Input from '@/components/form/Input.vue';
+import Radio from '@/components/form/Radio.vue';
+import Select from '@/components/form/Select.vue';
 import { ref } from 'vue';
-import { useHistory } from '../../store/history';
+import { useHistory } from '@/store/history';
 import { storeToRefs } from 'pinia';
-import historyApi from '../../api/history';
+import historyApi from '@/api/history';
 
 const popupStore = usePopupStore();
 const historyStore = useHistory();
@@ -126,5 +126,5 @@ yearArr.reverse();
 const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 </script>
 <style lang="scss">
-@import '../../style/popup.scss';
+@import '@/components/style/popup.scss';
 </style>

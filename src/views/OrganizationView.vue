@@ -5,8 +5,8 @@
   </div>
 </template>
 <script setup>
-import SubTitle from '../components/common/SubTitle.vue';
-import OrganizationMap from '../components/organization/OrganizationMap.vue';
+import SubTitle from '@/components/common/SubTitle.vue';
+import OrganizationMap from '@/components/organization/OrganizationMap.vue';
 </script>
 <style lang="scss" scoped>
 .container {

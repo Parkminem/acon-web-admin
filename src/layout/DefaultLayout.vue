@@ -20,17 +20,17 @@
   <PromotionPopup v-if="promotionPopupState" />
 </template>
 <script setup>
-import Header from '../components/common/Header.vue';
-import Footer from '../components/common/Footer.vue';
-import HistoryPopup from '../components/popup/HistoryPopup.vue';
-import PartnersPopup from '../components/popup/PartnersPopup.vue';
-import LocationPopup from '../components/popup/LocationPopup.vue';
-import QuestionTypePopup from '../components/popup/QuestionTypePopup.vue';
-import PromotionPopup from '../components/popup/PromotionPopup.vue';
-import Loading from '../components/utils/Loading.vue';
+import Header from '@/components/common/Header.vue';
+import Footer from '@/components/common/Footer.vue';
+import HistoryPopup from '@/components/popup/HistoryPopup.vue';
+import PartnersPopup from '@/components/popup/PartnersPopup.vue';
+import LocationPopup from '@/components/popup/LocationPopup.vue';
+import QuestionTypePopup from '@/components/popup/QuestionTypePopup.vue';
+import PromotionPopup from '@/components/popup/PromotionPopup.vue';
+import Loading from '@/components/utils/Loading.vue';
 
-import { useHeaderStore } from '../store/header';
-import { usePopupStore } from '../store/popup';
+import { useHeaderStore } from '@/store/header';
+import { usePopupStore } from '@/store/popup';
 import { storeToRefs } from 'pinia';
 const headerStore = useHeaderStore();
 const popupStore = usePopupStore();

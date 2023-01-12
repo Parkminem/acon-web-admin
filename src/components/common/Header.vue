@@ -95,7 +95,7 @@
 <script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useHeaderStore } from '../../store/header';
+import { useHeaderStore } from '@/store/header';
 const headerStore = useHeaderStore();
 const { slideState } = storeToRefs(headerStore);
 

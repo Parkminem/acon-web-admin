@@ -32,20 +32,20 @@
   </div>
 </template>
 <script setup>
-import SubTitle from '../components/common/SubTitle.vue';
-import ResisterBtn from '../components/utils/ResisterBtn.vue';
-import ShowList from '../components/utils/ShowList.vue';
-import SearchBox from '../components/utils/SearchBox.vue';
-import Table from '../components/utils/Table.vue';
-import AllEntries from '../components/utils/AllEntries.vue';
-import Pagination from '../components/utils/Pagination.vue';
-import empty from '../components/utils/empty.vue';
-import { usePopupStore } from '../store/popup';
-import { usePromotion } from '../store/promotion';
-import { useSelect } from '../store/utils';
-import { theadData } from '../utils/theadData';
-import { promotion } from '../utils/dummy';
-import promotionApi from '../api/promotion';
+import SubTitle from '@/components/common/SubTitle.vue';
+import ResisterBtn from '@/components/utils/ResisterBtn.vue';
+import ShowList from '@/components/utils/ShowList.vue';
+import SearchBox from '@/components/utils/SearchBox.vue';
+import Table from '@/components/utils/Table.vue';
+import AllEntries from '@/components/utils/AllEntries.vue';
+import Pagination from '@/components/utils/Pagination.vue';
+import empty from '@/components/utils/empty.vue';
+import { usePopupStore } from '@/store/popup';
+import { usePromotion } from '@/store/promotion';
+import { useSelect } from '@/store/utils';
+import { theadData } from '@/components/utils/theadData';
+import { promotion } from '@/components/utils/dummy';
+import promotionApi from '@/api/promotion';
 import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
 

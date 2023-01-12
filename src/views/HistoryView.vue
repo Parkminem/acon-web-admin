@@ -38,21 +38,21 @@
 </template>
 <script setup>
 import { watch } from 'vue';
-import SubTitle from '../components/common/SubTitle.vue';
-import ResisterBtn from '../components/utils/ResisterBtn.vue';
-import ShowList from '../components/utils/ShowList.vue';
-import SearchBox from '../components/utils/SearchBox.vue';
-import Table from '../components/utils/Table.vue';
-import AllEntries from '../components/utils/AllEntries.vue';
-import Pagination from '../components/utils/Pagination.vue';
-import LocaleList from '../components/utils/LocaleList.vue';
-import empty from '../components/utils/empty.vue';
-import historyApi from '../api/history';
-import { usePopupStore } from '../store/popup';
-import { useHistory } from '../store/history';
-import { useSelect } from '../store/utils';
-import { theadData } from '../utils/theadData';
-import { history } from '../utils/dummy';
+import SubTitle from '@/components/common/SubTitle.vue';
+import ResisterBtn from '@/components/utils/ResisterBtn.vue';
+import ShowList from '@/components/utils/ShowList.vue';
+import SearchBox from '@/components/utils/SearchBox.vue';
+import Table from '@/components/utils/Table.vue';
+import AllEntries from '@/components/utils/AllEntries.vue';
+import Pagination from '@/components/utils/Pagination.vue';
+import LocaleList from '@/components/utils/LocaleList.vue';
+import empty from '@/components/utils/empty.vue';
+import historyApi from '@/api/history';
+import { usePopupStore } from '@/store/popup';
+import { useHistory } from '@/store/history';
+import { useSelect } from '@/store/utils';
+import { theadData } from '@/components/utils/theadData';
+import { history } from '@/components/utils/dummy';
 import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
@@ -61,7 +61,8 @@ const { locale, showNum } = storeToRefs(selectStore);
 const { historyList } = storeToRefs(historyStore);
 
 //연혁 리스트 조회
-await historyStore.historyListAct(1, showNum.value);
+// await historyStore.historyListAct(1, 10);
+await historyStore.detailHistoryAct(1);
 
 // 게시물 갯수 변경
 watch(showNum, (newShowNum) => {
