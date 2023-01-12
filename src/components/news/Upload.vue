@@ -2,6 +2,7 @@
   <SubTitle>소식</SubTitle>
   <div class="container">
     <div class="section">
+      <!-- 소식상세정보(수정 클릭 시 스토어에 받기)가 있을 경우와 없을 경우의 조건으로 업로드, 수정 제목 변경 -->
       <div class="title">소식 업로드</div>
       <form action="" enctype="multipart/form-data">
         <Input title="제목(한국어)" v-model="krTitle" />
@@ -9,7 +10,7 @@
         <Input title="제목(포르투갈어)" v-model="ptTitle" />
         <Input title="제목(영어)" v-model="enTitle" />
         <File title="썸네일" @fileValue="emitFile" />
-        <Radio title="활성화 여부" value01="yes" value02="no" v-model="active" />
+        <Radio title="활성화 여부" value01="1" value02="-1" v-model="active" />
         <Editor title="내용(한국어)" @write="emitKrDesc" />
         <Editor title="내용(인도네시아어)" @write="emitIdDesc" />
         <Editor title="내용(포르투갈어)" @write="emitPtDesc" />

@@ -4,13 +4,19 @@
     <div class="section">
       <ResisterBtn @clickRegister="usePopupStore().questionTypeOpen" />
       <div class="tableTop">
-        <ShowList />
+        <div class="left">
+          <ShowList />
+          <LocaleList />
+        </div>
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.questionType">
         <ul class="td">
           <li class="w10">1</li>
-          <li>데이터 가공</li>
+          <li v-if="locale === 'kr'">데이터 가공</li>
+          <li v-if="locale === 'en'">데이터 가공</li>
+          <li v-if="locale === 'id'">데이터 가공</li>
+          <li v-if="locale === 'pt'">데이터 가공</li>
           <li class="w10">
             <button><span>수정</span></button>
           </li>
@@ -34,13 +40,13 @@ import SearchBox from '../../components/utils/SearchBox.vue';
 import Table from '../../components/utils/Table.vue';
 import AllEntries from '../../components/utils/AllEntries.vue';
 import Pagination from '../../components/utils/Pagination.vue';
+import LocaleList from '../../components/utils/LocaleList.vue';
 import { usePopupStore } from '../../store/popup';
+import { theadData } from '../../utils/theadData';
+import { useSelect } from '../../store/utils';
+import { storeToRefs } from 'pinia';
 
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: '', name: '문의유형명' },
-  { width: 'w10', name: '수정' },
-  { width: 'w10', name: '삭제' }
-];
+const selectStore = useSelect();
+const { locale } = storeToRefs(selectStore);
 </script>
 <style lang="scss" scoped></style>

@@ -1,5 +1,5 @@
 import instance from './instance';
 
-const {} = newsApi;
+const newsApi = {};
 
 export default newsApi;

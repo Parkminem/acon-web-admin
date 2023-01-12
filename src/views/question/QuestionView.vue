@@ -6,7 +6,7 @@
         <ShowList />
         <SearchBox />
       </div>
-      <Table :theadData="theadData">
+      <Table :theadData="theadData.question">
         <ul class="td">
           <li class="w10">1</li>
           <li class="w10">데이터 가공</li>
@@ -34,16 +34,6 @@ import SearchBox from '../../components/utils/SearchBox.vue';
 import Table from '../../components/utils/Table.vue';
 import AllEntries from '../../components/utils/AllEntries.vue';
 import Pagination from '../../components/utils/Pagination.vue';
-
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: 'w10', name: '문의유형' },
-  { width: 'w10', name: '이름' },
-  { width: 'w10', name: '회사명' },
-  { width: 'w10', name: '연락처' },
-  { width: '', name: '이메일' },
-  { width: 'w10', name: '등록일' },
-  { width: 'w10', name: '답변' }
-];
+import { theadData } from '../../utils/theadData';
 </script>
 <style lang="scss" scoped></style>

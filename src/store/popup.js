@@ -2,42 +2,43 @@ import { defineStore } from 'pinia';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
-    historyState: false,
-    partnerState: false,
-    locationState: false,
-    questionTypeState: false,
-    promotionState: false
+    historyPopupState: false,
+    partnerPopupState: false,
+    locationPopupState: false,
+    questionTypePopupState: false,
+    promotionPopupState: false
   }),
   actions: {
     historyOpen() {
-      this.historyState = true;
+      this.historyPopupState = true;
     },
     historyClose() {
-      this.historyState = false;
+      this.historyState = null;
+      this.historyPopupState = false;
     },
     partnerOpen() {
-      this.partnerState = true;
+      this.partnerPopupState = true;
     },
     partnerClose() {
-      this.partnerState = false;
+      this.partnerPopupState = false;
     },
     locationOpen() {
-      this.locationState = true;
+      this.locationPopupState = true;
     },
     locationClose() {
-      this.locationState = false;
+      this.locationPopupState = false;
     },
     questionTypeOpen() {
-      this.questionTypeState = true;
+      this.questionTypePopupState = true;
     },
     questionTypeClose() {
-      this.questionTypeState = false;
+      this.questionTypePopupState = false;
     },
     promotionOpen() {
-      this.promotionState = true;
+      this.promotionPopupState = true;
     },
     promotionClose() {
-      this.promotionState = false;
+      this.promotionPopupState = false;
     }
   }
 });

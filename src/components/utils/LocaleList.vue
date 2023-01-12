@@ -1,28 +1,27 @@
 <template>
-  <div class="showBox">
-    <span>Show</span>
-    <Selete :options="select.show" v-model="showVal" :selected="showNum.toString()" />
+  <div class="LocaleList">
+    <span>language</span>
+    <SeleteBar :options="select.locale" v-model="lang" :selected="locale" />
   </div>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
-import Selete from './SelecteBar.vue';
+import SeleteBar from './SelecteBar.vue';
 import { select } from '../../utils/select';
 import { useSelect } from '../../store/utils';
 import { storeToRefs } from 'pinia';
 
 const selectStore = useSelect();
-const { showNum } = storeToRefs(selectStore);
+const { locale } = storeToRefs(selectStore);
+const lang = ref();
 
-const showVal = ref();
-
-//스토어의 갯수 state를 바뀐 value로 변경
-watch(showVal, (newShowVal) => {
-  selectStore.changeShow(newShowVal);
+//스토어의 언어state를 바뀐 언어로 변경
+watch(lang, (newlang) => {
+  selectStore.changeLocale(newlang);
 });
 </script>
 <style lang="scss">
-.showBox {
+.LocaleList {
   display: flex;
   .selectBox {
     margin: 0 10px;
