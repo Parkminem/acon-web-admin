@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import promotionApi from '@/api/promotion';
-import { usePopupStore } from './popup';
+import { usePopupStore } from '@/store/popup';
 
 const popupStore = usePopupStore();
 

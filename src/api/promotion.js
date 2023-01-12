@@ -1,4 +1,4 @@
-import instance from './instance';
+import instance from '@/api/instance';
 
 /**
  * 프로모션 리스트 조회

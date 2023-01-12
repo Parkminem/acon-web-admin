@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import historyApi from '@/api/history';
-import { usePopupStore } from './popup';
+import { usePopupStore } from '@/store/popup';
 
 const popupStore = usePopupStore();
 

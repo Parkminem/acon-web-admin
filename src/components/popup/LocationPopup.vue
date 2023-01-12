@@ -35,7 +35,7 @@
 </template>
 <script setup>
 import Input from '@/components/form/Input.vue';
-import PostcodePopup from './PostcodePopup.vue';
+import PostcodePopup from '@/components/popup/PostcodePopup.vue';
 import Checkbox from '@/components/form/Checkbox.vue';
 import { usePopupStore } from '@/store/popup';
 import { useLocation } from '@/store/location';
