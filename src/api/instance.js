@@ -26,11 +26,11 @@ instance.interceptors.response.use(
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
   function (response) {
-    console.log({ API_URL: response.config.url, DATA: response.data.data });
+    // console.log({ API_URL: response.config.url, DATA: response.data.data });
     return response;
   },
   function (error) {
-    console.log(error.response?.data);
+    // console.log(error.response?.data);
     if (error.response.data.status === 500) {
       alert('500 서버 에러');
     } else {

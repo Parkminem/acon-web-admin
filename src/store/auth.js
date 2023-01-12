@@ -9,9 +9,9 @@ export const useAuthStore = defineStore('auth', {
       await authApi
         .getAuth(id, pw)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           localStorage.setItem('token', res.data.accessToken);
-          console.log(localStorage);
+          // console.log(localStorage);
           router.push('/main');
         })
         .catch((error) => {
