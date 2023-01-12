@@ -45,9 +45,9 @@ export const theadData = {
   promotion: [
     { width: 'w10', name: '번호' },
     { width: '', name: '영상 이름' },
-    { width: '', name: '영상 유튜브 주소' },
+    { width: 'w20', name: '영상 유튜브 주소' },
     { width: 'w10', name: '등록일' },
-    { width: '', name: '영상 공개 여부' },
+    { width: 'w10', name: '영상 공개 여부' },
     { width: 'w10', name: '수정' },
     { width: 'w10', name: '삭제' }
   ]

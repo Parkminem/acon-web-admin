@@ -8,7 +8,7 @@
     color: #fff;
     padding: 10px 0;
     font-size: 13px;
-    > li:not(.w10) {
+    > li:not(.w10, .w20) {
       flex-grow: 1;
     }
     li {
@@ -53,10 +53,11 @@
       border-bottom: 1px solid #ddd;
       font-size: 13px;
       align-items: center;
-      > li:not(.w10) {
+      > li:not(.w10, .w20) {
         flex-grow: 1;
       }
       li {
+        word-break: keep-all;
         button {
           background-color: #444444;
           color: #fff;
@@ -75,4 +76,7 @@
 /* 테이블 width */
 .w10 {
   width: 10%;
+}
+.w20 {
+  width: 20%;
 }

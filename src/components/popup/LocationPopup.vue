@@ -3,7 +3,7 @@
   <div class="inner">
     <div class="popupHeader">
       <h1 v-if="!detailLocation">위치 등록</h1>
-      <h1 v-if="detailLocation">위치 수정</h1>
+      <h1 v-else>위치 수정</h1>
       <button @click="popupStore.locationClose"><span class="material-icons"> close </span></button>
     </div>
     <form @submit.prevent="submit">
@@ -27,8 +27,8 @@
         <Checkbox title="공개 여부(푸터 정보란)" v-model="openCheck" />
       </div>
       <div class="popupFooter">
-        <button v-if="!detailLocation" @click="uploadLocation"><span>등록</span></button>
-        <button v-if="detailLocation" @click="editLocation"><span>수정</span></button>
+        <button v-if="!detailLocation" @click.prevent="uploadLocation"><span>등록</span></button>
+        <button v-else @click.prevent="editLocation"><span>수정</span></button>
       </div>
     </form>
   </div>

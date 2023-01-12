@@ -3,7 +3,7 @@
   <div class="inner">
     <div class="popupHeader">
       <h1 v-if="!detailHistory">연혁 등록</h1>
-      <h1 v-if="detailHistory">연혁 수정</h1>
+      <h1 v-else>연혁 수정</h1>
       <button @click="popupStore.historyClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" @submit.prevent="submit">
@@ -17,8 +17,8 @@
         <Input title="내용(영어)" v-model="contentEnRef" placeholder="IDEACONCERT" />
       </div>
       <div class="popupFooter">
-        <button v-if="!detailHistory" @click="uploadHistory"><span>등록</span></button>
-        <button v-if="detailHistory" @click="editHistory"><span>수정</span></button>
+        <button v-if="!detailHistory" @click.prevent="uploadHistory"><span>등록</span></button>
+        <button v-else @click.prevent="editHistory"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -69,7 +69,7 @@ function uploadHistory() {
     contentEnRef.value.length == 0 ||
     !isActiveRef.value
   ) {
-    alert('모든 내용을 등록해주세요.');
+    alert('모든 내용을 입력해주세요.');
   } else {
     const inputObj = {
       year: !yearRef.value ? currentYear : yearRef.value,

@@ -242,3 +242,92 @@ export const location = {
     }
   ]
 };
+export const promotion = {
+  list: [
+    {
+      promotion_pk: 2,
+      promotion_name: '쿠키런',
+      promotion_url: 'https://www.youtube.com/embed/VHo2U9lqV4Y',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:22:19',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 1
+    },
+    {
+      promotion_pk: 3,
+      promotion_name: '웹툰 벨롱벨롱 식탁 홍보영상 ver.2',
+      promotion_url: 'https://www.youtube.com/embed/eP8EuWlfQW0',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:34:05',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 2
+    },
+    {
+      promotion_pk: 4,
+      promotion_name: '웹툰 영상을 만드는 가장 손쉬운 방법, 아이디어콘서트',
+      promotion_url: 'https://www.youtube.com/embed/X1bV1oB3zaw',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:44:13',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 3
+    },
+    {
+      promotion_pk: 5,
+      promotion_name: '웹툰 벨롱벨롱식탁 홍보영상',
+      promotion_url: 'https://www.youtube.com/embed/dX3caTwSeKw',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:44:54',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 4
+    },
+    {
+      promotion_pk: 6,
+      promotion_name: '2021 코툰 마켓',
+      promotion_url: 'https://www.youtube.com/embed/mSsUDD1OOek',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:45:32',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 5
+    },
+    {
+      promotion_pk: 7,
+      promotion_name: 'Ideaconcert Official 6Seconds',
+      promotion_url: 'https://www.youtube.com/embed/R1XEYkQii6Q',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:46:12',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 6
+    },
+    {
+      promotion_pk: 8,
+      promotion_name:
+        'Tear Thief (The Forbidden Marriage X Kim Jong Kook) MV / 웹툰 금혼령 OST 눈물을 훔치다x김종국 MV영상',
+      promotion_url: 'https://www.youtube.com/embed/IV6A6BuFNVg',
+      view_status: 'Y',
+      regdate: '2021-12-29 15:46:33',
+      lastpage: 10,
+      nowpage: 1,
+      listpage: 10,
+      rowcnt: '93',
+      rownum: 7
+    }
+  ]
+};
