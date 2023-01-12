@@ -1,7 +1,7 @@
 <template>
   <div class="showBox">
     <span>Show</span>
-    <Selete :options="select.show" v-model="showVal" />
+    <Selete :options="select.show" v-model="showVal" :selected="showNum.toString()" />
   </div>
 </template>
 <script setup>
@@ -9,8 +9,10 @@ import { ref, watch } from 'vue';
 import Selete from './SelecteBar.vue';
 import { select } from '../../utils/select';
 import { useSelect } from '../../store/utils';
+import { storeToRefs } from 'pinia';
 
 const selectStore = useSelect();
+const { showNum } = storeToRefs(selectStore);
 
 const showVal = ref();
 

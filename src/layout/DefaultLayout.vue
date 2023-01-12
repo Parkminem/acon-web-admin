@@ -2,7 +2,14 @@
   <div class="main" :style="{ paddingLeft: movePadding() + 'px' }">
     <Header />
     <div class="contents">
-      <router-view></router-view>
+      <Suspense>
+        <template #default>
+          <router-view></router-view>
+        </template>
+        <template #fallback>
+          <Loading />
+        </template>
+      </Suspense>
       <Footer />
     </div>
   </div>
@@ -20,6 +27,7 @@ import PartnersPopup from '../components/popup/PartnersPopup.vue';
 import LocationPopup from '../components/popup/LocationPopup.vue';
 import QuestionTypePopup from '../components/popup/QuestionTypePopup.vue';
 import PromotionPopup from '../components/popup/PromotionPopup.vue';
+import Loading from '../components/utils/Loading.vue';
 
 import { useHeaderStore } from '../store/header';
 import { usePopupStore } from '../store/popup';

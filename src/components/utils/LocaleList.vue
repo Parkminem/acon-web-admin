@@ -1,7 +1,7 @@
 <template>
   <div class="LocaleList">
     <span>language</span>
-    <SeleteBar :options="select.locale" v-model="locale" />
+    <SeleteBar :options="select.locale" v-model="lang" :selected="locale" />
   </div>
 </template>
 <script setup>
@@ -9,13 +9,15 @@ import { ref, watch } from 'vue';
 import SeleteBar from './SelecteBar.vue';
 import { select } from '../../utils/select';
 import { useSelect } from '../../store/utils';
+import { storeToRefs } from 'pinia';
 
 const selectStore = useSelect();
-const locale = ref();
+const { locale } = storeToRefs(selectStore);
+const lang = ref();
 
 //스토어의 언어state를 바뀐 언어로 변경
-watch(locale, (newLocale) => {
-  selectStore.changeLocale(newLocale);
+watch(lang, (newlang) => {
+  selectStore.changeLocale(newlang);
 });
 </script>
 <style lang="scss">
