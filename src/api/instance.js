@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '@/routes';
 
 const instance = axios.create({
   baseURL: 'http://222.239.218.187:9100/admin'
@@ -35,6 +36,7 @@ instance.interceptors.response.use(
       alert('500 서버 에러');
     } else {
       alert('로그인을 다시 해주세요');
+      localStorage.removeItem('token');
       router.push('/');
     }
   }
