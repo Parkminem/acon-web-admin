@@ -66,5 +66,5 @@ if (!locationPopupState.value) {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/components/style/popup.scss';
+@import '@/style/popup.scss';
 </style>
