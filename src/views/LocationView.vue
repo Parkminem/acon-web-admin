@@ -52,11 +52,11 @@ import Pagination from '@/components/utils/Pagination.vue';
 import empty from '@/components/utils/empty.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
 import { useSelect } from '@/store/utils';
-import { theadData } from '@/components/utils/theadData';
+import { theadData } from '@/utils/theadData';
 import { usePopupStore } from '@/store/popup';
 import { useLocation } from '@/store/location';
 import { storeToRefs } from 'pinia';
-import { location } from '@/components/utils/dummy';
+import { location } from '@/utils/dummy';
 import { watch } from 'vue';
 import locationApi from '@/api/location';
 

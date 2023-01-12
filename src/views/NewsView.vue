@@ -48,7 +48,7 @@ import Pagination from '@/components/utils/Pagination.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
 import empty from '@/components/utils/empty.vue';
 import { useSelect } from '@/store/utils';
-import { theadData } from '@/components/utils/theadData';
+import { theadData } from '@/utils/theadData';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 

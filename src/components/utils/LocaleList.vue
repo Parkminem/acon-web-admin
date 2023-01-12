@@ -7,7 +7,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import SeleteBar from '@/components/utils/SelecteBar.vue';
-import { select } from '@/components/utils/select';
+import { select } from '@/utils/select';
 import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
 

@@ -42,7 +42,7 @@ import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
 import { usePopupStore } from '@/store/popup';
-import { theadData } from '@/components/utils/theadData';
+import { theadData } from '@/utils/theadData';
 import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
 

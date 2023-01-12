@@ -51,8 +51,8 @@ import historyApi from '@/api/history';
 import { usePopupStore } from '@/store/popup';
 import { useHistory } from '@/store/history';
 import { useSelect } from '@/store/utils';
-import { theadData } from '@/components/utils/theadData';
-import { history } from '@/components/utils/dummy';
+import { theadData } from '@/utils/theadData';
+import { history } from '@/utils/dummy';
 import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
