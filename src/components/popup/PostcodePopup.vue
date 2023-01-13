@@ -20,9 +20,15 @@ import { usePopupStore } from '@/store/popup';
 const popupStore = usePopupStore();
 const { locationPopupState } = storeToRefs(popupStore);
 
-const post = ref('');
-const address01 = ref('');
-const address02 = ref('');
+const props = defineProps({
+  post: Number,
+  address01: String,
+  address02: String
+});
+
+const post = ref(props.post);
+const address01 = ref(props.address01);
+const address02 = ref(props.address02);
 
 const emit = defineEmits();
 function search() {

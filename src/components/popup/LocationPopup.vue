@@ -6,25 +6,60 @@
       <h1 v-else>위치 수정</h1>
       <button @click="popupStore.locationClose"><span class="material-icons"> close </span></button>
     </div>
-    <form @submit.prevent="submit">
+    <form id="form">
       <div class="popupBody">
-        <Input title="위치명(한국어)" placeholder="판교 본사" v-model="krArea" />
-        <Input title="위치명(인도네시아어)" placeholder="판교 본사" v-model="idArea" />
-        <Input title="위치명(포르투갈어)" placeholder="판교 본사" v-model="ptArea" />
-        <Input title="위치명(영어)" placeholder="판교 본사" v-model="enArea" />
-        <Input title="연락처" placeholder="070-8825-5004" v-model="tel" />
-        <Input title="팩스" placeholder="031-5182-9048" v-model="fax" />
-        <PostcodePopup @post="emitPost" @address01="emitAddress01" @address02="emitAddress02" />
-        <Input title="주소(인도네시아어)" placeholder="상세주소(인도네시아어)" v-model="idAddress02">
-          <input type="text" placeholder="도로명주소(인도네시아어)" style="margin-bottom: 10px" v-model="idAddress01" />
+        <Input name="name_kr" title="위치명(한국어)" placeholder="판교 본사" v-model="krArea" />
+        <Input name="name_id" title="위치명(인도네시아어)" placeholder="판교 본사" v-model="idArea" />
+        <Input name="name_pt" title="위치명(포르투갈어)" placeholder="판교 본사" v-model="ptArea" />
+        <Input name="name_us" title="위치명(영어)" placeholder="판교 본사" v-model="enArea" />
+        <Input name="contact" title="연락처" placeholder="070-8825-5004" v-model="tel" />
+        <Input name="fax" title="팩스" placeholder="031-5182-9048" v-model="fax" />
+        <PostcodePopup
+          @post="emitPost"
+          @address01="emitAddress01"
+          @address02="emitAddress02"
+          :post="post"
+          :address01="address01"
+          :address02="address02"
+        />
+        <Input
+          name="detail_address_id"
+          title="주소(인도네시아어)"
+          placeholder="상세주소(인도네시아어)"
+          v-model="idAddress02"
+        >
+          <input
+            name="road_address_id"
+            type="text"
+            placeholder="도로명주소(인도네시아어)"
+            style="margin-bottom: 10px"
+            v-model="idAddress01"
+          />
         </Input>
-        <Input title="주소(포르투갈어)" placeholder="상세주소(포르투갈어)" v-model="ptAddress02">
-          <input type="text" placeholder="도로명주소(포르투갈어)" style="margin-bottom: 10px" v-model="ptAddress01" />
+        <Input
+          name="detail_address_pt"
+          title="주소(포르투갈어)"
+          placeholder="상세주소(포르투갈어)"
+          v-model="ptAddress02"
+        >
+          <input
+            name="road_address_pt"
+            type="text"
+            placeholder="도로명주소(포르투갈어)"
+            style="margin-bottom: 10px"
+            v-model="ptAddress01"
+          />
         </Input>
-        <Input title="주소(영어)" placeholder="상세주소(영어)" v-model="enAddress02">
-          <input type="text" placeholder="도로명주소(영어)" style="margin-bottom: 10px" v-model="enAddress01" />
+        <Input name="detail_address_us" title="주소(영어)" placeholder="상세주소(영어)" v-model="enAddress02">
+          <input
+            name="road_address_us"
+            type="text"
+            placeholder="도로명주소(영어)"
+            style="margin-bottom: 10px"
+            v-model="enAddress01"
+          />
         </Input>
-        <Checkbox title="공개 여부(푸터 정보란)" v-model="openCheck" />
+        <Checkbox name="check_open" title="공개 여부(푸터 정보란)" v-model="openCheck" />
       </div>
       <div class="popupFooter">
         <button v-if="!detailLocation" @click.prevent="uploadLocation"><span>등록</span></button>
@@ -73,6 +108,8 @@ function emitAddress02(address02Val) {
   address02.value = address02Val;
 }
 
+const makeForm = () => {};
+
 //수정 팝업 랜더링 시 데이터 삽입
 if (detailLocation.value) {
   krArea.value = detailLocation.value.name_kr;
@@ -112,30 +149,17 @@ function uploadLocation() {
   ) {
     alert('모든 내용을 입력해주세요');
   } else {
-    const inputObj = {
-      name_kr: krArea.value,
-      name_id: idArea.value,
-      name_pt: ptArea.value,
-      name_us: enArea.value,
-      post_code: post.value,
-      road_address_kr: address01.value,
-      road_address_id: idAddress01.value,
-      road_address_pt: ptAddress01.value,
-      road_address_us: enAddress01.value,
-      detail_address_kr: address02.value,
-      detail_address_id: idAddress02.value,
-      detail_address_pt: ptAddress02.value,
-      detail_address_us: enAddress02.value,
-      contact: tel.value,
-      fax: fax.value,
-      check_open: !check_open.value ? 'N' : 'Y'
-    };
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    formData.append('post_code', post.value);
+    formData.append('road_address_kr', address01.value);
+    formData.append('detail_address_kr', address02.value);
+    formData.append('check_open', openCheck.value ? 'Y' : 'N');
     locationApi
-      .fetchUploadLocation(inputObj)
+      .fetchUploadLocation(formData)
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.locationClose();
-          window.location.href = '/location';
         }
       })
       .catch((err) => console.log(err));
@@ -158,33 +182,19 @@ function editLocation() {
     enAddress01.value.length == 0 ||
     post.value.length == 0
   ) {
-    alert('모든 내용을 등록해주세요');
+    alert('모든 내용을 입력해주세요');
   } else {
-    const inputObj = {
-      location_pk: detailLocation.value.location_pk,
-      name_kr: krArea.value,
-      name_id: idArea.value,
-      name_pt: ptArea.value,
-      name_us: enArea.value,
-      post_code: post.value,
-      road_address_kr: address01.value,
-      road_address_id: idAddress01.value,
-      road_address_pt: ptAddress01.value,
-      road_address_us: enAddress01.value,
-      detail_address_kr: address02.value,
-      detail_address_id: idAddress02.value,
-      detail_address_pt: ptAddress02.value,
-      detail_address_us: enAddress02.value,
-      contact: tel.value,
-      fax: fax.value,
-      check_open: !check_open.value ? 'N' : 'Y'
-    };
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    formData.append('post_code', post.value);
+    formData.append('road_address_kr', address01.value);
+    formData.append('detail_address_kr', address02.value);
+    formData.append('check_open', openCheck.value ? 'Y' : 'N');
     locationApi
-      .fetchEditLocation(inputObj)
+      .fetchEditLocation(detailLocation.value.location_pk, formData)
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.locationClose();
-          window.location.href = '/location';
         }
       })
       .catch((err) => console.log(err));

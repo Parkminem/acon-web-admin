@@ -2,7 +2,7 @@
   <div class="inputBox">
     <div class="checkBox">
       <label>{{ title }}</label>
-      <input type="checkbox" :name="title" :id="title" v-model="isCheck" @change="handleInput" />
+      <input type="checkbox" :id="title" v-model="isCheck" @change="handleInput" />
     </div>
   </div>
 </template>

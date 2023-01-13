@@ -27,6 +27,7 @@ export const usePopupStore = defineStore('popup', {
     },
     locationClose() {
       this.locationPopupState = false;
+      window.location.href = '/location';
     },
     questionTypeOpen() {
       this.questionTypePopupState = true;

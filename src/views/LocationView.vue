@@ -5,14 +5,14 @@
       <ResisterBtn @clickRegister="usePopupStore().locationOpen" />
       <div class="tableTop">
         <div class="left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
         </div>
         <SearchBox />
       </div>
       <Table :theadData="theadData.location">
         <!-- t-body -->
-        <ul class="td" v-for="area in location.list" :key="area.location_pk">
+        <ul class="td" v-for="area in locationList" :key="area.location_pk">
           <li class="w10">{{ area.location_pk }}</li>
           <li class="w10" v-if="locale === 'kr'">{{ area.name_kr }}</li>
           <li class="w10" v-if="locale === 'id'">{{ area.name_id }}</li>
@@ -26,7 +26,7 @@
           <li class="w10">{{ area.fax }}</li>
           <li class="w10">{{ area.check_open }}</li>
           <li class="w10">
-            <button><span>수정</span></button>
+            <button @click="locationStore.detailLocationAct(area.location_pk)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deleteLocation(area.location_pk)"><span>삭제</span></button>
@@ -35,8 +35,8 @@
         <!-- t-body -->
       </Table>
       <div class="tableBottom">
-        <AllEntries />
-        <Pagination />
+        <AllEntries :nowpage="nowpageNum" :listpage="Number(listpage)" :rowcnt="rowcnt" />
+        <Pagination :lastpage="Number(lastpage)" :nowpage="nowpageNum" @goPage="(page) => pageFunc(page)" />
       </div>
     </div>
   </div>
@@ -56,8 +56,7 @@ import { theadData } from '@/utils/theadData';
 import { usePopupStore } from '@/store/popup';
 import { useLocation } from '@/store/location';
 import { storeToRefs } from 'pinia';
-import { location } from '@/utils/dummy';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import locationApi from '@/api/location';
 
 const selectStore = useSelect();
@@ -65,8 +64,14 @@ const locationStore = useLocation();
 const { locale, showNum } = storeToRefs(selectStore);
 const { locationList } = storeToRefs(locationStore);
 
+const nowpageNum = ref(1);
+
 //자사 위치 리스트 조회
-// await locationStore.locationListAct(1, showNum.value);
+await locationStore.locationListAct(1, showNum.value);
+
+const listpage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
+const rowcnt = locationList.value[0].rowcnt;
+const lastpage = ref(locationList.value[0].lastpage);
 
 //게시물 갯수 변경
 watch(showNum, (newShowNum) => {
@@ -82,7 +87,7 @@ function deleteLocation(pk) {
         window.location.href = '/location';
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => alert('삭제에 실패하였습니다.'));
 }
 </script>
 <style lang="scss" scoped></style>
