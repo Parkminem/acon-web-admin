@@ -13,8 +13,8 @@ export const usePopupStore = defineStore('popup', {
       this.historyPopupState = true;
     },
     historyClose() {
-      this.historyState = null;
       this.historyPopupState = false;
+      window.location.href = '/history';
     },
     partnerOpen() {
       this.partnerPopupState = true;

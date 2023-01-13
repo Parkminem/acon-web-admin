@@ -5,7 +5,7 @@ import instance from '@/api/instance';
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
 function fetchHistoryList(page, count) {
-  return instance.post(`/history/list?nowpage=${page}&listpage=${count}`);
+  return instance.get(`/history/list?nowpage=${page}&listpage=${count}`);
 }
 
 /**
@@ -20,16 +20,21 @@ function fetchDetailHistory(pk) {
  * 연혁 등록
  * @param object(year, month, content_kr, content_id, content_pt,content_us,active_flag)
  */
+// function fetchUploadHistory(object) {
+//   return instance.post('/history', null, {
+//     params: {
+//       year: object.year,
+//       month: object.month,
+//       content_kr: object.content_kr,
+//       content_id: object.content_id,
+//       content_pt: object.content_pt,
+//       content_us: object.content_us,
+//       active_flag: object.active_flag
+//     }
+//   });
+// }
 function fetchUploadHistory(object) {
-  return instance.post('/history', {
-    year: object.year,
-    month: object.month,
-    content_kr: object.content_kr,
-    content_id: object.content_id,
-    content_pt: object.content_pt,
-    content_us: object.content_us,
-    active_flag: object.active_flag
-  });
+  return instance.post('/history', object);
 }
 /**
  * 연혁 수정
@@ -53,9 +58,7 @@ function fetchEditHistory(object) {
  * @param 고유번호
  */
 function fecthDeleteHistory(pk) {
-  return instance.delete('/history', {
-    history_pk: pk
-  });
+  return instance.delete(`/history/${pk}`);
 }
 
 const historyApi = { fetchDetailHistory, fetchHistoryList, fetchUploadHistory, fetchEditHistory, fecthDeleteHistory };

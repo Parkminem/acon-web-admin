@@ -1,7 +1,7 @@
 <template>
   <div class="selectBox">
     <select name="" id="" @change="optionChange">
-      <option v-for="option of options" :value="option.value" :key="option.value" :selected="selected === option.value">
+      <option v-for="option of options" :value="option.value" :key="option.value" :selected="selected == option.value">
         {{ option.name }}
       </option>
     </select>

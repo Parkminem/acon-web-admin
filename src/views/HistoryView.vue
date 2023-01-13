@@ -30,14 +30,14 @@
         <!-- t-body -->
       </Table>
       <div class="tableBottom">
-        <AllEntries />
-        <Pagination />
+        <AllEntries :nowpage="nowpageNum" :listpage="Number(listpage)" :rowcnt="rowcnt" />
+        <Pagination :lastpage="Number(lastpage)" :nowpage="nowpageNum" @goPage="(page) => pageFunc(page)" />
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 import ShowList from '@/components/utils/ShowList.vue';
@@ -59,25 +59,47 @@ const selectStore = useSelect();
 const { locale, showNum } = storeToRefs(selectStore);
 const { historyList } = storeToRefs(historyStore);
 
+const nowpageNum = ref(1);
+const listpage = ref(showNum.value);
+
 //연혁 리스트 조회
 await historyStore.historyListAct(1, 10);
 
+const rowcnt = historyList.value[0].rowcnt;
+const lastpage = ref(historyList.value[0].lastpage);
+
 // 게시물 갯수 변경
 watch(showNum, (newShowNum) => {
-  const nowpage = historyList.value[0].nowpage;
-  historyStore.historyListAct(nowpage, newShowNum);
+  function showList(num) {
+    const nowpage = historyList.value[0].nowpage;
+    listpage.value = Number(num);
+    historyStore.historyListAct(nowpage, num).then((res) => {
+      lastpage.value = historyList.value[0].lastpage;
+    });
+  }
+  if (newShowNum < historyList.value[0].rowcnt) {
+    showList(newShowNum);
+  } else {
+    showList(showNum.value);
+  }
 });
+
+//페이지 변경
+function pageFunc(page) {
+  historyStore.historyListAct(page, showNum.value);
+  nowpageNum.value = page;
+}
 
 // 연혁 삭제
 function deleteHistory(pk) {
   historyApi
     .fecthDeleteHistory(pk)
     .then((res) => {
-      if (res.data.status === 200) {
+      if (res.status === 200) {
         window.location.href = '/history';
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => alert('삭제에 실패했습니다.'));
 }
 </script>
 <style lang="scss" scoped></style>

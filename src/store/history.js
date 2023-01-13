@@ -19,7 +19,6 @@ export const useHistory = defineStore('history', {
         .fetchHistoryList(page, count)
         .then((res) => {
           this.historyList = res.data;
-          console.log(this.historyList);
         })
         .catch((err) => console.log(err));
     },
@@ -31,8 +30,7 @@ export const useHistory = defineStore('history', {
       await historyApi
         .fetchDetailHistory(pk)
         .then((res) => {
-          // console.log(res.data);
-          this.detailHistory = res.data.data;
+          this.detailHistory = res.data;
           popupStore.historyOpen();
         })
         .catch((err) => console.log(err));

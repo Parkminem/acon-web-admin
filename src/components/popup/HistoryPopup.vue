@@ -6,15 +6,22 @@
       <h1 v-else>연혁 수정</h1>
       <button @click="popupStore.historyClose"><span class="material-icons"> close </span></button>
     </div>
-    <form action="" @submit.prevent="submit">
+    <form action="" id="form">
       <div class="popupBody">
-        <Select title="년도" id="year" :arr="yearArr" v-model="yearRef" />
-        <Select title="월" id="month" :arr="monthArr" v-model="monthRef" />
-        <Radio title="활성화 여부" v-model="isActiveRef" value01="1" value02="-1" />
-        <Input title="내용(한국어)" v-model="contentKrRef" placeholder="IDEACONCERT" />
-        <Input title="내용(인도네시아어)" v-model="contentIdRef" placeholder="IDEACONCERT" />
-        <Input title="내용(포르투갈어)" v-model="contentPtRef" placeholder="IDEACONCERT" />
-        <Input title="내용(영어)" v-model="contentEnRef" placeholder="IDEACONCERT" />
+        <Select name="year" title="년도" id="year" :arr="yearArr" v-model="yearRef" :selected="Number(yearRef)" />
+        <Select name="month" title="월" id="month" :arr="monthArr" v-model="monthRef" :selected="Number(monthRef)" />
+        <Radio
+          name="active_flag"
+          title="활성화 여부"
+          v-model="isActiveRef"
+          value01="1"
+          value02="-1"
+          :checked="isActiveRef"
+        />
+        <Input name="content_kr" title="내용(한국어)" v-model="contentKrRef" placeholder="IDEACONCERT" />
+        <Input name="content_kr" title="내용(인도네시아어)" v-model="contentIdRef" placeholder="IDEACONCERT" />
+        <Input name="content_pt" title="내용(포르투갈어)" v-model="contentPtRef" placeholder="IDEACONCERT" />
+        <Input name="content_us" title="내용(영어)" v-model="contentEnRef" placeholder="IDEACONCERT" />
       </div>
       <div class="popupFooter">
         <button v-if="!detailHistory" @click.prevent="uploadHistory"><span>등록</span></button>
@@ -53,10 +60,10 @@ if (detailHistory.value) {
   contentEnRef.value = detailHistory.value.content_us;
   monthRef.value = detailHistory.value.month;
   yearRef.value = detailHistory.value.year;
-  if (isActiveRef.value.active_flag == 1) {
-    isActive.value = '1';
+  if (detailHistory.value.active_flag == 1) {
+    isActiveRef.value = '1';
   } else {
-    isActive.value = '-1';
+    isActiveRef.value = '-1';
   }
 }
 
@@ -71,18 +78,13 @@ function uploadHistory() {
   ) {
     alert('모든 내용을 입력해주세요.');
   } else {
-    const inputObj = {
-      year: !yearRef.value ? currentYear : yearRef.value,
-      month: !monthRef.value ? 1 : monthRef.value,
-      content_kr: contentKrRef.value,
-      content_id: contentIdRef.value,
-      content_pt: contentPtRef.value,
-      content_us: contentEnRef.value,
-      active_flag: isActiveRef.value
-    };
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+
     historyApi
-      .fetchUploadHistory(inputObj)
+      .fetchUploadHistory(formData)
       .then((res) => {
+        console.log(res);
         if (res.data.status === 200) {
           popupStore.historyClose();
           window.location.href = '/history';
@@ -109,7 +111,6 @@ function editHistory() {
     .then((res) => {
       if (res.data.status === 200) {
         popupStore.historyClose();
-        window.location.href = '/history';
       }
     })
     .catch((err) => {

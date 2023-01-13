@@ -2,31 +2,48 @@
   <!-- 함수 사용 v-for로 랜더링 -->
   <div class="pagination">
     <ul>
-      <li>
+      <li v-if="pagination(currentPage, currentLastPage).preBtn">
         <button><span class="material-icons"> chevron_left </span></button>
       </li>
-      <li>
-        <button><span>1</span></button>
+      <li v-for="page in pageArr" :key="page">
+        <button
+          :class="{ active: currentPage == page }"
+          @click="
+            $emit('goPage', page);
+            currentPage = page;
+          "
+        >
+          <span>{{ page }}</span>
+        </button>
       </li>
-      <li>
-        <button class="active"><span>2</span></button>
-      </li>
-      <li>
-        <button><span>3</span></button>
-      </li>
-      <li>
-        <button><span>4</span></button>
-      </li>
-      <li>
-        <button><span>5</span></button>
-      </li>
-      <li>
+      <li v-if="pagination(currentPage, currentLastPage).nextBtn">
         <button><span class="material-icons"> chevron_right </span></button>
       </li>
     </ul>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { pagination } from '@/utils/pagination';
+import { ref, watch } from 'vue';
+
+const props = defineProps({
+  lastpage: Number,
+  nowpage: Number
+});
+
+const currentPage = ref(props.nowpage);
+const currentLastPage = ref(props.lastpage);
+const pageArr = ref(pagination(currentPage.value, currentLastPage.value).pageArr);
+
+watch(currentPage, (newNowPage) => {
+  currentPage.value = newNowPage;
+});
+
+// lastpage가 watch 되지 않음, 확인 후 수정해야함...
+watch(currentLastPage, (newLastPage) => {
+  currentLastPage.value = newLastPage;
+});
+</script>
 <style lang="scss" scoped>
 .pagination {
   ul {

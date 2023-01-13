@@ -1,8 +1,8 @@
 <template>
   <div class="inputBox">
     <label>{{ title }}</label>
-    <select :name="title" :id="id" @change="handleInput">
-      <option :value="i" v-for="i in arr" :key="i">{{ i }}</option>
+    <select :name="name" :id="id" @change="handleInput">
+      <option :value="i" v-for="i in arr" :key="i" :selected="i === selected">{{ i }}</option>
     </select>
   </div>
 </template>
@@ -10,7 +10,9 @@
 defineProps({
   title: String,
   id: String,
-  arr: Array
+  arr: Array,
+  selected: Number,
+  name: String
 });
 const emit = defineEmits(['update:modelValue']);
 function handleInput(event) {

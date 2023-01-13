@@ -2,14 +2,15 @@
   <div class="inputBox">
     <label>{{ title }}</label>
     <slot></slot>
-    <input type="text" :placeholder="placeholder" :id="title" :value="modelValue" @input="handleInput" />
+    <input type="text" :placeholder="placeholder" :id="title" :value="modelValue" @input="handleInput" :name="name" />
   </div>
 </template>
 <script setup>
 defineProps({
   title: String,
   modelValue: String,
-  placeholder: String
+  placeholder: String,
+  name: String
 });
 const emit = defineEmits(['update:modelValue']);
 function handleInput(event) {
