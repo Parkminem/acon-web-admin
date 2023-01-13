@@ -22,7 +22,7 @@
 <script setup>
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
-import empty from '@/components/utils/empty.vue';
+import Empty from '@/components/utils/Empty.vue';
 
 import { usePopupStore } from '@/store/popup';
 </script>

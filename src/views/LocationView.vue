@@ -35,8 +35,8 @@
         <!-- t-body -->
       </Table>
       <div class="tableBottom">
-        <AllEntries :nowpage="nowpageNum" :listpage="Number(listpage)" :rowcnt="rowcnt" />
-        <Pagination :lastpage="Number(lastpage)" :nowpage="nowpageNum" @goPage="(page) => pageFunc(page)" />
+        <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
+        <Pagination :lastPage="Number(lastPage)" :nowPage="nowPageNum" @goPage="(page) => pageFunc(page)" />
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@ import SearchBox from '@/components/utils/SearchBox.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
-import empty from '@/components/utils/empty.vue';
+import Empty from '@/components/utils/Empty.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
@@ -64,14 +64,14 @@ const locationStore = useLocation();
 const { locale, showNum } = storeToRefs(selectStore);
 const { locationList } = storeToRefs(locationStore);
 
-const nowpageNum = ref(1);
+const nowPageNum = ref(1);
 
 //자사 위치 리스트 조회
 await locationStore.locationListAct(1, showNum.value);
 
-const listpage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
-const rowcnt = locationList.value[0].rowcnt;
-const lastpage = ref(locationList.value[0].lastpage);
+const listPage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
+const rowCnt = locationList.value[0].rowcnt;
+const lastPage = ref(locationList.value[0].lastpage);
 
 //게시물 갯수 변경
 watch(showNum, (newShowNum) => {

@@ -46,7 +46,7 @@ import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
-import empty from '@/components/utils/empty.vue';
+import Empty from '@/components/utils/Empty.vue';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { useRouter } from 'vue-router';

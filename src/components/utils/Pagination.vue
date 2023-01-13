@@ -27,12 +27,12 @@ import { pagination } from '@/utils/pagination';
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-  lastpage: Number,
-  nowpage: Number
+  lastPage: Number,
+  nowPage: Number
 });
 
-const currentPage = ref(props.nowpage);
-const currentLastPage = ref(props.lastpage);
+const currentPage = ref(props.nowPage);
+const currentLastPage = ref(props.lastPage);
 const pageArr = ref(pagination(currentPage.value, currentLastPage.value).pageArr);
 
 watch(currentPage, (newNowPage) => {
