@@ -19,7 +19,7 @@
           :checked="isActiveRef"
         />
         <Input name="content_kr" title="내용(한국어)" v-model="contentKrRef" placeholder="IDEACONCERT" />
-        <Input name="content_kr" title="내용(인도네시아어)" v-model="contentIdRef" placeholder="IDEACONCERT" />
+        <Input name="content_id" title="내용(인도네시아어)" v-model="contentIdRef" placeholder="IDEACONCERT" />
         <Input name="content_pt" title="내용(포르투갈어)" v-model="contentPtRef" placeholder="IDEACONCERT" />
         <Input name="content_us" title="내용(영어)" v-model="contentEnRef" placeholder="IDEACONCERT" />
       </div>
@@ -80,11 +80,9 @@ function uploadHistory() {
   } else {
     const form = document.getElementById('form');
     const formData = new FormData(form);
-
     historyApi
       .fetchUploadHistory(formData)
       .then((res) => {
-        console.log(res);
         if (res.data.status === 200) {
           popupStore.historyClose();
           window.location.href = '/history';
@@ -96,25 +94,17 @@ function uploadHistory() {
 
 //연혁 수정
 function editHistory() {
-  const inputObj = {
-    history_pk: detailHistory.value.history_pk,
-    year: !yearRef.value ? currentYear : yearRef.value,
-    month: !monthRef.value ? 1 : monthRef.value,
-    content_kr: contentKrRef.value,
-    content_id: contentIdRef.value,
-    content_pt: contentPtRef.value,
-    content_us: contentEnRef.value,
-    active_flag: isActiveRef.value
-  };
+  const form = document.getElementById('form');
+  const formData = new FormData(form);
   historyApi
-    .fetchEditHistory(inputObj)
+    .fetchEditHistory(detailHistory.value.history_pk, formData)
     .then((res) => {
       if (res.data.status === 200) {
         popupStore.historyClose();
       }
     })
     .catch((err) => {
-      console.log(err);
+      alert('');
     });
 }
 
