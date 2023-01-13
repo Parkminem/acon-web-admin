@@ -34,13 +34,15 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    // console.log(error.response?.data);
+    console.log(error.response?.data);
     if (error.response.data.status === 500) {
       alert('500 서버 에러');
-    } else {
-      alert('로그인을 다시 해주세요');
+    } else if (error.response.data.code === 'C006') {
+      alert('토큰이 만료되었습니다');
       localStorage.removeItem('token');
       router.push('/');
+    } else {
+      console.log(error);
     }
   }
 );
