@@ -12,7 +12,7 @@
       </div>
       <Table :theadData="theadData.history">
         <!-- t-body -->
-        <ul class="td" v-for="item in history.list" :key="item.rownum">
+        <ul class="td" v-for="item in historyList" :key="item.rownum">
           <li class="w10">{{ item.year }}</li>
           <li class="w10">{{ item.month }}</li>
           <li v-if="locale === 'kr'">{{ item.content_kr }}</li>
@@ -52,7 +52,6 @@ import { usePopupStore } from '@/store/popup';
 import { useHistory } from '@/store/history';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
-import { history } from '@/utils/dummy';
 import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
@@ -61,12 +60,12 @@ const { locale, showNum } = storeToRefs(selectStore);
 const { historyList } = storeToRefs(historyStore);
 
 //연혁 리스트 조회
-// await historyStore.historyListAct(1, 10);
-await historyStore.detailHistoryAct(1);
+await historyStore.historyListAct(1, 10);
 
 // 게시물 갯수 변경
 watch(showNum, (newShowNum) => {
-  historyStore.historyListAct(historyList.value[0].nowpage, newShowNum);
+  const nowpage = historyList.value[0].nowpage;
+  historyStore.historyListAct(nowpage, newShowNum);
 });
 
 // 연혁 삭제

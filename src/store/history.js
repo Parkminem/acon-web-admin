@@ -18,8 +18,8 @@ export const useHistory = defineStore('history', {
       await historyApi
         .fetchHistoryList(page, count)
         .then((res) => {
-          console.log(res);
-          // this.historyList = res.data.data;
+          this.historyList = res.data;
+          console.log(this.historyList);
         })
         .catch((err) => console.log(err));
     },

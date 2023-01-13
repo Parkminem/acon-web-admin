@@ -31,7 +31,6 @@
         </div>
       </div>
     </div>
-    <!-- v-if 작업 -->
     <div class="loginBox" v-else>
       <div class="title">
         <h1>IDEACONCERT</h1>
