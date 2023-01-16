@@ -5,13 +5,13 @@
       <h1>파트너사 등록</h1>
       <button @click="popupStore.partnerClose"><span class="material-icons"> close </span></button>
     </div>
-    <form action="" enctype="multipart/form-data">
+    <form action="" enctype="multipart/form-data" id="form">
       <div class="popupBody">
-        <Input title="파트너사명(한국어)" placeholder="IDEACONCERT" v-model="krPartner" />
-        <Input title="파트너사명(인도네시아어)" placeholder="IDEACONCERT" v-model="idPartner" />
-        <Input title="파트너사명(포르투갈어)" placeholder="IDEACONCERT" v-model="ptPartner" />
-        <Input title="파트너사명(영어)" placeholder="IDEACONCERT" v-model="enPartner" />
-        <Input title="파트너사 홈페이지" placeholder="http://ideaconcert.com" v-model="homepage" />
+        <Input name="name_kr" title="파트너사명(한국어)" placeholder="IDEACONCERT" v-model="krPartner" />
+        <Input name="name_id" title="파트너사명(인도네시아어)" placeholder="IDEACONCERT" v-model="idPartner" />
+        <Input name="name_pt" title="파트너사명(포르투갈어)" placeholder="IDEACONCERT" v-model="ptPartner" />
+        <Input name="name_us" title="파트너사명(영어)" placeholder="IDEACONCERT" v-model="enPartner" />
+        <Input name="url" title="파트너사 홈페이지" placeholder="http://ideaconcert.com" v-model="homepage" />
         <File title="로고" @fileValue="emitFile" />
       </div>
       <div class="popupFooter">
