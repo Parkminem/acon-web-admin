@@ -159,7 +159,7 @@ function uploadLocation() {
           popupStore.locationClose();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('등록에 실패하였습니다.'));
   }
 }
 
@@ -194,7 +194,7 @@ function editLocation() {
           popupStore.locationClose();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('수정에 실패하였습니다.'));
   }
 }
 </script>

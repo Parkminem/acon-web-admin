@@ -34,6 +34,7 @@ export const usePopupStore = defineStore('popup', {
     },
     questionTypeClose() {
       this.questionTypePopupState = false;
+      window.location.href = '/questiontype';
     },
     promotionOpen() {
       this.promotionPopupState = true;

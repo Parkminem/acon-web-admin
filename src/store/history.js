@@ -24,8 +24,9 @@ export const useHistory = defineStore('history', {
     },
     /**
      * 연혁 상세 정보 조회 액션
-     * @param 고유번호
-     */ async detailHistoryAct(pk) {
+     *  @param 고유번호
+     */
+    async detailHistoryAct(pk) {
       this.detailHistory = null;
       await historyApi
         .fetchDetailHistory(pk)
