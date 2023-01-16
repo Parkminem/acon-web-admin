@@ -44,5 +44,5 @@ function submit() {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/style/popup.scss';
+@import '@/assets/style/popup.scss';
 </style>

@@ -28,5 +28,5 @@ function upDownSort(event) {
 }
 </script>
 <style lang="scss">
-@import '@/style/table.scss';
+@import '@/assets/style/table.scss';
 </style>

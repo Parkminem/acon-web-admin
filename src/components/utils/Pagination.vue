@@ -51,6 +51,7 @@ const pageArr = ref(pagination(currentPage.value, currentLastPage.value).pageArr
 
 watch(currentPage, (newNowPage) => {
   currentPage.value = newNowPage;
+  currentStartPage.value = pagination(newNowPage, currentLastPage.value).startPage;
   pageArr.value = pagination(newNowPage, currentLastPage.value).pageArr;
 });
 
