@@ -69,7 +69,7 @@ const listPage = ref(showNum.value);
 await questionTypeStore.questionTypeListAct(1, 10);
 
 const rowCnt = questionTypeList.value[0].rowcnt;
-const lastPage = ref(questionTypeList.value[0].lastPage);
+const lastPage = ref(questionTypeList.value[0].lastpage);
 
 //페이지 변경
 function pageFunc(page) {

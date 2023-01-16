@@ -3,7 +3,7 @@
   <div class="container">
     <div class="section">
       <div class="tableTop">
-        <ShowList />
+        <!-- <ShowList /> -->
         <SearchBox />
       </div>
       <Table :theadData="theadData.question">
