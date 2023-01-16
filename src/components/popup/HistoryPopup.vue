@@ -104,7 +104,7 @@ function editHistory() {
       }
     })
     .catch((err) => {
-      alert('');
+      alert('수정에 실패하였습니다.');
     });
 }
 

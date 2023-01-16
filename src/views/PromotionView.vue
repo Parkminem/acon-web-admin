@@ -4,29 +4,34 @@
     <div class="section">
       <ResisterBtn @clickRegister="usePopupStore().promotionOpen" />
       <div class="tableTop">
-        <ShowList />
+        <!-- <ShowList /> -->
         <SearchBox />
       </div>
       <Table :theadData="theadData.promotion">
-        <!-- nodata 시 v-if 작업 -->
-        <!-- <empty /> -->
-        <ul class="td" v-for="i in promotion.list" :key="i.promotion_pk">
-          <li class="w10">{{ i.promotion_pk }}</li>
+        <empty v-if="!promotionList" />
+        <ul v-else class="td" v-for="(i, idx) in promotionList" :key="i.promotion_pk">
+          <li class="w10">{{ i.nowpage > 1 ? (i.nowpage - 1) * 10 + (idx + 1) : idx + 1 }}</li>
           <li class="">{{ i.promotion_name }}</li>
           <li class="w20">{{ i.promotion_url }}</li>
           <li class="w10">{{ changeDate(i.regdate) }}</li>
           <li class="w10">{{ i.view_status }}</li>
           <li class="w10">
-            <button><span>수정</span></button>
+            <button @click="promotionStore.detailPromotionAct(i.promotion_pk)"><span>수정</span></button>
           </li>
           <li class="w10">
-            <button @click="deletePromotion"><span>삭제</span></button>
+            <button @click="deletePromotion(i.promotion_pk)"><span>삭제</span></button>
           </li>
         </ul>
       </Table>
       <div class="tableBottom">
-        <AllEntries />
-        <Pagination />
+        <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
+        <Pagination
+          :lastPage="Number(lastPage)"
+          :nowPage="nowPageNum"
+          @goPage="(page) => pageFunc(page)"
+          @goNextPage="(page) => nextPageFunc(page)"
+          @goPrePage="(page) => prePageFunc(page)"
+        />
       </div>
     </div>
   </div>
@@ -44,9 +49,8 @@ import { usePopupStore } from '@/store/popup';
 import { usePromotion } from '@/store/promotion';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
-import { promotion } from '@/utils/dummy';
 import promotionApi from '@/api/promotion';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 const promotionStore = usePromotion();
@@ -54,6 +58,14 @@ const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
 const { promotionList } = storeToRefs(promotionStore);
 
+const nowPageNum = ref(1);
+const listPage = ref(showNum.value);
+
+//프로모션 리스트 조회
+await promotionStore.promotionListAct(1, 10);
+
+const rowCnt = promotionList.value[0].rowcnt;
+const lastPage = ref(promotionList.value[0].lastpage);
 //등록일 형태 변경 함수
 const changeDate = (date) => {
   return date.substr(0, 10).replace(/-/g, '.');
@@ -64,6 +76,19 @@ watch(showNum, (newShowNum) => {
   promotionStore.promotionListAct(promotionList.value[0].nowpage, newShowNum);
 });
 
+//페이지 변경
+function pageFunc(page) {
+  promotionStore.promotionListAct(page, showNum.value);
+  nowPageNum.value = page;
+}
+function nextPageFunc(page) {
+  promotionStore.promotionListAct(page + 1, showNum.value);
+  nowPageNum.value = page + 1;
+}
+function prePageFunc(page) {
+  promotionStore.promotionListAct(page - 1, showNum.value);
+  nowPageNum.value = page - 1;
+}
 //프로모션 삭제
 function deletePromotion(pk) {
   promotionApi
@@ -73,7 +98,7 @@ function deletePromotion(pk) {
         window.location.href = '/promotion';
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => alert('삭제에 실패하였습니다.'));
 }
 </script>
 <style lang="scss" scoped></style>

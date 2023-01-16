@@ -1,9 +1,15 @@
 <template>
-  <!-- 함수 사용 v-for로 랜더링 -->
   <div class="pagination">
     <ul>
       <li v-if="pagination(currentPage, currentLastPage).preBtn">
-        <button><span class="material-icons"> chevron_left </span></button>
+        <button
+          @click="
+            $emit('goPrePage', currentStartPage);
+            currentPage = currentStartPage - 1;
+          "
+        >
+          <span class="material-icons"> chevron_left </span>
+        </button>
       </li>
       <li v-for="page in pageArr" :key="page">
         <button
@@ -17,7 +23,14 @@
         </button>
       </li>
       <li v-if="pagination(currentPage, currentLastPage).nextBtn">
-        <button><span class="material-icons"> chevron_right </span></button>
+        <button
+          @click="
+            $emit('goNextPage', currentEndPage);
+            currentPage = currentEndPage + 1;
+          "
+        >
+          <span class="material-icons"> chevron_right </span>
+        </button>
       </li>
     </ul>
   </div>
@@ -30,13 +43,15 @@ const props = defineProps({
   lastPage: Number,
   nowPage: Number
 });
-
 const currentPage = ref(props.nowPage);
 const currentLastPage = ref(props.lastPage);
+const currentEndPage = ref(pagination(currentPage.value, currentLastPage.value).endPage);
+const currentStartPage = ref(pagination(currentPage.value, currentLastPage.value).startPage);
 const pageArr = ref(pagination(currentPage.value, currentLastPage.value).pageArr);
 
 watch(currentPage, (newNowPage) => {
   currentPage.value = newNowPage;
+  pageArr.value = pagination(newNowPage, currentLastPage.value).pageArr;
 });
 
 // lastpage가 watch 되지 않음, 확인 후 수정해야함...

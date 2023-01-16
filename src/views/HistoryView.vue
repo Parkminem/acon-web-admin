@@ -12,7 +12,8 @@
       </div>
       <Table :theadData="theadData.history">
         <!-- t-body -->
-        <ul class="td" v-for="item in historyList" :key="item.rownum">
+        <Empty v-if="!historyList" />
+        <ul v-else class="td" v-for="item in historyList" :key="item.rownum">
           <li class="w10">{{ item.year }}</li>
           <li class="w10">{{ item.month }}</li>
           <li v-if="locale === 'kr'">{{ item.content_kr }}</li>

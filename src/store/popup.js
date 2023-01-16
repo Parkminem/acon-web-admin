@@ -40,6 +40,7 @@ export const usePopupStore = defineStore('popup', {
     },
     promotionClose() {
       this.promotionPopupState = false;
+      window.location.href = '/promotion';
     }
   }
 });

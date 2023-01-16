@@ -59,7 +59,7 @@
             v-model="enAddress01"
           />
         </Input>
-        <Checkbox name="check_open" title="공개 여부(푸터 정보란)" v-model="openCheck" />
+        <Checkbox name="check_open" title="공개 여부(푸터 정보란)" v-model="openCheck" :checked="openCheck" />
       </div>
       <div class="popupFooter">
         <button v-if="!detailLocation" @click.prevent="uploadLocation"><span>등록</span></button>
@@ -96,8 +96,7 @@ const enAddress02 = ref('');
 const post = ref('');
 const address01 = ref('');
 const address02 = ref('');
-const openCheck = ref('');
-
+const openCheck = ref(false);
 function emitPost(postVal) {
   post.value = postVal;
 }
@@ -107,8 +106,6 @@ function emitAddress01(address01Val) {
 function emitAddress02(address02Val) {
   address02.value = address02Val;
 }
-
-const makeForm = () => {};
 
 //수정 팝업 랜더링 시 데이터 삽입
 if (detailLocation.value) {

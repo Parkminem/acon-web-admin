@@ -6,11 +6,16 @@
       <h1 v-else>프로모션 영상 수정</h1>
       <button @click="popupStore.promotionClose"><span class="material-icons"> close </span></button>
     </div>
-    <form action="">
+    <form action="" id="form">
       <div class="popupBody">
-        <Input title="홍보영상 이름" placeholder="쿠키런" v-model="name" />
-        <Input title="홍보영상 유튜브 주소" placeholder="https://www.youtube.com/watch?v=VHo2U9lqV4Y" v-model="url" />
-        <Checkbox title="홍보영상 공개 여부" v-model="openCheck" />
+        <Input name="promotion_name" title="홍보영상 이름" placeholder="쿠키런" v-model="name" />
+        <Input
+          name="promotion_url"
+          title="홍보영상 유튜브 주소"
+          placeholder="https://www.youtube.com/watch?v=VHo2U9lqV4Y"
+          v-model="url"
+        />
+        <Checkbox name="view_status" title="홍보영상 공개 여부" v-model="openCheck" :checked="openCheck" />
       </div>
       <div class="popupFooter">
         <button v-if="!detailPromotion" @click.prevent="uploadPromotion"><span>등록</span></button>
@@ -34,7 +39,7 @@ const promotionStore = usePromotion();
 const { detailPromotion } = storeToRefs(promotionStore);
 const name = ref('');
 const url = ref('');
-const openCheck = ref('');
+const openCheck = ref(false);
 
 //수정 팝업 랜더링 시 데이터 삽입
 if (detailPromotion.value) {
@@ -48,17 +53,14 @@ function uploadPromotion() {
   if (name.value.length == 0 || url.value.length == 0) {
     alert('모든 내용을 입력해주세요.');
   } else {
-    const inputObj = {
-      promotion_name: name.value,
-      promotion_url: url.value,
-      view_status: !openCheck.value ? 'N' : 'Y'
-    };
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    formData.append('view_status', openCheck.value ? 'Y' : 'N');
     promotionApi
-      .fetchUploadPromotion(inputObj)
+      .fetchUploadPromotion(formData)
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.promotionClose();
-          window.location.href = '/promotion';
         }
       })
       .catch((err) => {
@@ -72,22 +74,18 @@ function editPromotion() {
   if (name.value.length == 0 || url.value.length == 0) {
     alert('모든 내용을 입력해주세요.');
   } else {
-    const inputObj = {
-      promotion_pk: detailPromotion.value.promotion_pk,
-      promotion_name: name.value,
-      promotion_url: url.value,
-      view_status: !openCheck.value ? 'N' : 'Y'
-    };
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    formData.append('view_status', openCheck.value ? 'Y' : 'N');
+    promotionApi
+      .fetchEditPromotion(detailPromotion.value.promotion_pk, formData)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.promotionClose();
+        }
+      })
+      .catch((err) => alert('수정에 실패하였습니다.'));
   }
-  promotionApi
-    .fetchEditPromotion(inputObj)
-    .then((res) => {
-      if (res.data.status === 200) {
-        popupStore.promotionClose();
-        window.location.href = '/promotion';
-      }
-    })
-    .catch((err) => console.log(err``));
 }
 </script>
 <style lang="scss" scoped>

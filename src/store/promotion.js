@@ -18,8 +18,7 @@ export const usePromotion = defineStore('promotion', {
       await promotionApi
         .fetchPromotionList(page, count)
         .then((res) => {
-          this.promotionList = res.data.data;
-          // console.log(this.promotionList)
+          this.promotionList = res.data;
         })
         .catch((err) => {
           console.log(err);
@@ -33,8 +32,7 @@ export const usePromotion = defineStore('promotion', {
       await promotionApi
         .fetchDetailPromotion(pk)
         .then((res) => {
-          // console.log(res.data.data);
-          this.detailPromotion = res.data.data;
+          this.detailPromotion = res.data;
           popupStore.promotionOpen();
         })
         .catch((err) => console.log(err));

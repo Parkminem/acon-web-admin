@@ -5,10 +5,7 @@ import instance from '@/api/instance';
  * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수)
  */
 function fetchPromotionList(page, count) {
-  return instance.post('/promotion/list', {
-    nowpage: page,
-    listpage: count
-  });
+  return instance.get(`/promotion/list?nowpage=${page}&listpage=${count}`);
 }
 
 /**
@@ -24,24 +21,15 @@ function fetchDetailPromotion(pk) {
  * @param object(promotion_name, promotion_url, view_status)
  */
 function fetchUploadPromotion(object) {
-  return instance.post('/promotion', {
-    promotion_name: object.promotion_name,
-    promotion_url: object.promotion_url,
-    view_status: object.view_status
-  });
+  return instance.post('/promotion', object);
 }
 
 /**
  * 프로모션 수정
- * @param object(promotion_pk, promotion_name, promotion_url, view_status)
+ * @param 고유번호, object(promotion_pk, promotion_name, promotion_url, view_status)
  */
-function fetchEditPromotion(object) {
-  return instance.put('/promotion', {
-    promotion_pk: object.promotion_pk,
-    promotion_name: object.promotion_name,
-    promotion_url: object.promotion_url,
-    view_status: object.view_status
-  });
+function fetchEditPromotion(pk, object) {
+  return instance.put(`/promotion/${pk}`, object);
 }
 
 /**
@@ -49,9 +37,7 @@ function fetchEditPromotion(object) {
  * @param 고유번호
  */
 function fetchDeletePromotion(pk) {
-  return instance.delete('/history', {
-    promotion_pk: pk
-  });
+  return instance.delete(`/promotion/${pk}`);
 }
 
 const promotionApi = {

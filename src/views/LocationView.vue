@@ -12,7 +12,8 @@
       </div>
       <Table :theadData="theadData.location">
         <!-- t-body -->
-        <ul class="td" v-for="area in locationList" :key="area.location_pk">
+        <Empty v-if="!locationList" />
+        <ul v-else class="td" v-for="area in locationList" :key="area.location_pk">
           <li class="w10">{{ area.location_pk }}</li>
           <li class="w10" v-if="locale === 'kr'">{{ area.name_kr }}</li>
           <li class="w10" v-if="locale === 'id'">{{ area.name_id }}</li>
