@@ -21,6 +21,7 @@ export const usePopupStore = defineStore('popup', {
     },
     partnerClose() {
       this.partnerPopupState = false;
+      window.location.href = '/partners';
     },
     locationOpen() {
       this.locationPopupState = true;

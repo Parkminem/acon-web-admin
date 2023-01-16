@@ -2,7 +2,8 @@
   <div class="cover" @click="popupStore.partnerClose"></div>
   <div class="inner">
     <div class="popupHeader">
-      <h1>파트너사 등록</h1>
+      <h1 v-if="!partnersList">파트너사 등록</h1>
+      <h1 v-else>파트너사 등록</h1>
       <button @click="popupStore.partnerClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" enctype="multipart/form-data" id="form">
@@ -15,7 +16,8 @@
         <File title="로고" @fileValue="emitFile" />
       </div>
       <div class="popupFooter">
-        <button @click.prevent="submit"><span>등록</span></button>
+        <button v-if="!partnersList" @click.prevent="submit"><span>등록</span></button>
+        <button v-else @click.prevent="submit"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -25,8 +27,13 @@ import Input from '@/components/form/Input.vue';
 import File from '@/components/form/File.vue';
 import { ref } from 'vue';
 import { usePopupStore } from '@/store/popup';
+import { usePartners } from '@/store/partners';
+import { storeToRefs } from 'pinia';
 
 const popupStore = usePopupStore();
+const partnersStore = usePartners();
+
+const { partnersList } = storeToRefs(partnersStore);
 
 const krPartner = ref('');
 const idPartner = ref('');
@@ -38,10 +45,10 @@ const file = ref();
 function emitFile(val) {
   file.value = val;
 }
-function submit() {
-  //axios
-  console.log(file.value.files);
-}
+
+//
+
+// console.log(file.value.files);
 </script>
 <style lang="scss" scoped>
 @import '@/assets/style/popup.scss';
