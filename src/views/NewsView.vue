@@ -1,38 +1,38 @@
 <template>
   <SubTitle>소식</SubTitle>
   <div class="container">
-    <div class="section">
+    <div class="section" v-if="newsStore.newsList">
       <ResisterBtn @clickRegister="goUpload" />
       <div class="tableTop">
         <div class="left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
         </div>
         <SearchBox />
       </div>
       <Table :theadData="theadData.news">
         <!-- t-body -->
-        <ul class="td">
-          <li class="w10">1</li>
-          <li v-if="locale === 'kr'">아이디어콘서트 설립</li>
-          <li v-if="locale === 'en'">아이디어콘서트 설립</li>
-          <li v-if="locale === 'id'">아이디어콘서트 설립</li>
-          <li v-if="locale === 'pt'">아이디어콘서트 설립</li>
+        <ul class="td" v-for="news in newsStore.newsList" :key="news.pk">
+          <li class="w10">{{ news.news_pk }}</li>
+          <li v-if="locale === 'kr'">{{ news.title_kr }}</li>
+          <li v-if="locale === 'en'">{{ news.title_en }}</li>
+          <li v-if="locale === 'id'">{{ news.title_id }}</li>
+          <li v-if="locale === 'pt'">{{ news.title_pt }}</li>
           <li class="w10">작성자이름</li>
-          <li class="w10">활성화</li>
-          <li class="w10">2012.03.24</li>
+          <li class="w10">{{ news.active_flag === 1 ? '활성화' : '비활성화' }}</li>
+          <li class="w10">{{ news.regdate }}</li>
           <li class="w10">
-            <button><span>수정</span></button>
+            <button @click="newsStore.newsDetailAct(news.news_pk)"><span>수정</span></button>
           </li>
           <li class="w10">
-            <button><span>삭제</span></button>
+            <button @click="deleteNews(news.news_pk)"><span>삭제</span></button>
           </li>
         </ul>
         <!-- t-body -->
       </Table>
       <div class="tableBottom">
-        <AllEntries />
-        <Pagination />
+        <!-- <AllEntries /> -->
+        <Pagination :lastPage="Number(lastPage)" :nowPage="nowPageNum" @goPage="(page) => pageFunc(page)" />
       </div>
     </div>
   </div>
@@ -49,16 +49,49 @@ import LocaleList from '@/components/utils/LocaleList.vue';
 import empty from '@/components/utils/empty.vue';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
-import { useRouter } from 'vue-router';
+import router from '@/routes';
 import { storeToRefs } from 'pinia';
+import { useNewsStore } from '@/store/news';
+import { ref } from 'vue';
+import newsApi from '@/api/news';
 
-const router = useRouter();
 const selectStore = useSelect();
 const { locale } = storeToRefs(selectStore);
+const newsStore = useNewsStore();
+const { newsList } = storeToRefs(newsStore);
 
-//소식 등록하기로 이동
+// 소식 등록하기로 이동
 function goUpload() {
   router.push('/news/upload');
+}
+
+// 소식 리스트 불러오기
+await newsStore.newsListAct(1, 10);
+
+const lastPage = ref(newsList.value[0].lastpage);
+const nowPageNum = ref(1);
+
+// 페이지 변경
+function pageFunc(page) {
+  newsStore.newsListAct(page, 10);
+  nowPageNum.value = page;
+}
+
+// 소식 삭제
+function deleteNews(pk) {
+  if (confirm('삭제하시겠습니까?') === true) {
+    newsApi
+      .fetchDeleteNews(pk)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          window.location.href = '/news';
+        }
+      })
+      .catch((err) => alert(err));
+  } else {
+    return false;
+  }
 }
 </script>
 <style lang="scss" scoped></style>

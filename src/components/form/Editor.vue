@@ -9,12 +9,14 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ref } from 'vue';
 const editor = ClassicEditor;
 
-const editorDesc = ref('');
-defineProps({
+const props = defineProps({
   title: String,
-  modelValue: String
+  modelValue: String,
+  val: String
 });
+const editorDesc = ref(props.val);
 const emit = defineEmits();
+
 function handleInput() {
   emit('write', editorDesc);
 }

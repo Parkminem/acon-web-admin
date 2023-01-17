@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="usePopupStore().historyOpen" />
       <div class="tableTop">
         <div class="left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
         </div>
         <SearchBox />
