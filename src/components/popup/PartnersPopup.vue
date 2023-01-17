@@ -30,6 +30,7 @@ import partnersApi from '@/api/partners';
 import { usePopupStore } from '@/store/popup';
 import { usePartners } from '@/store/partners';
 import { storeToRefs } from 'pinia';
+import { compileScript } from '@vue/compiler-sfc';
 
 const popupStore = usePopupStore();
 const partnersStore = usePartners();
@@ -61,6 +62,12 @@ if (detailPartner.value) {
 function uploadPartner() {
   const form = document.getElementById('form');
   const formData = new FormData(form);
+  let reader = new FileReader();
+  let src;
+  reader.onload = (e) => {
+    src = e.target.result;
+  };
+  reader.readAsDataURL(file.value.files[0]);
   if (
     krPartner.value.length == 0 ||
     idPartner.value.length == 0 ||
@@ -71,7 +78,24 @@ function uploadPartner() {
   ) {
     alert('모든 내용을 입력해주세요');
   } else {
-    // partnersApi.fetchUploadPartners
+    partnersApi
+      .fetchUploadPartners(formData)
+      .then((res) => {
+        if (res.data.status === 200) {
+          const object = {
+            name_kr: krPartner.value,
+            name_id: idPartner.value,
+            name_pt: ptPartner.value,
+            name_us: enPartner.value,
+            url: homepage.value,
+            src: src,
+            partner_pk: res.data.message_detail
+          };
+          partnersStore.saveNewPartner(object);
+          popupStore.partnerClose();
+        }
+      })
+      .catch((err) => console.log(err));
   }
 }
 </script>

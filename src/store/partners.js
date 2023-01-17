@@ -48,6 +48,7 @@ export const usePartners = defineStore('partners', {
      */
     saveNewPartner(object) {
       this.newPartner.push(object);
+      this.newPartner.reverse();
     }
   }
 });

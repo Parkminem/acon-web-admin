@@ -17,7 +17,7 @@ function fetchDetailPartners(pk) {
 }
 
 /**
- * 파트너사 데이터 등록
+ * 파트너사 등록
  * @param object(name_kr,name_id,name_pt,name_us,url)
  */
 function fetchUploadPartners(object) {
