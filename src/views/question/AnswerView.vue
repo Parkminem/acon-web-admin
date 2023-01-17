@@ -50,14 +50,14 @@
               <div class="col">
                 <div class="name"><span>등록일</span></div>
                 <div class="text">
-                  <span>{{ changeDate(detailQuestion.regdate) }}</span>
+                  <span>{{ changeDate(detailQuestion.question_date) }}</span>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col textBox">
                 <div class="name"><span>내용</span></div>
-                <div class="text" v-html="detailQuestion.content"></div>
+                <div class="text" v-html="detailQuestion.question_content"></div>
               </div>
             </div>
           </div>
@@ -73,14 +73,22 @@
               <div class="col">
                 <div class="name col1"><span>언어</span></div>
                 <div class="text">
-                  <label for="kr"><input type="radio" name="language" value="KR" id="kr" /><span>한국어</span></label>
+                  <label for="kr"
+                    ><input type="radio" name="language" value="KR" :ref="krRef" id="kr" /><span>한국어</span></label
+                  >
                   <label for="id"
-                    ><input type="radio" name="language" value="ID" id="id" /><span>인도네시아어</span></label
+                    ><input type="radio" name="language" value="ID" id="id" :ref="idRef" /><span
+                      >인도네시아어</span
+                    ></label
                   >
                   <label for="pt"
-                    ><input type="radio" name="language" value="PT" id="pt" /><span>포르투갈어</span></label
+                    ><input type="radio" name="language" value="PT" id="pt" :ref="ptRef" /><span
+                      >포르투갈어</span
+                    ></label
                   >
-                  <label for="en"><input type="radio" name="language" value="US" id="en" /><span>영어</span></label>
+                  <label for="en"
+                    ><input type="radio" name="language" value="US" id="en" :ref="enRef" /><span>영어</span></label
+                  >
                 </div>
               </div>
             </div>
@@ -108,12 +116,15 @@ import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { changeDate } from '@/utils/calculator';
-import router from '@/routes';
 
 const route = useRoute();
 const questionStore = useQuestion();
 
 const contentVal = ref('');
+const krRef = ref('');
+const idRef = ref('');
+const ptRef = ref('');
+const enRef = ref('');
 
 const { detailQuestion } = storeToRefs(questionStore);
 
@@ -128,16 +139,7 @@ function sendAnswer() {
     const form = document.getElementById('form');
     const formData = new FormData(form);
     formData.append('question_pk', detailQuestion.value.question_pk);
-    questionStore
-      .answerAct(formData)
-      .then((res) => {
-        if (res.data.status == 200) {
-          router.push('/question');
-        }
-      })
-      .catch((err) => {
-        alert('답변이 전송되지 못했습니다.');
-      });
+    questionStore.answerAct(formData);
   }
 }
 </script>

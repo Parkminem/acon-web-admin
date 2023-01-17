@@ -21,15 +21,7 @@ function fetchDetailPartners(pk) {
  * @param object(name_kr,name_id,name_pt,name_us,url)
  */
 function fetchUploadPartners(object) {
-  return instance.post('/partner', object);
-}
-
-/**
- * 파트너사 로고 업로드
- * @param 등록 시 받은 pk, file
- */
-function fetchLogoPartners(pk, file) {
-  return instance.post(`/partner/${pk}`, file, { headers: { 'Content-Type': 'multipart/form-data' } });
+  return instance.post('/partner', object, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 /**
@@ -55,8 +47,7 @@ const partnersApi = {
   fetchDetailPartners,
   fetchUploadPartners,
   fetchEditPartners,
-  fetchDeletePartners,
-  fetchLogoPartners
+  fetchDeletePartners
 };
 
 export default partnersApi;

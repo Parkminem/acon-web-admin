@@ -49,10 +49,18 @@ function emitFile(val) {
 
 //수정 팝업 랜더링 시 데이터 삽입
 if (detailPartner.value) {
+  krPartner.value = detailPartner.value.name_kr;
+  idPartner.value = detailPartner.value.name_id;
+  ptPartner.value = detailPartner.value.name_pt;
+  enPartner.value = detailPartner.value.name_us;
+  homepage.value = detailPartner.value.url;
+  file.value = detailPartner.value.logo_origin_name;
 }
 
 //파트너사 등록
 function uploadPartner() {
+  const form = document.getElementById('form');
+  const formData = new FormData(form);
   if (
     krPartner.value.length == 0 ||
     idPartner.value.length == 0 ||
@@ -63,21 +71,7 @@ function uploadPartner() {
   ) {
     alert('모든 내용을 입력해주세요');
   } else {
-    const form = document.getElementById('form');
-    const formData = new FormData(form);
-    const fileForm = new FormData();
-    fileForm.append('file', file.value);
-    let pk;
-    partnersApi.fetchUploadPartners(formData).then(async (res) => {
-      if (res.data.status == 200) {
-        pk = await res.data.message_detail;
-        // await partnersApi.fetchLogoPartners(pk, fileForm).then((res) => {
-        //   formData.append('logo_origin_name', res.data.fileOrgName);
-        //   formData.append('logo_file_url', res.data.filePath);
-        //   formData.append('logo_save_name', res.data.savename);
-        // });
-      }
-    });
+    // partnersApi.fetchUploadPartners
   }
 }
 </script>

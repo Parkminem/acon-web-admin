@@ -15,9 +15,9 @@
           <li class="w10">{{ qna.company }}</li>
           <li class="w10">{{ qna.phone }}</li>
           <li>{{ qna.email }}</li>
-          <li class="w10">{{ changeDate(qna.regdate) }}</li>
+          <li class="w10">{{ changeDate(qna.question_date) }}</li>
           <li class="w10">
-            <button @click="goAnswerPage(qna.question_pk)"><span>등록</span></button>
+            <button v-if="!qna.answer_content" @click="goAnswerPage(qna.question_pk)"><span>등록</span></button>
           </li>
         </ul>
       </Table>

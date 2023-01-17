@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { usePartners } from '@/store/partners';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
@@ -20,8 +21,9 @@ export const usePopupStore = defineStore('popup', {
       this.partnerPopupState = true;
     },
     partnerClose() {
+      const partnersStore = usePartners();
+      partnersStore.resetDetailPartnerAct();
       this.partnerPopupState = false;
-      window.location.href = '/partners';
     },
     locationOpen() {
       this.locationPopupState = true;
