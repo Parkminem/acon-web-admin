@@ -31,6 +31,20 @@ export const useQuestion = defineStore('question', {
           this.detailQuestion = res.data;
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * 답변 하기
+     * @param object(question_pk, language, content)
+     */
+    async answerAct(object) {
+      questionApi
+        .fetchAnswer(object)
+        .then((res) => {
+          if (res.data.status === 200) {
+            router.push('/question');
+          }
+        })
+        .catch((err) => console.log(err));
     }
   }
 });

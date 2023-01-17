@@ -73,46 +73,73 @@
               <div class="col">
                 <div class="name col1"><span>언어</span></div>
                 <div class="text">
-                  <label for="kr"><input type="radio" name="language" value="kr" id="kr" /><span>한국어</span></label>
+                  <label for="kr"><input type="radio" name="language" value="KR" id="kr" /><span>한국어</span></label>
                   <label for="id"
-                    ><input type="radio" name="language" value="id" id="id" /><span>인도네시아어</span></label
+                    ><input type="radio" name="language" value="ID" id="id" /><span>인도네시아어</span></label
                   >
                   <label for="pt"
-                    ><input type="radio" name="language" value="pt" id="pt" /><span>포르투갈어</span></label
+                    ><input type="radio" name="language" value="PT" id="pt" /><span>포르투갈어</span></label
                   >
-                  <label for="en"><input type="radio" name="language" value="en" id="en" /><span>영어</span></label>
+                  <label for="en"><input type="radio" name="language" value="US" id="en" /><span>영어</span></label>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col textBox">
                 <div class="name"><span>내용</span></div>
-                <div class="text"><textarea name="" id="" cols="30" rows="15"></textarea></div>
+                <div class="text">
+                  <textarea name="content" id="" cols="30" rows="15" v-model="contentVal"></textarea>
+                </div>
               </div>
             </div>
           </div>
         </form>
       </div>
       <div class="btn">
-        <button><span>완료</span></button>
+        <button @click="sendAnswer"><span>완료</span></button>
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import { ref } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { changeDate } from '@/utils/calculator';
+import router from '@/routes';
 
 const route = useRoute();
 const questionStore = useQuestion();
+
+const contentVal = ref('');
 
 const { detailQuestion } = storeToRefs(questionStore);
 
 //문의 내역 상세 조회
 await questionStore.detailQuestionAct(route.query.pk);
+
+//답변 전송
+function sendAnswer() {
+  if (contentVal.value.length == 0) {
+    alert('모든 글을 작성해 주세요.');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    formData.append('question_pk', detailQuestion.value.question_pk);
+    questionStore
+      .answerAct(formData)
+      .then((res) => {
+        if (res.data.status == 200) {
+          router.push('/question');
+        }
+      })
+      .catch((err) => {
+        alert('답변이 전송되지 못했습니다.');
+      });
+  }
+}
 </script>
 <style lang="scss">
 .card {
