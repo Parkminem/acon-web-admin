@@ -16,8 +16,8 @@
             <h1 v-if="locale === 'pt'">{{ item.name_pt }}</h1>
             <h1 v-if="locale === 'en'">{{ item.name_us }}</h1>
             <div class="btns">
-              <button><span>수정</span></button>
-              <button><span>삭제</span></button>
+              <button @click="partnersApi.fetchDetailPartners(item.partner_pk)"><span>수정</span></button>
+              <button @click="deletePartner(item.partner_pk)"><span>삭제</span></button>
             </div>
           </div>
         </div>
@@ -34,6 +34,7 @@ import { usePartners } from '@/store/partners';
 import { usePopupStore } from '@/store/popup';
 import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
+import partnersApi from '@/api/partners';
 
 const partnersStore = usePartners();
 const selectStore = useSelect();
@@ -45,6 +46,20 @@ const url = 'http://data.ideaconcert.com';
 
 //파트너사 리스트 조회
 await partnersStore.partnersListAct();
+
+//파트너사 삭제
+function deletePartner(pk) {
+  partnersApi
+    .fetchDeletePartners(pk)
+    .then((res) => {
+      if (res.data.status === 200) {
+        window.location.href = '/partners';
+      }
+    })
+    .catch((err) => {
+      alert('삭제에 실패하였습니다.');
+    });
+}
 </script>
 <style lang="scss" scoped>
 .partnersBox {

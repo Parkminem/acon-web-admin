@@ -2,7 +2,7 @@
   <div class="cover" @click="popupStore.partnerClose"></div>
   <div class="inner">
     <div class="popupHeader">
-      <h1 v-if="!partnersList">파트너사 등록</h1>
+      <h1 v-if="!detailPartner">파트너사 등록</h1>
       <h1 v-else>파트너사 등록</h1>
       <button @click="popupStore.partnerClose"><span class="material-icons"> close </span></button>
     </div>
@@ -16,7 +16,7 @@
         <File title="로고" @fileValue="emitFile" />
       </div>
       <div class="popupFooter">
-        <button v-if="!partnersList" @click.prevent="submit"><span>등록</span></button>
+        <button v-if="!detailPartner" @click.prevent="uploadPartner"><span>등록</span></button>
         <button v-else @click.prevent="submit"><span>수정</span></button>
       </div>
     </form>
@@ -26,6 +26,7 @@
 import Input from '@/components/form/Input.vue';
 import File from '@/components/form/File.vue';
 import { ref } from 'vue';
+import partnersApi from '@/api/partners';
 import { usePopupStore } from '@/store/popup';
 import { usePartners } from '@/store/partners';
 import { storeToRefs } from 'pinia';
@@ -33,7 +34,7 @@ import { storeToRefs } from 'pinia';
 const popupStore = usePopupStore();
 const partnersStore = usePartners();
 
-const { partnersList } = storeToRefs(partnersStore);
+const { detailPartner } = storeToRefs(partnersStore);
 
 const krPartner = ref('');
 const idPartner = ref('');
@@ -46,9 +47,39 @@ function emitFile(val) {
   file.value = val;
 }
 
-//
+//수정 팝업 랜더링 시 데이터 삽입
+if (detailPartner.value) {
+}
 
-// console.log(file.value.files);
+//파트너사 등록
+function uploadPartner() {
+  if (
+    krPartner.value.length == 0 ||
+    idPartner.value.length == 0 ||
+    ptPartner.value.length == 0 ||
+    enPartner.value.length == 0 ||
+    homepage.value.length == 0 ||
+    file.value == undefined
+  ) {
+    alert('모든 내용을 입력해주세요');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    const fileForm = new FormData();
+    fileForm.append('file', file.value);
+    let pk;
+    partnersApi.fetchUploadPartners(formData).then(async (res) => {
+      if (res.data.status == 200) {
+        pk = await res.data.message_detail;
+        // await partnersApi.fetchLogoPartners(pk, fileForm).then((res) => {
+        //   formData.append('logo_origin_name', res.data.fileOrgName);
+        //   formData.append('logo_file_url', res.data.filePath);
+        //   formData.append('logo_save_name', res.data.savename);
+        // });
+      }
+    });
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/style/popup.scss';
