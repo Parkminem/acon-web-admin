@@ -13,7 +13,7 @@
         <Input name="name_pt" title="파트너사명(포르투갈어)" placeholder="IDEACONCERT" v-model="ptPartner" />
         <Input name="name_us" title="파트너사명(영어)" placeholder="IDEACONCERT" v-model="enPartner" />
         <Input name="url" title="파트너사 홈페이지" placeholder="http://ideaconcert.com" v-model="homepage" />
-        <File title="로고" @fileValue="emitFile" />
+        <File title="로고" @fileValue="emitFile" :name="fileName" />
       </div>
       <div class="popupFooter">
         <button v-if="!detailPartner" @click.prevent="uploadPartner"><span>등록</span></button>
@@ -30,7 +30,6 @@ import partnersApi from '@/api/partners';
 import { usePopupStore } from '@/store/popup';
 import { usePartners } from '@/store/partners';
 import { storeToRefs } from 'pinia';
-import { compileScript } from '@vue/compiler-sfc';
 
 const popupStore = usePopupStore();
 const partnersStore = usePartners();
@@ -42,6 +41,7 @@ const idPartner = ref('');
 const ptPartner = ref('');
 const enPartner = ref('');
 const homepage = ref('');
+const fileName = ref('');
 const file = ref();
 
 function emitFile(val) {
@@ -55,7 +55,7 @@ if (detailPartner.value) {
   ptPartner.value = detailPartner.value.name_pt;
   enPartner.value = detailPartner.value.name_us;
   homepage.value = detailPartner.value.url;
-  file.value = detailPartner.value.logo_origin_name;
+  fileName.value = detailPartner.value.logo_origin_name;
 }
 
 //파트너사 등록

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import partnersApi from '@/api/partners';
+import { usePopupStore } from '@/store/popup';
 
 export const usePartners = defineStore('partners', {
   state: () => ({
@@ -29,9 +30,17 @@ export const usePartners = defineStore('partners', {
         .fetchDetailPartners(pk)
         .then((res) => {
           this.detailPartner = res.data;
-          console.log(this.detailPartner);
+          const popupStore = usePopupStore();
+          popupStore.partnerOpen();
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * 파트너사 수정 액션
+     * @param 고유번호
+     */
+    async editPartnerAct(pk) {
+      await partnersApi.fetchEditPartners(pk);
     },
     /**
      * detailPartner 값 초기화

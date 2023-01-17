@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-        <Empty v-if="!partnersList" />
+        <Empty v-if="!partnersList || !newPartner" />
         <div v-else class="item" v-for="item in partnersList">
           <div class="imgBox">
             <a :href="item.url" target="_blank"><img :src="url + item.logo_file_url" :alt="item.name_kr" /></a>
@@ -31,7 +31,7 @@
             <h1 v-if="locale === 'pt'">{{ item.name_pt }}</h1>
             <h1 v-if="locale === 'en'">{{ item.name_us }}</h1>
             <div class="btns">
-              <button @click="partnersApi.fetchDetailPartners(item.partner_pk)"><span>수정</span></button>
+              <button @click="partnersStore.detailPartnerAct(item.partner_pk)"><span>수정</span></button>
               <button @click="deletePartner(item.partner_pk)"><span>삭제</span></button>
             </div>
           </div>
