@@ -56,10 +56,10 @@
           <div class="col">
             <div class="name col1"><span>언어</span></div>
             <div class="text">
-              <label for=""><input type="radio" name="" id="" /><span>한국어</span></label>
-              <label for=""><input type="radio" name="" id="" /><span>인도네시아어</span></label>
-              <label for=""><input type="radio" name="" id="" /><span>포르투갈어</span></label>
-              <label for=""><input type="radio" name="" id="" /><span>영어</span></label>
+              <label for="kr"><input type="radio" name="language" value="kr" id="kr" /><span>한국어</span></label>
+              <label for="id"><input type="radio" name="language" value="id" id="id" /><span>인도네시아어</span></label>
+              <label for="pt"><input type="radio" name="language" value="pt" id="pt" /><span>포르투갈어</span></label>
+              <label for="en"><input type="radio" name="language" value="en" id="en" /><span>영어</span></label>
             </div>
           </div>
         </div>
@@ -96,8 +96,10 @@
     border-radius: 10px;
     &Head {
       .row {
+        &:not(&:last-child) {
+          border-bottom: 1px solid #444;
+        }
         display: flex;
-        border-bottom: 1px solid #444;
         .col {
           width: 100%;
           display: flex;
@@ -113,6 +115,13 @@
           }
           .text {
             padding: 10px;
+            label {
+              margin-right: 10px;
+              span {
+                padding-left: 5px;
+                font-size: 14px;
+              }
+            }
           }
           &.textBox {
             flex-direction: column;
@@ -147,6 +156,20 @@
     &:hover {
       background-color: #000;
     }
+  }
+}
+input[type='radio'] {
+  vertical-align: middle;
+  appearance: none;
+  background-color: #ddd;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+
+  border-radius: 100px;
+  &:checked {
+    border: 5px solid #333;
+    background-color: #fff;
   }
 }
 </style>
