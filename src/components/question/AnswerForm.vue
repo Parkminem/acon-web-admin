@@ -66,11 +66,14 @@
         <div class="row">
           <div class="col textBox">
             <div class="name"><span>내용</span></div>
-            <div class="text"><textarea name="" id="" cols="30" rows="18"></textarea></div>
+            <div class="text"><textarea name="" id="" cols="30" rows="15"></textarea></div>
           </div>
         </div>
       </div>
     </form>
+  </div>
+  <div class="btn">
+    <button><span>완료</span></button>
   </div>
 </template>
 <script setup></script>
@@ -117,7 +120,7 @@
               width: 100%;
             }
             .text {
-              min-height: 300px;
+              min-height: 230px;
               textarea {
                 overflow: auto;
                 resize: none;
@@ -130,6 +133,19 @@
           }
         }
       }
+    }
+  }
+}
+.btn {
+  margin-top: 20px;
+  button {
+    padding: 11px 17px;
+    background-color: #343a40;
+    color: #fff;
+    border-radius: 3px;
+    transition: all 0.25s ease-out;
+    &:hover {
+      background-color: #000;
     }
   }
 }
