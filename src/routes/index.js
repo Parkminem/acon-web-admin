@@ -46,6 +46,11 @@ const routes = [
         component: () => import('@/views/question/QuestionView.vue')
       },
       {
+        path: '/question/answer',
+        name: 'answer',
+        component: () => import('@/views/question/AnswerView.vue')
+      },
+      {
         path: '/promotion',
         name: 'promotion',
         component: () => import('@/views/PromotionView.vue')

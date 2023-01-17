@@ -4,7 +4,7 @@
     <div class="section">
       <!-- 소식상세정보(수정 클릭 시 스토어에 받기)가 있을 경우와 없을 경우의 조건으로 업로드, 수정 제목 변경 -->
       <div class="title">소식 업로드</div>
-      <form action="" enctype="multipart/form-data">
+      <form action="" enctype="multipart/form-data" id="form">
         <Input title="제목(한국어)" v-model="krTitle" />
         <Input title="제목(인도네시아어)" v-model="idTitle" />
         <Input title="제목(포르투갈어)" v-model="ptTitle" />
@@ -53,10 +53,6 @@ function emitPtDesc(val) {
 }
 function emitEnDesc(val) {
   enDesc.value = val.value;
-}
-function submit() {
-  //axios
-  console.log(thumbnail.value.files);
 }
 </script>
 <style lang="scss">
