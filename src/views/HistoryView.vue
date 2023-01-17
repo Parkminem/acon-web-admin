@@ -32,7 +32,13 @@
       </Table>
       <div class="tableBottom">
         <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
-        <Pagination :lastPage="Number(lastPage)" :nowPage="nowPageNum" @goPage="(page) => pageFunc(page)" />
+        <Pagination
+          :lastPage="Number(lastPage)"
+          :nowPage="nowPageNum"
+          @goPage="(page) => pageFunc(page)"
+          @goNextPage="(page) => nextPageFunc(page)"
+          @goPrePage="(page) => prePageFunc(page)"
+        />
       </div>
     </div>
   </div>
@@ -89,6 +95,14 @@ watch(showNum, (newShowNum) => {
 function pageFunc(page) {
   historyStore.historyListAct(page, showNum.value);
   nowPageNum.value = page;
+}
+function nextPageFunc(page) {
+  historyStore.historyListAct(page + 1, showNum.value);
+  nowPageNum.value = page + 1;
+}
+function prePageFunc(page) {
+  historyStore.historyListAct(page - 1, showNum.value);
+  nowPageNum.value = page - 1;
 }
 
 // 연혁 삭제

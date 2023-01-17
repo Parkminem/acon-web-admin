@@ -45,6 +45,7 @@ import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
 import Empty from '@/components/utils/Empty.vue';
+import { changeDate } from '@/utils/calculator';
 import { usePopupStore } from '@/store/popup';
 import { usePromotion } from '@/store/promotion';
 import { useSelect } from '@/store/utils';
@@ -66,10 +67,6 @@ await promotionStore.promotionListAct(1, 10);
 
 const rowCnt = promotionList.value[0].rowcnt;
 const lastPage = ref(promotionList.value[0].lastpage);
-//등록일 형태 변경 함수
-const changeDate = (date) => {
-  return date.substr(0, 10).replace(/-/g, '.');
-};
 
 //게시물 갯수 변경
 watch(showNum, (newShowNum) => {

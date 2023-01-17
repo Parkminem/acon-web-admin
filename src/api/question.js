@@ -12,3 +12,18 @@ function fetchQnaList(page, count) {
  * 문의내역 상세 정보 조회
  * @param 고유번호
  */
+function fetchDetailQna(pk) {
+  return instance.get(`question/${pk}`);
+}
+
+/**
+ * 답변하기
+ * @param object(question_pk, language, content)
+ */
+function fetchAnswer(object) {
+  return instance.post('question/answer', object);
+}
+
+const questionApi = { fetchQnaList, fetchDetailQna, fetchAnswer };
+
+export default questionApi;

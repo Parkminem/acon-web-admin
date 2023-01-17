@@ -37,7 +37,13 @@
       </Table>
       <div class="tableBottom">
         <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
-        <Pagination :lastPage="Number(lastPage)" :nowPage="nowPageNum" @goPage="(page) => pageFunc(page)" />
+        <Pagination
+          :lastPage="Number(lastPage)"
+          :nowPage="nowPageNum"
+          @goPage="(page) => pageFunc(page)"
+          @goNextPage="(page) => nextPageFunc(page)"
+          @goPrePage="(page) => prePageFunc(page)"
+        />
       </div>
     </div>
   </div>
@@ -78,6 +84,20 @@ const lastPage = ref(locationList.value[0].lastpage);
 watch(showNum, (newShowNum) => {
   locationStore.locationListAct(locationList.value[0].nowpage, newShowNum);
 });
+
+//페이지 변경
+function pageFunc(page) {
+  locationStore.locationListAct(page, showNum.value);
+  nowPageNum.value = page;
+}
+function nextPageFunc(page) {
+  locationStore.locationListAct(page + 1, showNum.value);
+  nowPageNum.value = page + 1;
+}
+function prePageFunc(page) {
+  locationStore.locationListAct(page - 1, showNum.value);
+  nowPageNum.value = page - 1;
+}
 
 //자사 위치 삭제
 function deleteLocation(pk) {
