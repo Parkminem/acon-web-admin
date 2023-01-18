@@ -10,12 +10,24 @@ export const useHistory = defineStore('history', {
   }),
   actions: {
     /**
-     * 연혁 리스트 조회 액션
+     * sort 없는 연혁 리스트 조회 액션
      * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수)
      */
     async historyListAct(page, count) {
       await historyApi
         .fetchHistoryList(page, count)
+        .then((res) => {
+          this.historyList = res.data;
+        })
+        .catch((err) => console.log(err));
+    },
+    /**
+     * sort 한 연혁 리스트 조회 액션
+     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수, sort값)
+     */
+    async sortHistoryListAct(page, count, sort) {
+      await historyApi
+        .fetchSortHistoryList(page, count, sort)
         .then((res) => {
           this.historyList = res.data;
         })

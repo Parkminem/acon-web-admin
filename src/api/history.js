@@ -1,11 +1,10 @@
 import instance from '@/api/instance';
 const sortData = {
-  // regdate: 'desc',
-  year: 'desc'
+  regdate: 'desc'
 };
 
 /**
- * 연혁 리스트 조희
+ * sort 없는 연혁 리스트 조희
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
 function fetchHistoryList(page, count) {
@@ -13,7 +12,17 @@ function fetchHistoryList(page, count) {
     `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify(sortData))}`
   );
 }
-
+/**
+ * sort한 연혁 리스트 조회
+ * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)
+ */
+function fetchSortHistoryList(page, count, sortData) {
+  return instance.get(`/history/list?nowpage=${page}&listpage=${count}`, {
+    params: {
+      sort: encodeURIComponent(JSON.stringify({ year: sortData }))
+    }
+  });
+}
 /**
  * 연헉 상세 정보 반환
  * @param 고유번호
@@ -45,6 +54,13 @@ function fecthDeleteHistory(pk) {
   return instance.delete(`/history/${pk}`);
 }
 
-const historyApi = { fetchDetailHistory, fetchHistoryList, fetchUploadHistory, fetchEditHistory, fecthDeleteHistory };
+const historyApi = {
+  fetchDetailHistory,
+  fetchHistoryList,
+  fetchUploadHistory,
+  fetchEditHistory,
+  fecthDeleteHistory,
+  fetchSortHistoryList
+};
 
 export default historyApi;
