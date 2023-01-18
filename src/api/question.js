@@ -5,7 +5,11 @@ import instance from '@/api/instance';
  * @param (현재페이지, 한 페이지 당 총 게시물 수 )
  */
 function fetchQnaList(page, count) {
-  return instance.get(`/question/list?nowpage=${page}&listpage=${count}`);
+  return instance.get(
+    `/question/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ question_date: 'desc' })
+    )}`
+  );
 }
 
 /**
