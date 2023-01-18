@@ -13,9 +13,9 @@ export const useQuestionType = defineStore('questionType', {
      * 문의 유형 리스트 조회 액션
      * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수)
      */
-    async questionTypeListAct(page, count) {
+    async questionTypeListAct(page, count, sortData) {
       await questionTypeApi
-        .fetchQnaTypeList(page, count)
+        .fetchQnaTypeList(page, count, sortData)
         .then((res) => {
           this.questionTypeList = res.data;
         })

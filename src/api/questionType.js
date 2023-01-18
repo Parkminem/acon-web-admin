@@ -4,8 +4,12 @@ import instance from '@/api/instance';
  * 문의 유형 리스트 조회
  * @param (현재 페이지, 한 페이지 당 총 게시물 수)
  */
-function fetchQnaTypeList(page, count) {
-  return instance.get(`/question/type/list?nowpage=${page}&listpage=${count}`);
+function fetchQnaTypeList(page, count, sortData) {
+  return instance.get(
+    `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ question_type_pk: sortData })
+    )}`
+  );
 }
 
 /**
