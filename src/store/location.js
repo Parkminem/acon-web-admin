@@ -18,8 +18,7 @@ export const useLocation = defineStore('location', {
       await locationApi
         .fetchLocationList(page, count)
         .then((res) => {
-          // console.log(res);
-          // this.locationList = res.data.data;
+          this.locationList = res.data;
         })
         .catch((err) => console.log(err));
     },
@@ -33,8 +32,8 @@ export const useLocation = defineStore('location', {
         .fetchDetailLocation(pk)
         .then((res) => {
           console.log(res);
-          // console.log(res.data.data);
-          this.detailLocation = res.data.data;
+          this.detailLocation = res.data;
+          console.log(this.detailLocation);
           popupStore.locationOpen();
         })
         .catch((err) => console.log(err));

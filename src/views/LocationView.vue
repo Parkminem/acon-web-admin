@@ -5,14 +5,15 @@
       <ResisterBtn @clickRegister="usePopupStore().locationOpen" />
       <div class="tableTop">
         <div class="left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
         </div>
         <SearchBox />
       </div>
       <Table :theadData="theadData.location">
         <!-- t-body -->
-        <ul class="td" v-for="area in location.list" :key="area.location_pk">
+        <Empty v-if="!locationList" />
+        <ul v-else class="td" v-for="area in locationList" :key="area.location_pk">
           <li class="w10">{{ area.location_pk }}</li>
           <li class="w10" v-if="locale === 'kr'">{{ area.name_kr }}</li>
           <li class="w10" v-if="locale === 'id'">{{ area.name_id }}</li>
@@ -26,7 +27,7 @@
           <li class="w10">{{ area.fax }}</li>
           <li class="w10">{{ area.check_open }}</li>
           <li class="w10">
-            <button><span>수정</span></button>
+            <button @click="locationStore.detailLocationAct(area.location_pk)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deleteLocation(area.location_pk)"><span>삭제</span></button>
@@ -35,8 +36,14 @@
         <!-- t-body -->
       </Table>
       <div class="tableBottom">
-        <AllEntries />
-        <Pagination />
+        <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
+        <Pagination
+          :lastPage="Number(lastPage)"
+          :nowPage="nowPageNum"
+          @goPage="(page) => pageFunc(page)"
+          @goNextPage="(page) => nextPageFunc(page)"
+          @goPrePage="(page) => prePageFunc(page)"
+        />
       </div>
     </div>
   </div>
@@ -49,15 +56,14 @@ import SearchBox from '@/components/utils/SearchBox.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
-import empty from '@/components/utils/empty.vue';
+import Empty from '@/components/utils/Empty.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { usePopupStore } from '@/store/popup';
 import { useLocation } from '@/store/location';
 import { storeToRefs } from 'pinia';
-import { location } from '@/utils/dummy';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import locationApi from '@/api/location';
 
 const selectStore = useSelect();
@@ -65,13 +71,33 @@ const locationStore = useLocation();
 const { locale, showNum } = storeToRefs(selectStore);
 const { locationList } = storeToRefs(locationStore);
 
+const nowPageNum = ref(1);
+
 //자사 위치 리스트 조회
-// await locationStore.locationListAct(1, showNum.value);
+await locationStore.locationListAct(1, showNum.value);
+
+const listPage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
+const rowCnt = locationList.value[0].rowcnt;
+const lastPage = ref(locationList.value[0].lastpage);
 
 //게시물 갯수 변경
 watch(showNum, (newShowNum) => {
   locationStore.locationListAct(locationList.value[0].nowpage, newShowNum);
 });
+
+//페이지 변경
+function pageFunc(page) {
+  locationStore.locationListAct(page, showNum.value);
+  nowPageNum.value = page;
+}
+function nextPageFunc(page) {
+  locationStore.locationListAct(page + 1, showNum.value);
+  nowPageNum.value = page + 1;
+}
+function prePageFunc(page) {
+  locationStore.locationListAct(page - 1, showNum.value);
+  nowPageNum.value = page - 1;
+}
 
 //자사 위치 삭제
 function deleteLocation(pk) {
@@ -82,7 +108,7 @@ function deleteLocation(pk) {
         window.location.href = '/location';
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => alert('삭제에 실패하였습니다.'));
 }
 </script>
 <style lang="scss" scoped></style>

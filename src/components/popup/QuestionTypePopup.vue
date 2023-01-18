@@ -2,18 +2,20 @@
   <div class="cover" @click="popupStore.questionTypeClose"></div>
   <div class="inner">
     <div class="popupHeader">
-      <h1>문의유형 등록</h1>
+      <h1 v-if="!detailQuestionType">문의유형 등록</h1>
+      <h1 v-else>문의유형 등록</h1>
       <button @click="popupStore.questionTypeClose"><span class="material-icons"> close </span></button>
     </div>
-    <form action="">
+    <form action="" id="form">
       <div class="popupBody">
-        <Input title="문의유형명(한국어)" v-model="krType" />
-        <Input title="문의유형명(인도네시아어)" v-model="idType" />
-        <Input title="문의유형명(포르투갈어)" v-model="ptType" />
-        <Input title="문의유형명(영어)" v-model="enType" />
+        <Input name="name_kr" title="문의유형명(한국어)" v-model="krType" />
+        <Input name="name_id" title="문의유형명(인도네시아어)" v-model="idType" />
+        <Input name="name_pt" title="문의유형명(포르투갈어)" v-model="ptType" />
+        <Input name="name_us" title="문의유형명(영어)" v-model="enType" />
       </div>
       <div class="popupFooter">
-        <button @click.prevent="submit"><span>등록</span></button>
+        <button v-if="!detailQuestionType" @click.prevent="uploadQuestionType"><span>등록</span></button>
+        <button v-else @click.prevent="editQuestionType"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -21,19 +23,65 @@
 <script setup>
 import { ref } from 'vue';
 import Input from '@/components/form/Input.vue';
+import questionTypeApi from '@/api/questionType';
+import { useQuestionType } from '@/store/questionType';
 import { usePopupStore } from '@/store/popup';
+import { storeToRefs } from 'pinia';
 
 const popupStore = usePopupStore();
+const questionType = useQuestionType();
+
+const { detailQuestionType } = storeToRefs(questionType);
 
 const krType = ref('');
 const idType = ref('');
 const ptType = ref('');
 const enType = ref('');
 
-function submit() {
-  //axios
+//수정 팝업 랜더링 시 데이터 삽입
+if (detailQuestionType.value) {
+  krType.value = detailQuestionType.value.name_kr;
+  idType.value = detailQuestionType.value.name_id;
+  ptType.value = detailQuestionType.value.name_pt;
+  enType.value = detailQuestionType.value.name_us;
+}
+
+//문의 유형 등록
+function uploadQuestionType() {
+  if (krType.value.length == 0 || idType.value.length == 0 || ptType.value.length == 0 || enType.value.length == 0) {
+    alert('모든 내용을 입력해주세요');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    questionTypeApi
+      .fetchUploadQnaType(formData)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.questionTypeClose();
+        }
+      })
+      .catch((err) => alert('등록에 실패하였습니다.'));
+  }
+}
+
+//문의 유형 수정
+function editQuestionType() {
+  if (krType.value.length == 0 || idType.value.length == 0 || ptType.value.length == 0 || enType.value.length == 0) {
+    alert('모든 내용을 입력해주세요');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    questionTypeApi
+      .fetchEditQnaType(detailQuestionType.value.question_type_pk, formData)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.questionTypeClose();
+        }
+      })
+      .catch((err) => alert('수정에 실패하였습니다.'));
+  }
 }
 </script>
 <style lang="scss" scoped>
-@import '@/style/popup.scss';
+@import '@/assets/style/popup.scss';
 </style>

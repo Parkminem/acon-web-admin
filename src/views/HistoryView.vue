@@ -12,7 +12,8 @@
       </div>
       <Table :theadData="theadData.history">
         <!-- t-body -->
-        <ul class="td" v-for="item in historyList" :key="item.rownum">
+        <Empty v-if="!historyList" />
+        <ul v-else class="td" v-for="item in historyList" :key="item.rownum">
           <li class="w10">{{ item.year }}</li>
           <li class="w10">{{ item.month }}</li>
           <li v-if="locale === 'kr'">{{ item.content_kr }}</li>
@@ -30,8 +31,14 @@
         <!-- t-body -->
       </Table>
       <div class="tableBottom">
-        <AllEntries :nowpage="nowpageNum" :listpage="Number(listpage)" :rowcnt="rowcnt" />
-        <Pagination :lastpage="Number(lastpage)" :nowpage="nowpageNum" @goPage="(page) => pageFunc(page)" />
+        <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
+        <Pagination
+          :lastPage="Number(lastPage)"
+          :nowPage="nowPageNum"
+          @goPage="(page) => pageFunc(page)"
+          @goNextPage="(page) => nextPageFunc(page)"
+          @goPrePage="(page) => prePageFunc(page)"
+        />
       </div>
     </div>
   </div>
@@ -46,7 +53,7 @@ import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
 import LocaleList from '@/components/utils/LocaleList.vue';
-import empty from '@/components/utils/empty.vue';
+import Empty from '@/components/utils/Empty.vue';
 import historyApi from '@/api/history';
 import { usePopupStore } from '@/store/popup';
 import { useHistory } from '@/store/history';
@@ -59,22 +66,22 @@ const selectStore = useSelect();
 const { locale, showNum } = storeToRefs(selectStore);
 const { historyList } = storeToRefs(historyStore);
 
-const nowpageNum = ref(1);
-const listpage = ref(showNum.value);
+const nowPageNum = ref(1);
+const listPage = ref(showNum.value);
 
 //연혁 리스트 조회
 await historyStore.historyListAct(1, 10);
 
-const rowcnt = historyList.value[0].rowcnt;
-const lastpage = ref(historyList.value[0].lastpage);
+const rowCnt = historyList.value[0].rowcnt;
+const lastPage = ref(historyList.value[0].lastpage);
 
 // 게시물 갯수 변경
 watch(showNum, (newShowNum) => {
   function showList(num) {
     const nowpage = historyList.value[0].nowpage;
-    listpage.value = Number(num);
+    listPage.value = Number(num);
     historyStore.historyListAct(nowpage, num).then((res) => {
-      lastpage.value = historyList.value[0].lastpage;
+      lastPage.value = historyList.value[0].lastpage;
     });
   }
   if (newShowNum < historyList.value[0].rowcnt) {
@@ -87,7 +94,15 @@ watch(showNum, (newShowNum) => {
 //페이지 변경
 function pageFunc(page) {
   historyStore.historyListAct(page, showNum.value);
-  nowpageNum.value = page;
+  nowPageNum.value = page;
+}
+function nextPageFunc(page) {
+  historyStore.historyListAct(page + 1, showNum.value);
+  nowPageNum.value = page + 1;
+}
+function prePageFunc(page) {
+  historyStore.historyListAct(page - 1, showNum.value);
+  nowPageNum.value = page - 1;
 }
 
 // 연혁 삭제

@@ -1,14 +1,14 @@
 <template>
   <div class="entryBox">
     <!-- 숫자 부분 데이터바인딩 -->
-    <p>Showing {{ nowpage }} to {{ listpage }} of {{ rowcnt }} entries</p>
+    <p>Showing {{ nowPage }} to {{ listPage }} of {{ rowCnt }} entries</p>
   </div>
 </template>
 <script setup>
 defineProps({
-  nowpage: Number,
-  listpage: Number,
-  rowcnt: String
+  nowPage: Number,
+  listPage: Number,
+  rowCnt: String
 });
 </script>
 <style lang="scss" scoped>

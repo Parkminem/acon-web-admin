@@ -2,7 +2,7 @@
   <div class="inputBox">
     <div class="checkBox">
       <label>{{ title }}</label>
-      <input type="checkbox" :name="title" :id="title" v-model="isCheck" @change="handleInput" />
+      <input type="checkbox" :id="title" v-model="isCheck" @change="handleInput" :checked="checked" />
     </div>
   </div>
 </template>
@@ -11,9 +11,10 @@ import { ref } from 'vue';
 
 const isCheck = ref();
 
-defineProps({
+const props = defineProps({
   title: String,
-  modelValue: Boolean
+  modelValue: Boolean,
+  checked: Boolean
 });
 const emit = defineEmits(['update:modelValue']);
 function handleInput() {

@@ -38,12 +38,17 @@ const routes = [
       {
         path: '/questiontype',
         name: 'questiontype',
-        component: () => import('@/views/Question/QuestionTypeView.vue')
+        component: () => import('@/views/question/QuestionTypeView.vue')
       },
       {
         path: '/question',
         name: 'question',
         component: () => import('@/views/question/QuestionView.vue')
+      },
+      {
+        path: '/question/answer',
+        name: 'answer',
+        component: () => import('@/views/question/AnswerView.vue')
       },
       {
         path: '/promotion',

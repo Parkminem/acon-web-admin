@@ -20,37 +20,15 @@ function fetchDetailHistory(pk) {
  * 연혁 등록
  * @param object(year, month, content_kr, content_id, content_pt,content_us,active_flag)
  */
-// function fetchUploadHistory(object) {
-//   return instance.post('/history', null, {
-//     params: {
-//       year: object.year,
-//       month: object.month,
-//       content_kr: object.content_kr,
-//       content_id: object.content_id,
-//       content_pt: object.content_pt,
-//       content_us: object.content_us,
-//       active_flag: object.active_flag
-//     }
-//   });
-// }
 function fetchUploadHistory(object) {
   return instance.post('/history', object);
 }
 /**
  * 연혁 수정
- * @param object(history_pk, year, month, content_kr, content_id, content_pt, content_us, active_flag)
+ * @param pk object(history_pk, year, month, content_kr, content_id, content_pt, content_us, active_flag)
  */
-function fetchEditHistory(object) {
-  return instance.put('/history', {
-    history_pk: object.history_pk,
-    year: object.year,
-    month: object.month,
-    content_kr: object.content_kr,
-    content_id: object.content_id,
-    content_pt: object.content_pt,
-    content_us: object.content_us,
-    active_flag: object.active_flag
-  });
+function fetchEditHistory(pk, object) {
+  return instance.put(`/history/${pk}`, object);
 }
 
 /**

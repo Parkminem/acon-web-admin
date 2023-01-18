@@ -23,11 +23,14 @@
               v-model="pwVal"
               @focusin="upDown[2] = true"
               @focusout="if (pwVal.length == 0) upDown[2] = false;"
+              @keyup.enter="onLogin"
             /><span class="material-icons-outlined"> lock </span>
           </div>
         </div>
         <div class="loginBtn">
-          <button @click="onLogin"><span>LOGIN</span><span class="material-icons"> arrow_forward </span></button>
+          <button @click.prevent="onLogin">
+            <span>LOGIN</span><span class="material-icons"> arrow_forward </span>
+          </button>
         </div>
       </div>
     </div>
@@ -41,7 +44,7 @@
         </div>
         <div class="btns">
           <router-link to="/main"><span>Back To Main</span></router-link>
-          <button @click="onLogout"><span>LOGOUT</span></button>
+          <button @click.prevent="onLogout"><span>LOGOUT</span></button>
         </div>
       </div>
     </div>
