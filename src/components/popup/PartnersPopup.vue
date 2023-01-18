@@ -3,7 +3,7 @@
   <div class="inner">
     <div class="popupHeader">
       <h1 v-if="!detailPartner">파트너사 등록</h1>
-      <h1 v-else>파트너사 등록</h1>
+      <h1 v-else>파트너사 수정</h1>
       <button @click="popupStore.partnerClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" enctype="multipart/form-data" id="form">
@@ -17,7 +17,7 @@
       </div>
       <div class="popupFooter">
         <button v-if="!detailPartner" @click.prevent="uploadPartner"><span>등록</span></button>
-        <button v-else @click.prevent="submit"><span>수정</span></button>
+        <button v-else @click.prevent="editPartner"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -96,6 +96,42 @@ function uploadPartner() {
         }
       })
       .catch((err) => console.log(err));
+  }
+}
+//파트너사 수정(파일 수정 X 로직 완료, 파일 수정 시 로직 짜야됨)
+function editPartner() {
+  if (
+    krPartner.value.length == 0 ||
+    idPartner.value.length == 0 ||
+    ptPartner.value.length == 0 ||
+    enPartner.value.length == 0 ||
+    homepage.value.length == 0 ||
+    fileName.value !== detailPartner.value.logo_origin_name
+  ) {
+    alert('모든 내용을 입력해주세요');
+  } else {
+    if (detailPartner.value.logo_origin_name === fileName.value) {
+      const formData = new FormData();
+      formData.append('name_kr', krPartner.value);
+      formData.append('name_id', idPartner.value);
+      formData.append('name_pt', ptPartner.value);
+      formData.append('name_us', enPartner.value);
+      formData.append('url', homepage.value);
+      formData.append('logo_file_url', detailPartner.value.logo_file_url);
+      formData.append('logo_origin_name', detailPartner.value.logo_origin_name);
+      formData.append('logo_save_name', detailPartner.value.logo_save_name);
+      partnersApi
+        .fetchEditPartners(detailPartner.value.partner_pk, formData)
+        .then((res) => {
+          if (res.data.status === 200) {
+            popupStore.partnerClose();
+            window.location.href = '/partners';
+          }
+        })
+        .catch((err) => {
+          alert('수정에 실패하였습니다.');
+        });
+    }
   }
 }
 </script>

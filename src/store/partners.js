@@ -36,13 +36,6 @@ export const usePartners = defineStore('partners', {
         .catch((err) => console.log(err));
     },
     /**
-     * 파트너사 수정 액션
-     * @param 고유번호
-     */
-    async editPartnerAct(pk) {
-      await partnersApi.fetchEditPartners(pk);
-    },
-    /**
      * detailPartner 값 초기화
      */
     resetDetailPartnerAct() {
