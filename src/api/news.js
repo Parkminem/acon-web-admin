@@ -37,23 +37,10 @@ function fetchDeleteNews(pk) {
 /**
  * 소식 수정
  * @param object(news_pk, title_kr, title_id, title_pt, title_us,
-    // Todo thumbnail
     active_flag, content_kr, content_id, content_pt, content_us)
  */
-function fetchEditNews(object) {
-  return instance.put('/news', {
-    news_pk: object.news_pk,
-    title_kr: object.value,
-    title_id: object.value,
-    title_pt: object.value,
-    title_us: object.value,
-    // Todo thumbnail
-    active_flag: object.value,
-    content_kr: object.value,
-    content_id: object.value,
-    content_pt: object.value,
-    content_us: object.value
-  });
+function fetchEditNews(pk, object) {
+  return instance.put(`/news/${pk}`, object);
 }
 
 const newsApi = { fetchNewsList, fetchDeleteNews, fetchDetailNews, fetchUploadNews, fetchEditNews };

@@ -9,7 +9,7 @@
         <Input name="title_id" title="제목(인도네시아어)" v-model="idTitle" />
         <Input name="title_pt" title="제목(포르투갈어)" v-model="ptTitle" />
         <Input name="title_us" title="제목(영어)" v-model="enTitle" />
-        <File title="썸네일" @fileValue="emitFile" />
+        <File title="썸네일" @fileValue="emitFile" :name="thumbnail" />
         <Radio
           name="active_flag"
           title="활성화 여부"
@@ -107,17 +107,18 @@ function onUpload() {
   } else {
     const form = document.getElementById('form');
     const formData = new FormData(form);
+
     formData.append('content_kr', krDesc.value);
     formData.append('content_id', idDesc.value);
     formData.append('content_pt', ptDesc.value);
     formData.append('content_us', enDesc.value);
-    console.log(...formData);
+
     newsApi
       .fetchUploadNews(formData) //
       .then((res) => {
         console.log(res);
+        router.push('/news');
       })
-      .then(router.push('/news'))
       .catch((err) => {
         console.log(err);
       });
@@ -126,21 +127,16 @@ function onUpload() {
 
 // 뉴스 수정
 function editNews() {
-  const inputObj = {
-    news_pk: detailNews.value.news_pk,
-    title_kr: krTitle.value,
-    title_id: idTitle.value,
-    title_pt: ptTitle.value,
-    title_us: enTitle.value,
-    // Todo thumbnail
-    active_flag: isActiveRef.value,
-    content_kr: krDesc.value,
-    content_id: idDesc.value,
-    content_pt: ptDesc.value,
-    content_us: enDesc.value
-  };
+  const form = document.getElementById('form');
+  const formData = new FormData(form);
+
+  formData.append('content_kr', krDesc.value);
+  formData.append('content_id', idDesc.value);
+  formData.append('content_pt', ptDesc.value);
+  formData.append('content_us', enDesc.value);
+
   newsApi
-    .fetchEditNews(inputObj)
+    .fetchEditNews(detailNews.value.news_pk, formData)
     .then((res) => {
       if (res.data.status === 200) {
         alert('수정이 완료되었습니다');
