@@ -13,9 +13,9 @@ export const useLocation = defineStore('location', {
      * 자사 위치 리스트 조회
      * @param (현재 페이지, 한 페이지 안의 게시물 갯수)
      */
-    async locationListAct(page, count) {
+    async locationListAct(page, count, sortData) {
       await locationApi
-        .fetchLocationList(page, count)
+        .fetchLocationList(page, count, sortData)
         .then((res) => {
           this.locationList = res.data;
         })

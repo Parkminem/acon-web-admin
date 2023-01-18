@@ -1,27 +1,20 @@
 import instance from '@/api/instance';
-const sortData = {
-  regdate: 'desc'
-};
 
 /**
  * sort 없는 연혁 리스트 조희
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
 function fetchHistoryList(page, count) {
-  return instance.get(
-    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify(sortData))}`
-  );
+  return instance.get(`/history/list?nowpage=${page}&listpage=${count}`);
 }
 /**
  * sort한 연혁 리스트 조회
  * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)
  */
 function fetchSortHistoryList(page, count, sortData) {
-  return instance.get(`/history/list?nowpage=${page}&listpage=${count}`, {
-    params: {
-      sort: encodeURIComponent(JSON.stringify({ year: sortData }))
-    }
-  });
+  return instance.get(
+    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ year: sortData }))}`
+  );
 }
 /**
  * 연헉 상세 정보 반환

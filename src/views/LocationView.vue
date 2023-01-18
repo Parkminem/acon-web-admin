@@ -7,6 +7,14 @@
         <div class="left">
           <!-- <ShowList /> -->
           <LocaleList />
+          <div class="sortBox">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting($event)">
+              <option value="" disabled selected><span>등록일</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
         </div>
         <SearchBox />
       </div>
@@ -73,9 +81,10 @@ const { locale, showNum } = storeToRefs(selectStore);
 const { locationList } = storeToRefs(locationStore);
 
 const nowPageNum = ref(1);
+const sortData = ref();
 
 //자사 위치 리스트 조회
-await locationStore.locationListAct(1, showNum.value);
+await locationStore.locationListAct(1, showNum.value, 'desc');
 
 const listPage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
 const rowCnt = locationList.value[0].rowcnt;
@@ -88,16 +97,34 @@ watch(showNum, (newShowNum) => {
 
 //페이지 변경
 function pageFunc(page) {
-  locationStore.locationListAct(page, showNum.value);
+  if (!sortData.value) {
+    locationStore.locationListAct(page, showNum.value, 'desc');
+  } else {
+    locationStore.locationListAct(page, showNum.value, sortData.value);
+  }
   nowPageNum.value = page;
 }
 function nextPageFunc(page) {
-  locationStore.locationListAct(page + 1, showNum.value);
+  if (!sortData.value) {
+    locationStore.locationListAct(page + 1, showNum.value, 'desc');
+  } else {
+    locationStore.locationListAct(page + 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page + 1;
 }
 function prePageFunc(page) {
-  locationStore.locationListAct(page - 1, showNum.value);
+  if (!sortData.value) {
+    locationStore.locationListAct(page - 1, showNum.value, 'desc');
+  } else {
+    locationStore.locationListAct(page - 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page - 1;
+}
+
+//등록일 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  locationStore.locationListAct(nowPageNum.value, listPage.value, sortData.value);
 }
 
 //등록하기 버튼 클릭
