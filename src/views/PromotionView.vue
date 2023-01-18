@@ -2,7 +2,7 @@
   <SubTitle>홍보영상</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().promotionOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <!-- <ShowList /> -->
         <SearchBox />
@@ -16,7 +16,7 @@
           <li class="w10">{{ changeDate(i.regdate) }}</li>
           <li class="w10">{{ i.view_status }}</li>
           <li class="w10">
-            <button @click="promotionStore.detailPromotionAct(i.promotion_pk)"><span>수정</span></button>
+            <button @click="promotionStore.detailPromotionAct(i.promotion_pk, nowPageNum)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deletePromotion(i.promotion_pk)"><span>삭제</span></button>
@@ -56,6 +56,7 @@ import { storeToRefs } from 'pinia';
 
 const promotionStore = usePromotion();
 const selectStore = useSelect();
+const popupStore = usePopupStore();
 const { showNum } = storeToRefs(selectStore);
 const { promotionList } = storeToRefs(promotionStore);
 
@@ -86,13 +87,18 @@ function prePageFunc(page) {
   promotionStore.promotionListAct(page - 1, showNum.value);
   nowPageNum.value = page - 1;
 }
+//등록하기 버튼 클릭
+function clickRegisterBtn() {
+  popupStore.promotionOpen();
+  promotionStore.currentPromotionPageAct(nowPageNum.value);
+}
 //프로모션 삭제
 function deletePromotion(pk) {
   promotionApi
     .fetchDeletePromotion(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/promotion';
+        promotionStore.promotionListAct(nowPageNum.value, showNum.value);
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

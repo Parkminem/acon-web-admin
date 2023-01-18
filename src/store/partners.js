@@ -6,8 +6,7 @@ export const usePartners = defineStore('partners', {
   state: () => ({
     partnersList: null,
     detailPartner: null,
-    partnerPopupState: false,
-    newPartner: []
+    partnerPopupState: false
   }),
   actions: {
     /**
@@ -43,14 +42,6 @@ export const usePartners = defineStore('partners', {
         return false;
       }
       this.detailPartner = null;
-    },
-    /**
-     * 등록 값 저장(임의로 리스트에 추가하기 위함)
-     * @param object(name_kr, name_id, name_pt, name_us, url, 임의file_url)
-     */
-    saveNewPartner(object) {
-      this.newPartner.push(object);
-      this.newPartner.reverse();
     }
   }
 });

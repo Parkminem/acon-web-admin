@@ -39,10 +39,13 @@ import { ref } from 'vue';
 import { useHistory } from '@/store/history';
 import { storeToRefs } from 'pinia';
 import historyApi from '@/api/history';
+import { useSelect } from '@/store/utils';
 
 const popupStore = usePopupStore();
 const historyStore = useHistory();
-const { detailHistory } = storeToRefs(historyStore);
+const selectStore = useSelect();
+const { detailHistory, historyPage } = storeToRefs(historyStore);
+const { showNum } = storeToRefs(selectStore);
 const contentKrRef = ref('');
 const contentIdRef = ref('');
 const contentPtRef = ref('');
@@ -52,7 +55,6 @@ const yearRef = ref('');
 const monthRef = ref();
 const currentYear = new Date().getFullYear();
 
-//수정 팝업 랜더링 시 데이터 삽입
 if (detailHistory.value) {
   contentKrRef.value = detailHistory.value.content_kr;
   contentIdRef.value = detailHistory.value.content_id;
@@ -85,10 +87,10 @@ function uploadHistory() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.historyClose();
-          window.location.href = '/history';
+          historyStore.historyListAct(historyPage.value, showNum.value);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('등록에 실패하였습니다.'));
   }
 }
 
@@ -101,6 +103,7 @@ function editHistory() {
     .then((res) => {
       if (res.data.status === 200) {
         popupStore.historyClose();
+        historyStore.historyListAct(historyPage.value, showNum.value);
       }
     })
     .catch((err) => {

@@ -2,12 +2,11 @@ import { defineStore } from 'pinia';
 import questionTypeApi from '@/api/questionType';
 import { usePopupStore } from '@/store/popup';
 
-const popupStore = usePopupStore();
-
 export const useQuestionType = defineStore('questionType', {
   state: () => ({
     questionTypeList: null,
-    detailQuestionType: null
+    detailQuestionType: null,
+    questionTypePage: null
   }),
   actions: {
     /**
@@ -26,16 +25,30 @@ export const useQuestionType = defineStore('questionType', {
      * 문의 유형 상세 정보 조회 액션
      * @param 고유번호
      */
-    async detailQuestionTypeAct(pk) {
+    async detailQuestionTypeAct(pk, page) {
       this.detailQuestionType = null;
       await questionTypeApi
         .fetchDetailQnaType(pk)
         .then((res) => {
+          const popupStore = usePopupStore();
           this.detailQuestionType = res.data;
-          console.log(this.detailQuestionType);
+          this.questionTypePage = page;
           popupStore.questionTypeOpen();
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * detailQuestionType 값 초기화 액션
+     */
+    resetDetailQuestionTypeAct() {
+      this.detailQuestionType = null;
+    },
+    /**
+     * 현재 페이지 저장 액션
+     * @param 현재페이지
+     */
+    currentQuestionTypeAct(page) {
+      this.questionTypePage = page;
     }
   }
 });

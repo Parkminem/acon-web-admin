@@ -5,22 +5,7 @@
       <ResisterBtn @clickRegister="usePopupStore().partnerOpen" />
       <LocaleList />
       <div class="partnersBox">
-        <div v-if="newPartner" class="item" v-for="item in newPartner">
-          <div class="imgBox">
-            <a :href="item.url" target="_blank"><img :src="item.src" :alt="item.name_kr" /></a>
-          </div>
-          <div class="info">
-            <h1 v-if="locale === 'kr'">{{ item.name_kr }}</h1>
-            <h1 v-if="locale === 'id'">{{ item.name_id }}</h1>
-            <h1 v-if="locale === 'pt'">{{ item.name_pt }}</h1>
-            <h1 v-if="locale === 'en'">{{ item.name_us }}</h1>
-            <div class="btns">
-              <button @click="partnersApi.fetchDetailPartners(item.partner_pk)"><span>수정</span></button>
-              <button @click="deletePartner(item.partner_pk)"><span>삭제</span></button>
-            </div>
-          </div>
-        </div>
-        <Empty v-if="!partnersList || !newPartner" />
+        <Empty v-if="!partnersList" />
         <div v-else class="item" v-for="item in partnersList">
           <div class="imgBox">
             <a :href="item.url" target="_blank"><img :src="url + item.logo_file_url" :alt="item.name_kr" /></a>
@@ -54,7 +39,7 @@ import partnersApi from '@/api/partners';
 const partnersStore = usePartners();
 const selectStore = useSelect();
 
-const { partnersList, newPartner } = storeToRefs(partnersStore);
+const { partnersList } = storeToRefs(partnersStore);
 const { locale } = storeToRefs(selectStore);
 
 const url = 'http://data.ideaconcert.com';
@@ -68,7 +53,7 @@ function deletePartner(pk) {
     .fetchDeletePartners(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/partners';
+        partnersStore.partnersListAct();
       }
     })
     .catch((err) => {
