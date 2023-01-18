@@ -3,6 +3,7 @@ import { usePartners } from '@/store/partners';
 import { useHistory } from '@/store/history';
 import { useLocation } from '@/store/location';
 import { useQuestionType } from '@/store/questionType';
+import { usePromotion } from '@/store/promotion';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
@@ -49,8 +50,9 @@ export const usePopupStore = defineStore('popup', {
       this.promotionPopupState = true;
     },
     promotionClose() {
+      const promotionStore = usePromotion();
+      promotionStore.resetDetailPromotionAct();
       this.promotionPopupState = false;
-      window.location.href = '/promotion';
     }
   }
 });
