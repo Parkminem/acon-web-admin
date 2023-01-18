@@ -2,10 +2,10 @@
   <SubTitle>연혁</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().historyOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
         </div>
         <SearchBox />
@@ -22,7 +22,7 @@
           <li v-if="locale === 'pt'">{{ item.content_pt }}</li>
           <li class="w10">{{ item.active_flag === 1 ? '활성화' : '비활성화' }}</li>
           <li class="w10">
-            <button @click="historyStore.detailHistoryAct(item.history_pk)"><span>수정</span></button>
+            <button @click="historyStore.detailHistoryAct(item.history_pk, nowPageNum)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deleteHistory(item.history_pk)"><span>삭제</span></button>
@@ -63,6 +63,7 @@ import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
 const selectStore = useSelect();
+const popupStore = usePopupStore();
 const { locale, showNum } = storeToRefs(selectStore);
 const { historyList } = storeToRefs(historyStore);
 
@@ -106,13 +107,19 @@ function prePageFunc(page) {
   nowPageNum.value = page - 1;
 }
 
+//등록하기 버튼 클릭 함수
+function clickRegisterBtn() {
+  popupStore.historyOpen();
+  historyStore.currentHistoryPage(nowPageNum.value);
+}
+
 // 연혁 삭제
 function deleteHistory(pk) {
   historyApi
     .fecthDeleteHistory(pk)
     .then((res) => {
       if (res.status === 200) {
-        window.location.href = '/history';
+        historyStore.historyListAct(nowPageNum.value, showNum.value);
       }
     })
     .catch((err) => alert('삭제에 실패했습니다.'));

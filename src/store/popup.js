@@ -15,7 +15,6 @@ export const usePopupStore = defineStore('popup', {
     },
     historyClose() {
       this.historyPopupState = false;
-      window.location.href = '/history';
     },
     partnerOpen() {
       this.partnerPopupState = true;

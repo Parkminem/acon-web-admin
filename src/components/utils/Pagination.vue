@@ -43,7 +43,7 @@ const props = defineProps({
   lastPage: Number,
   nowPage: Number
 });
-console.log(props.lastPage);
+// console.log(props.lastPage);
 const currentPage = ref(props.nowPage);
 const currentLastPage = ref(props.lastPage);
 const currentEndPage = ref(pagination(currentPage.value, currentLastPage.value).endPage);

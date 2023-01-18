@@ -7,7 +7,8 @@ const popupStore = usePopupStore();
 export const useHistory = defineStore('history', {
   state: () => ({
     detailHistory: null,
-    historyList: null
+    historyList: null,
+    historyPage: null
   }),
   actions: {
     /**
@@ -24,17 +25,25 @@ export const useHistory = defineStore('history', {
     },
     /**
      * 연혁 상세 정보 조회 액션
-     *  @param 고유번호
+     *  @param 고유번호, 페이지
      */
-    async detailHistoryAct(pk) {
+    async detailHistoryAct(pk, page) {
       this.detailHistory = null;
       await historyApi
         .fetchDetailHistory(pk)
         .then((res) => {
           this.detailHistory = res.data;
+          this.historyPage = page;
           popupStore.historyOpen();
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * 현재 페이지 저장
+     * @param 현재페이지
+     */
+    currentHistoryPage(page) {
+      this.historyPage = page;
     }
   }
 });
