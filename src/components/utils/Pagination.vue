@@ -1,7 +1,7 @@
 <template>
   <div class="pagination">
     <ul>
-      <li v-if="pagination(currentPage, currentLastPage).preBtn">
+      <li v-if="pagination(currentPage, lastPage).preBtn">
         <button
           @click="
             $emit('goPrePage', currentStartPage);
@@ -22,7 +22,7 @@
           <span>{{ page }}</span>
         </button>
       </li>
-      <li v-if="pagination(currentPage, currentLastPage).nextBtn">
+      <li v-if="pagination(currentPage, lastPage).nextBtn">
         <button
           @click="
             $emit('goNextPage', currentEndPage);
@@ -43,6 +43,7 @@ const props = defineProps({
   lastPage: Number,
   nowPage: Number
 });
+console.log(props.lastPage);
 const currentPage = ref(props.nowPage);
 const currentLastPage = ref(props.lastPage);
 const currentEndPage = ref(pagination(currentPage.value, currentLastPage.value).endPage);

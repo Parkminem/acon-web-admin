@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="usePopupStore().historyOpen" />
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <LocaleList />
         </div>
         <SearchBox />
@@ -81,7 +81,8 @@ watch(showNum, (newShowNum) => {
     const nowpage = historyList.value[0].nowpage;
     listPage.value = Number(num);
     historyStore.historyListAct(nowpage, num).then((res) => {
-      lastPage.value = historyList.value[0].lastpage;
+      console.log(res);
+      // lastPage.value = res.data[0].lastpage;
     });
   }
   if (newShowNum < historyList.value[0].rowcnt) {
