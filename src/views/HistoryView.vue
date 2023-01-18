@@ -110,7 +110,7 @@ function prePageFunc(page) {
 //등록하기 버튼 클릭 함수
 function clickRegisterBtn() {
   popupStore.historyOpen();
-  historyStore.currentHistoryPage(nowPageNum.value);
+  historyStore.currentHistoryPageAct(nowPageNum.value);
 }
 
 // 연혁 삭제

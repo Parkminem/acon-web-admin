@@ -2,12 +2,11 @@ import { defineStore } from 'pinia';
 import locationApi from '@/api/location';
 import { usePopupStore } from '@/store/popup';
 
-const popupStore = usePopupStore();
-
 export const useLocation = defineStore('location', {
   state: () => ({
     locationList: null,
-    detailLocation: null
+    detailLocation: null,
+    locationPage: null
   }),
   actions: {
     /**
@@ -24,19 +23,32 @@ export const useLocation = defineStore('location', {
     },
     /**
      * 자사 위치 상세 조회
-     * @param 고유번호
+     * @param 고유번호, 현재 페이지
      */
-    async detailLocationAct(pk) {
+    async detailLocationAct(pk, page) {
       this.detailLocation = null;
       await locationApi
         .fetchDetailLocation(pk)
         .then((res) => {
-          console.log(res);
+          const popupStore = usePopupStore();
+          this.locationPage = page;
           this.detailLocation = res.data;
-          console.log(this.detailLocation);
           popupStore.locationOpen();
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * detailLocation 값 초기화 액션
+     */
+    resetDetailLocationAct() {
+      this.detailLocation = null;
+    },
+    /**
+     * 현재 페이지 저장 액션
+     * @param 현재페이지
+     */
+    currentLocationPageAct(page) {
+      this.locationPage = page;
     }
   }
 });

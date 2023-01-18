@@ -2,8 +2,6 @@ import { defineStore } from 'pinia';
 import historyApi from '@/api/history';
 import { usePopupStore } from '@/store/popup';
 
-const popupStore = usePopupStore();
-
 export const useHistory = defineStore('history', {
   state: () => ({
     detailHistory: null,
@@ -34,15 +32,22 @@ export const useHistory = defineStore('history', {
         .then((res) => {
           this.detailHistory = res.data;
           this.historyPage = page;
+          const popupStore = usePopupStore();
           popupStore.historyOpen();
         })
         .catch((err) => console.log(err));
     },
     /**
-     * 현재 페이지 저장
+     * detailHistory 값 초기화 액션
+     */
+    resetDetailHistoryAct() {
+      this.detailHistory = null;
+    },
+    /**
+     * 현재 페이지 저장 액션
      * @param 현재페이지
      */
-    currentHistoryPage(page) {
+    currentHistoryPageAct(page) {
       this.historyPage = page;
     }
   }

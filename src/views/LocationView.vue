@@ -2,7 +2,7 @@
   <SubTitle>위치</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().locationOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
           <!-- <ShowList /> -->
@@ -27,7 +27,7 @@
           <li class="w10">{{ area.fax }}</li>
           <li class="w10">{{ area.check_open }}</li>
           <li class="w10">
-            <button @click="locationStore.detailLocationAct(area.location_pk)"><span>수정</span></button>
+            <button @click="locationStore.detailLocationAct(area.location_pk, nowPageNum)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deleteLocation(area.location_pk)"><span>삭제</span></button>
@@ -68,6 +68,7 @@ import locationApi from '@/api/location';
 
 const selectStore = useSelect();
 const locationStore = useLocation();
+const popupStore = usePopupStore();
 const { locale, showNum } = storeToRefs(selectStore);
 const { locationList } = storeToRefs(locationStore);
 
@@ -99,13 +100,19 @@ function prePageFunc(page) {
   nowPageNum.value = page - 1;
 }
 
+//등록하기 버튼 클릭
+function clickRegisterBtn() {
+  popupStore.locationOpen();
+  locationStore.locationListAct(nowPageNum.value, showNum.value);
+}
+
 //자사 위치 삭제
 function deleteLocation(pk) {
   locationApi
     .fetchDeleteLocation(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/location';
+        locationStore.locationListAct(nowPageNum.value, showNum.value);
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

@@ -55,7 +55,6 @@ const yearRef = ref('');
 const monthRef = ref();
 const currentYear = new Date().getFullYear();
 
-//수정 팝업 랜더링 시 데이터 삽입
 if (detailHistory.value) {
   contentKrRef.value = detailHistory.value.content_kr;
   contentIdRef.value = detailHistory.value.content_id;

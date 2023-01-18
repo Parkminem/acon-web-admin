@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { usePartners } from '@/store/partners';
+import { useHistory } from '@/store/history';
+import { useLocation } from '@/store/location';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
@@ -14,6 +16,8 @@ export const usePopupStore = defineStore('popup', {
       this.historyPopupState = true;
     },
     historyClose() {
+      const historyStore = useHistory();
+      historyStore.resetDetailHistoryAct();
       this.historyPopupState = false;
     },
     partnerOpen() {
@@ -28,8 +32,9 @@ export const usePopupStore = defineStore('popup', {
       this.locationPopupState = true;
     },
     locationClose() {
+      const locationStore = useLocation();
+      locationStore.resetDetailLocationAct();
       this.locationPopupState = false;
-      window.location.href = '/location';
     },
     questionTypeOpen() {
       this.questionTypePopupState = true;
