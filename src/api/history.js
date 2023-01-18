@@ -1,11 +1,17 @@
 import instance from '@/api/instance';
+const sortData = {
+  // regdate: 'desc',
+  year: 'desc'
+};
 
 /**
  * 연혁 리스트 조희
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
 function fetchHistoryList(page, count) {
-  return instance.get(`/history/list?nowpage=${page}&listpage=${count}`);
+  return instance.get(
+    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify(sortData))}`
+  );
 }
 
 /**
