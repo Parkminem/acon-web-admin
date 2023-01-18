@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { usePartners } from '@/store/partners';
 import { useHistory } from '@/store/history';
 import { useLocation } from '@/store/location';
+import { useQuestionType } from '@/store/questionType';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
@@ -40,8 +41,9 @@ export const usePopupStore = defineStore('popup', {
       this.questionTypePopupState = true;
     },
     questionTypeClose() {
+      const questionTypeStore = useQuestionType();
+      questionTypeStore.resetDetailQuestionTypeAct();
       this.questionTypePopupState = false;
-      window.location.href = '/questiontype';
     },
     promotionOpen() {
       this.promotionPopupState = true;

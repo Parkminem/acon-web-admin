@@ -2,7 +2,7 @@
   <SubTitle>문의유형</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().questionTypeOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
           <!-- <ShowList /> -->
@@ -19,7 +19,9 @@
           <li v-if="locale === 'id'">{{ type.name_id }}</li>
           <li v-if="locale === 'pt'">{{ type.name_pt }}</li>
           <li class="w10">
-            <button @click="questionTypeStore.detailQuestionTypeAct(type.question_type_pk)"><span>수정</span></button>
+            <button @click="questionTypeStore.detailQuestionTypeAct(type.question_type_pk, nowPageNum)">
+              <span>수정</span>
+            </button>
           </li>
           <li class="w10">
             <button @click="deleteQuestionType(type.question_type_pk)"><span>삭제</span></button>
@@ -59,6 +61,7 @@ import { storeToRefs } from 'pinia';
 
 const questionTypeStore = useQuestionType();
 const selectStore = useSelect();
+const popupStore = usePopupStore();
 const { locale, showNum } = storeToRefs(selectStore);
 const { questionTypeList } = storeToRefs(questionTypeStore);
 
@@ -85,13 +88,19 @@ function prePageFunc(page) {
   nowPageNum.value = page - 1;
 }
 
+//등록하기 버튼 클릭
+function clickRegisterBtn() {
+  popupStore.questionTypeOpen();
+  questionTypeStore.currentQuestionTypeAct(nowPageNum.value);
+}
+
 //문의 유형 삭제
 function deleteQuestionType(pk) {
   questionTypeApi
     .fetchDeleteQnaType(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/questiontype';
+        questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value);
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

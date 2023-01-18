@@ -26,12 +26,15 @@ import Input from '@/components/form/Input.vue';
 import questionTypeApi from '@/api/questionType';
 import { useQuestionType } from '@/store/questionType';
 import { usePopupStore } from '@/store/popup';
+import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
 
 const popupStore = usePopupStore();
-const questionType = useQuestionType();
+const questionTypeStore = useQuestionType();
+const selectStore = useSelect();
 
-const { detailQuestionType } = storeToRefs(questionType);
+const { detailQuestionType, questionTypePage } = storeToRefs(questionTypeStore);
+const { showNum } = storeToRefs(selectStore);
 
 const krType = ref('');
 const idType = ref('');
@@ -58,6 +61,7 @@ function uploadQuestionType() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.questionTypeClose();
+          questionTypeStore.questionTypeListAct(questionTypePage.value, showNum.value);
         }
       })
       .catch((err) => alert('등록에 실패하였습니다.'));
@@ -76,6 +80,7 @@ function editQuestionType() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.questionTypeClose();
+          questionTypeStore.questionTypeListAct(questionTypePage.value, showNum.value);
         }
       })
       .catch((err) => alert('수정에 실패하였습니다.'));

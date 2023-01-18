@@ -90,7 +90,7 @@ function uploadHistory() {
           historyStore.historyListAct(historyPage.value, showNum.value);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('등록에 실패하였습니다.'));
   }
 }
 
