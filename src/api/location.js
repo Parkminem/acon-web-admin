@@ -2,10 +2,12 @@ import instance from '@/api/instance';
 
 /**
  * 자사 위치 리스트 조회
- * @param (현재 페이지, 한 페이지 안의 게시물 수)
+ * @param (현재 페이지, 한 페이지 안의 게시물 수, sort 값)
  */
-function fetchLocationList(page, count) {
-  return instance.get(`location/list?nowpage=${page}&listpage=${count}`);
+function fetchLocationList(page, count, sortData) {
+  return instance.get(
+    `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ regdate: sortData }))}`
+  );
 }
 
 /**

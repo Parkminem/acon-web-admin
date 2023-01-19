@@ -3,7 +3,17 @@
   <div class="container">
     <div class="section">
       <div class="tableTop">
-        <!-- <ShowList /> -->
+        <div class="left">
+          <!-- <ShowList /> -->
+          <div class="sortBox">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting($event)">
+              <option value="" disabled selected><span>등록일</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
+        </div>
         <SearchBox />
       </div>
       <Table :theadData="theadData.question">
@@ -17,7 +27,10 @@
           <li>{{ qna.email }}</li>
           <li class="w10">{{ changeDate(qna.question_date) }}</li>
           <li class="w10">
-            <button v-if="!qna.answer_content" @click="goAnswerPage(qna.question_pk)"><span>등록</span></button>
+            <button @click="goAnswerPage(qna.question_pk)">
+              <span v-if="!qna.answer_content">등록</span>
+              <span v-else>보기</span>
+            </button>
           </li>
         </ul>
       </Table>
@@ -58,27 +71,47 @@ const { questionList } = storeToRefs(questionStore);
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
 
+const sortData = ref();
+
 //문의 내역 조회
-await questionStore.questionListAct(1, 10);
+await questionStore.questionListAct(1, 10, 'desc');
 
 const rowCnt = questionList.value[0].rowcnt;
 const lastPage = ref(questionList.value[0].lastpage);
 
 //페이지 변경
 function pageFunc(page) {
-  questionStore.questionListAct(page, showNum.value);
+  if (!sortData.value) {
+    questionStore.questionListAct(page, showNum.value, 'desc');
+  } else {
+    questionStore.questionListAct(page, showNum.value, sortData.value);
+  }
   nowPageNum.value = page;
 }
 function nextPageFunc(page) {
-  questionStore.questionListAct(page + 1, showNum.value);
+  if (!sortData.value) {
+    questionStore.questionListAct(page + 1, showNum.value, 'desc');
+  } else {
+    questionStore.questionListAct(page + 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page + 1;
 }
 function prePageFunc(page) {
-  questionStore.questionListAct(page - 1, showNum.value);
+  if (!sortData.value) {
+    questionStore.questionListAct(page - 1, showNum.value, 'desc');
+  } else {
+    questionStore.questionListAct(page - 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page - 1;
 }
 
-//등록 페이지로 이동
+//등록일 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
+}
+
+//답변 등록 페이지로 이동
 function goAnswerPage(pk) {
   router.push(`/question/answer?pk=${pk}`);
 }

@@ -2,10 +2,10 @@ import instance from '@/api/instance';
 
 /**
  * 파트너사 리스트 조회
- * @param
+ * @param sort값
  */
 function fetchPartnersList() {
-  return instance.get('/partner/list?nowpage=1&listpage=1000');
+  return instance.get(`/partner/list?nowpage=1&listpage=1000`);
 }
 
 /**

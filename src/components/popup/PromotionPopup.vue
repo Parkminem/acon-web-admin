@@ -31,12 +31,15 @@ import { usePopupStore } from '@/store/popup';
 import { usePromotion } from '@/store/promotion';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useSelect } from '@/store/utils';
 import promotionApi from '@/api/promotion';
 
 const popupStore = usePopupStore();
 const promotionStore = usePromotion();
+const selectStore = useSelect();
 
-const { detailPromotion } = storeToRefs(promotionStore);
+const { detailPromotion, promotionPage } = storeToRefs(promotionStore);
+const { showNum } = storeToRefs(selectStore);
 const name = ref('');
 const url = ref('');
 const openCheck = ref(false);
@@ -61,10 +64,11 @@ function uploadPromotion() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.promotionClose();
+          promotionStore.promotionListAct(promotionPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert('등록에 실패하였습니다.');
       });
   }
 }
@@ -82,6 +86,7 @@ function editPromotion() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.promotionClose();
+          promotionStore.promotionListAct(promotionPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('수정에 실패하였습니다.'));

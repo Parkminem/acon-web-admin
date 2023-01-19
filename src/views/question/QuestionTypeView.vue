@@ -2,11 +2,19 @@
   <SubTitle>문의유형</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().questionTypeOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
           <!-- <ShowList /> -->
           <LocaleList />
+          <div class="sortBox">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting($event)">
+              <option value="" disabled selected><span>번호</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
         </div>
         <SearchBox />
       </div>
@@ -19,7 +27,9 @@
           <li v-if="locale === 'id'">{{ type.name_id }}</li>
           <li v-if="locale === 'pt'">{{ type.name_pt }}</li>
           <li class="w10">
-            <button @click="questionTypeStore.detailQuestionTypeAct(type.question_type_pk)"><span>수정</span></button>
+            <button @click="questionTypeStore.detailQuestionTypeAct(type.question_type_pk, nowPageNum)">
+              <span>수정</span>
+            </button>
           </li>
           <li class="w10">
             <button @click="deleteQuestionType(type.question_type_pk)"><span>삭제</span></button>
@@ -59,30 +69,56 @@ import { storeToRefs } from 'pinia';
 
 const questionTypeStore = useQuestionType();
 const selectStore = useSelect();
+const popupStore = usePopupStore();
 const { locale, showNum } = storeToRefs(selectStore);
 const { questionTypeList } = storeToRefs(questionTypeStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
+const sortData = ref();
 
 //문의 유형 리스트 조회
-await questionTypeStore.questionTypeListAct(1, 10);
+await questionTypeStore.questionTypeListAct(1, 10, 'desc');
 
 const rowCnt = questionTypeList.value[0].rowcnt;
 const lastPage = ref(questionTypeList.value[0].lastpage);
 
 //페이지 변경
 function pageFunc(page) {
-  questionTypeStore.questionTypeListAct(page, showNum.value);
+  if (!sortData.value) {
+    questionTypeStore.questionTypeListAct(page, showNum.value, 'desc');
+  } else {
+    questionTypeStore.questionTypeListAct(page, showNum.value, sortData.value);
+  }
   nowPageNum.value = page;
 }
 function nextPageFunc(page) {
-  questionTypeStore.questionTypeListAct(page + 1, showNum.value);
+  if (!sortData.value) {
+    questionTypeStore.questionTypeListAct(page + 1, showNum.value, 'desc');
+  } else {
+    questionTypeStore.questionTypeListAct(page + 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page + 1;
 }
 function prePageFunc(page) {
-  questionTypeStore.questionTypeListAct(page - 1, showNum.value);
+  if (!sortData.value) {
+    questionTypeStore.questionTypeListAct(page - 1, showNum.value, 'desc');
+  } else {
+    questionTypeStore.questionTypeListAct(page - 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page - 1;
+}
+
+//등록하기 버튼 클릭
+function clickRegisterBtn() {
+  popupStore.questionTypeOpen();
+  questionTypeStore.currentQuestionTypeAct(nowPageNum.value);
+}
+
+//등록 순서 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
 }
 
 //문의 유형 삭제
@@ -91,7 +127,11 @@ function deleteQuestionType(pk) {
     .fetchDeleteQnaType(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/questiontype';
+        if (!sortData.value) {
+          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

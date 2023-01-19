@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="card">
+      <div class="card" v-if="!detailQuestion.answer_content">
         <div class="titleBox">
           <h1>답변 등록</h1>
         </div>
@@ -102,9 +102,71 @@
             </div>
           </div>
         </form>
+        <div class="btn">
+          <button @click="sendAnswer"><span>완료</span></button>
+        </div>
       </div>
-      <div class="btn">
-        <button @click="sendAnswer"><span>완료</span></button>
+      <div class="card" v-else>
+        <div class="titleBox">
+          <h1>답변 내용</h1>
+        </div>
+        <form class="form" id="form">
+          <div class="formHead">
+            <div class="row">
+              <div class="col">
+                <div class="name col1"><span>언어</span></div>
+                <div class="text">
+                  <label for="kr"
+                    ><input
+                      type="radio"
+                      name="language"
+                      value="KR"
+                      id="kr"
+                      disabled
+                      :checked="detailQuestion.language === 'KR'"
+                    /><span>한국어</span></label
+                  >
+                  <label for="id"
+                    ><input
+                      type="radio"
+                      name="language"
+                      value="ID"
+                      id="id"
+                      disabled
+                      :checked="detailQuestion.language === 'ID'"
+                    /><span>인도네시아어</span></label
+                  >
+                  <label for="pt"
+                    ><input
+                      type="radio"
+                      name="language"
+                      value="PT"
+                      id="pt"
+                      disabled
+                      :checked="detailQuestion.language === 'PT'"
+                    /><span>포르투갈어</span></label
+                  >
+                  <label for="en"
+                    ><input
+                      type="radio"
+                      name="language"
+                      value="US"
+                      id="en"
+                      disabled
+                      :checked="detailQuestion.language === 'US'"
+                    /><span>영어</span></label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col textBox">
+                <div class="name"><span>내용</span></div>
+                <div class="text" v-html="detailQuestion.answer_content"></div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -2,9 +2,19 @@
   <SubTitle>홍보영상</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().promotionOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
-        <!-- <ShowList /> -->
+        <div class="left">
+          <!-- <ShowList /> -->
+          <div class="sortBox">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting($event)">
+              <option value="" disabled selected><span>등록일</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
+        </div>
         <SearchBox />
       </div>
       <Table :theadData="theadData.promotion">
@@ -16,7 +26,7 @@
           <li class="w10">{{ changeDate(i.regdate) }}</li>
           <li class="w10">{{ i.view_status }}</li>
           <li class="w10">
-            <button @click="promotionStore.detailPromotionAct(i.promotion_pk)"><span>수정</span></button>
+            <button @click="promotionStore.detailPromotionAct(i.promotion_pk, nowPageNum)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deletePromotion(i.promotion_pk)"><span>삭제</span></button>
@@ -56,14 +66,16 @@ import { storeToRefs } from 'pinia';
 
 const promotionStore = usePromotion();
 const selectStore = useSelect();
+const popupStore = usePopupStore();
 const { showNum } = storeToRefs(selectStore);
 const { promotionList } = storeToRefs(promotionStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
+const sortData = ref();
 
 //프로모션 리스트 조회
-await promotionStore.promotionListAct(1, 10);
+await promotionStore.promotionListAct(1, 10, 'desc');
 
 const rowCnt = promotionList.value[0].rowcnt;
 const lastPage = ref(promotionList.value[0].lastpage);
@@ -75,16 +87,40 @@ watch(showNum, (newShowNum) => {
 
 //페이지 변경
 function pageFunc(page) {
-  promotionStore.promotionListAct(page, showNum.value);
+  if (!sortData.value) {
+    promotionStore.promotionListAct(page, showNum.value, 'desc');
+  } else {
+    promotionStore.promotionListAct(page, showNum.value, sortData.value);
+  }
   nowPageNum.value = page;
 }
 function nextPageFunc(page) {
-  promotionStore.promotionListAct(page + 1, showNum.value);
+  if (!sortData.value) {
+    promotionStore.promotionListAct(page + 1, showNum.value, 'desc');
+  } else {
+    promotionStore.promotionListAct(page + 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page + 1;
 }
 function prePageFunc(page) {
-  promotionStore.promotionListAct(page - 1, showNum.value);
+  if (!sortData.value) {
+    promotionStore.promotionListAct(page - 1, showNum.value, 'desc');
+  } else {
+    promotionStore.promotionListAct(page - 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page - 1;
+}
+
+//등록일 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  promotionStore.promotionListAct(nowPageNum.value, listPage.value, sortData.value);
+}
+
+//등록하기 버튼 클릭
+function clickRegisterBtn() {
+  popupStore.promotionOpen();
+  promotionStore.currentPromotionPageAct(nowPageNum.value);
 }
 //프로모션 삭제
 function deletePromotion(pk) {
@@ -92,7 +128,11 @@ function deletePromotion(pk) {
     .fetchDeletePromotion(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/promotion';
+        if (!sortData.value) {
+          promotionStore.promotionListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          promotionStore.promotionListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

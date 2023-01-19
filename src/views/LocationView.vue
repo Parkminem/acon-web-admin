@@ -2,11 +2,19 @@
   <SubTitle>위치</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().locationOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
           <!-- <ShowList /> -->
           <LocaleList />
+          <div class="sortBox">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting($event)">
+              <option value="" disabled selected><span>등록일</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
         </div>
         <SearchBox />
       </div>
@@ -27,7 +35,7 @@
           <li class="w10">{{ area.fax }}</li>
           <li class="w10">{{ area.check_open }}</li>
           <li class="w10">
-            <button @click="locationStore.detailLocationAct(area.location_pk)"><span>수정</span></button>
+            <button @click="locationStore.detailLocationAct(area.location_pk, nowPageNum)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deleteLocation(area.location_pk)"><span>삭제</span></button>
@@ -68,13 +76,15 @@ import locationApi from '@/api/location';
 
 const selectStore = useSelect();
 const locationStore = useLocation();
+const popupStore = usePopupStore();
 const { locale, showNum } = storeToRefs(selectStore);
 const { locationList } = storeToRefs(locationStore);
 
 const nowPageNum = ref(1);
+const sortData = ref();
 
 //자사 위치 리스트 조회
-await locationStore.locationListAct(1, showNum.value);
+await locationStore.locationListAct(1, showNum.value, 'desc');
 
 const listPage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
 const rowCnt = locationList.value[0].rowcnt;
@@ -87,16 +97,40 @@ watch(showNum, (newShowNum) => {
 
 //페이지 변경
 function pageFunc(page) {
-  locationStore.locationListAct(page, showNum.value);
+  if (!sortData.value) {
+    locationStore.locationListAct(page, showNum.value, 'desc');
+  } else {
+    locationStore.locationListAct(page, showNum.value, sortData.value);
+  }
   nowPageNum.value = page;
 }
 function nextPageFunc(page) {
-  locationStore.locationListAct(page + 1, showNum.value);
+  if (!sortData.value) {
+    locationStore.locationListAct(page + 1, showNum.value, 'desc');
+  } else {
+    locationStore.locationListAct(page + 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page + 1;
 }
 function prePageFunc(page) {
-  locationStore.locationListAct(page - 1, showNum.value);
+  if (!sortData.value) {
+    locationStore.locationListAct(page - 1, showNum.value, 'desc');
+  } else {
+    locationStore.locationListAct(page - 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page - 1;
+}
+
+//등록일 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  locationStore.locationListAct(nowPageNum.value, listPage.value, sortData.value);
+}
+
+//등록하기 버튼 클릭
+function clickRegisterBtn() {
+  popupStore.locationOpen();
+  locationStore.currentLocationPageAct(nowPageNum.value);
 }
 
 //자사 위치 삭제
@@ -105,7 +139,11 @@ function deleteLocation(pk) {
     .fetchDeleteLocation(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        window.location.href = '/location';
+        if (!sortData.value) {
+          locationStore.locationListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          locationStore.locationListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

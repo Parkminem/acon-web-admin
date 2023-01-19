@@ -46,6 +46,18 @@ select {
   color: #333;
   .left {
     display: flex;
+    align-items: center;
+    .sortBox {
+      select {
+        margin-left: 10px;
+        font-size: 15px;
+        outline: none;
+        font-family: 'material-icons';
+        option {
+          font-family: 'material-icons';
+        }
+      }
+    }
   }
 }
 </style>

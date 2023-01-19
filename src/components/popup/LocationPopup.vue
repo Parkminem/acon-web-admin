@@ -77,9 +77,12 @@ import { useLocation } from '@/store/location';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import locationApi from '@/api/location';
+import { useSelect } from '@/store/utils';
 const popupStore = usePopupStore();
 const locationStore = useLocation();
-const { detailLocation } = storeToRefs(locationStore);
+const selectStore = useSelect();
+const { detailLocation, locationPage } = storeToRefs(locationStore);
+const { showNum } = storeToRefs(selectStore);
 
 const krArea = ref('');
 const idArea = ref('');
@@ -157,6 +160,7 @@ function uploadLocation() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.locationClose();
+          locationStore.locationListAct(locationPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('등록에 실패하였습니다.'));
@@ -192,6 +196,7 @@ function editLocation() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.locationClose();
+          locationStore.locationListAct(locationPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('수정에 실패하였습니다.'));

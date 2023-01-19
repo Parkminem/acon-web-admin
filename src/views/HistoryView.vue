@@ -2,11 +2,19 @@
   <SubTitle>연혁</SubTitle>
   <div class="container">
     <div class="section">
-      <ResisterBtn @clickRegister="usePopupStore().historyOpen" />
+      <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
           <!-- <ShowList /> -->
           <LocaleList />
+          <div class="sortBox">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting($event)">
+              <option value="" disabled selected><span>년도</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
         </div>
         <SearchBox />
       </div>
@@ -22,7 +30,7 @@
           <li v-if="locale === 'pt'">{{ item.content_pt }}</li>
           <li class="w10">{{ item.active_flag === 1 ? '활성화' : '비활성화' }}</li>
           <li class="w10">
-            <button @click="historyStore.detailHistoryAct(item.history_pk)"><span>수정</span></button>
+            <button @click="historyStore.detailHistoryAct(item.history_pk, nowPageNum)"><span>수정</span></button>
           </li>
           <li class="w10">
             <button @click="deleteHistory(item.history_pk)"><span>삭제</span></button>
@@ -63,11 +71,13 @@ import { storeToRefs } from 'pinia';
 
 const historyStore = useHistory();
 const selectStore = useSelect();
+const popupStore = usePopupStore();
 const { locale, showNum } = storeToRefs(selectStore);
 const { historyList } = storeToRefs(historyStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
+const sortData = ref();
 
 //연혁 리스트 조회
 await historyStore.historyListAct(1, 10);
@@ -81,7 +91,8 @@ watch(showNum, (newShowNum) => {
     const nowpage = historyList.value[0].nowpage;
     listPage.value = Number(num);
     historyStore.historyListAct(nowpage, num).then((res) => {
-      lastPage.value = historyList.value[0].lastpage;
+      console.log(res);
+      // lastPage.value = res.data[0].lastpage;
     });
   }
   if (newShowNum < historyList.value[0].rowcnt) {
@@ -93,16 +104,40 @@ watch(showNum, (newShowNum) => {
 
 //페이지 변경
 function pageFunc(page) {
-  historyStore.historyListAct(page, showNum.value);
+  if (!sortData.value) {
+    historyStore.historyListAct(page, showNum.value);
+  } else {
+    historyStore.sortHistoryListAct(page, showNum.value, sortData.value);
+  }
   nowPageNum.value = page;
 }
 function nextPageFunc(page) {
-  historyStore.historyListAct(page + 1, showNum.value);
+  if (!sortData.value) {
+    historyStore.historyListAct(page + 1, showNum.value);
+  } else {
+    historyStore.sortHistoryListAct(page + 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page + 1;
 }
 function prePageFunc(page) {
-  historyStore.historyListAct(page - 1, showNum.value);
+  if (!sortData.value) {
+    historyStore.historyListAct(page - 1, showNum.value);
+  } else {
+    historyStore.sortHistoryListAct(page - 1, showNum.value, sortData.value);
+  }
   nowPageNum.value = page - 1;
+}
+
+//년도 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  historyStore.sortHistoryListAct(nowPageNum.value, listPage.value, sortData.value);
+}
+
+//등록하기 버튼 클릭 함수
+function clickRegisterBtn() {
+  popupStore.historyOpen();
+  historyStore.currentHistoryPageAct(nowPageNum.value);
 }
 
 // 연혁 삭제
@@ -111,7 +146,11 @@ function deleteHistory(pk) {
     .fecthDeleteHistory(pk)
     .then((res) => {
       if (res.status === 200) {
-        window.location.href = '/history';
+        if (!sortData.value) {
+          historyStore.historyListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          historyStore.historyListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패했습니다.'));

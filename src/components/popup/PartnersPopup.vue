@@ -62,12 +62,6 @@ if (detailPartner.value) {
 function uploadPartner() {
   const form = document.getElementById('form');
   const formData = new FormData(form);
-  let reader = new FileReader();
-  let src;
-  reader.onload = (e) => {
-    src = e.target.result;
-  };
-  reader.readAsDataURL(file.value.files[0]);
   if (
     krPartner.value.length == 0 ||
     idPartner.value.length == 0 ||
@@ -82,23 +76,14 @@ function uploadPartner() {
       .fetchUploadPartners(formData)
       .then((res) => {
         if (res.data.status === 200) {
-          const object = {
-            name_kr: krPartner.value,
-            name_id: idPartner.value,
-            name_pt: ptPartner.value,
-            name_us: enPartner.value,
-            url: homepage.value,
-            src: src,
-            partner_pk: res.data.message_detail
-          };
-          partnersStore.saveNewPartner(object);
           popupStore.partnerClose();
+          partnersStore.partnersListAct();
         }
       })
       .catch((err) => console.log(err));
   }
 }
-//파트너사 수정(파일 수정 X 로직 완료, 파일 수정 시 로직 짜야됨)
+//파트너사 수정
 function editPartner() {
   if (
     krPartner.value.length == 0 ||
@@ -110,27 +95,31 @@ function editPartner() {
   ) {
     alert('모든 내용을 입력해주세요');
   } else {
-    if (detailPartner.value.logo_origin_name === fileName.value) {
-      const formData = new FormData();
-      formData.append('name_kr', krPartner.value);
-      formData.append('name_id', idPartner.value);
-      formData.append('name_pt', ptPartner.value);
-      formData.append('name_us', enPartner.value);
-      formData.append('url', homepage.value);
-      formData.append('logo_file_url', detailPartner.value.logo_file_url);
-      formData.append('logo_origin_name', detailPartner.value.logo_origin_name);
-      formData.append('logo_save_name', detailPartner.value.logo_save_name);
+    const edit = (data) => {
       partnersApi
-        .fetchEditPartners(detailPartner.value.partner_pk, formData)
+        .fetchEditPartners(detailPartner.value.partner_pk, data)
         .then((res) => {
           if (res.data.status === 200) {
             popupStore.partnerClose();
-            window.location.href = '/partners';
+            partnersStore.partnersListAct();
           }
         })
         .catch((err) => {
           alert('수정에 실패하였습니다.');
         });
+    };
+    //파일 수정X
+    if (detailPartner.value.logo_origin_name === fileName.value) {
+      const form = document.getElementById('form');
+      const formData = new FormData(form);
+      formData.delete('file');
+      edit(formData);
+    }
+    //파일 수정
+    if (file.value) {
+      const form = document.getElementById('form');
+      const formData = new FormData(form);
+      edit(formData);
     }
   }
 }
