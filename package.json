@@ -9,16 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^35.4.0",
-    "@ckeditor/ckeditor5-vue": "^4.0.1",
     "axios": "^1.2.1",
     "pinia": "^2.0.28",
-    "reset-css": "^5.0.1",
     "sass": "^1.57.0",
     "sass-loader": "^13.2.0",
     "vue": "^3.2.45",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "suneditor": "^2.44.3"
   },
   "devDependencies": {
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",

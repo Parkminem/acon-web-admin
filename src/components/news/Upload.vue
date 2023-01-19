@@ -18,10 +18,10 @@
           v-model="isActiveRef"
           :checked="isActiveRef"
         />
-        <Editor title="내용(한국어)" @write="emitKrDesc" :val="krDesc" />
-        <Editor title="내용(인도네시아어)" @write="emitIdDesc" :val="idDesc" />
-        <Editor title="내용(포르투갈어)" @write="emitPtDesc" :val="ptDesc" />
-        <Editor title="내용(영어)" @write="emitEnDesc" :val="enDesc" />
+        <Editor title="내용(한국어)" @write="emitKrDesc" :val="krDesc" :editorVar="krEditor" />
+        <Editor title="내용(인도네시아어)" @write="emitIdDesc" :val="idDesc" :editorVar="idEditor" />
+        <Editor title="내용(포르투갈어)" @write="emitPtDesc" :val="ptDesc" :editorVar="ptEditor" />
+        <Editor title="내용(영어)" @write="emitEnDesc" :val="enDesc" :editorVar="enEditor" />
         <button class="submitBtn" @click.prevent="onUpload" v-if="!detailNews">완료</button>
         <button class="submitBtn" @click.prevent="editNews" v-else>수정</button>
       </form>
@@ -34,7 +34,7 @@ import File from '@/components/form/File.vue';
 import Radio from '@/components/form/Radio.vue';
 import Editor from '@/components/form/Editor.vue';
 import SubTitle from '@/components/common/SubTitle.vue';
-import { ref } from 'vue';
+import { ref, reactive, toRefs } from 'vue';
 import { useNewsStore } from '@/store/news';
 import { storeToRefs } from 'pinia';
 import newsApi from '@/api/news';
@@ -43,6 +43,16 @@ import router from '@/routes';
 const newsStore = useNewsStore();
 const { detailNews } = storeToRefs(newsStore);
 
+function editorRefSetting() {
+  const state = reactive({
+    krEditor: {},
+    idEditor: {},
+    ptEditor: {},
+    enEditor: {}
+  });
+  return toRefs(state);
+}
+const { krEditor, idEditor, ptEditor, enEditor } = editorRefSetting();
 const krTitle = ref('');
 const idTitle = ref('');
 const ptTitle = ref('');
@@ -91,6 +101,8 @@ if (detailNews.value) {
 
 // 뉴스 등록
 function onUpload() {
+  console.log(krEditor.value.value.getContents(true));
+  console.log(...new FormData(document.getElementById('form')));
   if (
     krTitle.value.length === 0 ||
     idTitle.value.length === 0 ||
