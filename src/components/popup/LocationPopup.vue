@@ -84,7 +84,6 @@ const selectStore = useSelect();
 const { detailLocation, locationPage } = storeToRefs(locationStore);
 const { showNum } = storeToRefs(selectStore);
 
-console.log(locationPage.value);
 const krArea = ref('');
 const idArea = ref('');
 const ptArea = ref('');
@@ -161,7 +160,7 @@ function uploadLocation() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.locationClose();
-          locationStore.locationListAct(locationPage.value, showNum.value);
+          locationStore.locationListAct(locationPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('등록에 실패하였습니다.'));
@@ -197,7 +196,7 @@ function editLocation() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.locationClose();
-          locationStore.locationListAct(locationPage.value, showNum.value);
+          locationStore.locationListAct(locationPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('수정에 실패하였습니다.'));

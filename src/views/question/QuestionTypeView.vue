@@ -127,7 +127,11 @@ function deleteQuestionType(pk) {
     .fetchDeleteQnaType(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value);
+        if (!sortData.value) {
+          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

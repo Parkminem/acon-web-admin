@@ -1,17 +1,14 @@
 import instance from '@/api/instance';
-const jsonData = {
-  sort: {
-    promotion_pk: 'desc'
-  }
-};
 
 /**
  * 프로모션 리스트 조회
  * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수)
  */
-function fetchPromotionList(page, count) {
+function fetchPromotionList(page, count, sortData) {
   return instance.get(
-    `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify(jsonData))}`
+    `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ regdate: sortData })
+    )}`
   );
 }
 

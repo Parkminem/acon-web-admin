@@ -139,7 +139,11 @@ function deleteLocation(pk) {
     .fetchDeleteLocation(pk)
     .then((res) => {
       if (res.data.status === 200) {
-        locationStore.locationListAct(nowPageNum.value, showNum.value);
+        if (!sortData.value) {
+          locationStore.locationListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          locationStore.locationListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패하였습니다.'));

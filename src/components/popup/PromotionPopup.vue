@@ -64,7 +64,7 @@ function uploadPromotion() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.promotionClose();
-          promotionStore.promotionListAct(promotionPage.value, showNum.value);
+          promotionStore.promotionListAct(promotionPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => {
@@ -86,7 +86,7 @@ function editPromotion() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.promotionClose();
-          promotionStore.promotionListAct(promotionPage.value, showNum.value);
+          promotionStore.promotionListAct(promotionPage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('수정에 실패하였습니다.'));

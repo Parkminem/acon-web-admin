@@ -61,7 +61,7 @@ function uploadQuestionType() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.questionTypeClose();
-          questionTypeStore.questionTypeListAct(questionTypePage.value, showNum.value);
+          questionTypeStore.questionTypeListAct(questionTypePage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('등록에 실패하였습니다.'));
@@ -80,7 +80,7 @@ function editQuestionType() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.questionTypeClose();
-          questionTypeStore.questionTypeListAct(questionTypePage.value, showNum.value);
+          questionTypeStore.questionTypeListAct(questionTypePage.value, showNum.value, 'desc');
         }
       })
       .catch((err) => alert('수정에 실패하였습니다.'));

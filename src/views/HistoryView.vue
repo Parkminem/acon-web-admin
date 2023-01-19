@@ -146,7 +146,11 @@ function deleteHistory(pk) {
     .fecthDeleteHistory(pk)
     .then((res) => {
       if (res.status === 200) {
-        historyStore.historyListAct(nowPageNum.value, showNum.value);
+        if (!sortData.value) {
+          historyStore.historyListAct(nowPageNum.value, showNum.value, 'desc');
+        } else {
+          historyStore.historyListAct(nowPageNum.value, showNum.value, sortData.value);
+        }
       }
     })
     .catch((err) => alert('삭제에 실패했습니다.'));
