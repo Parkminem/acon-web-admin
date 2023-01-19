@@ -6,7 +6,14 @@ import instance from '@/api/instance';
  */
 
 function fetchNewsList(page, count) {
-  return instance.get(`/news/list?nowpage=${page}&listpage=${count}`);
+  const sorting = {
+    regdate: 'desc'
+    // year: 'desc'
+    // month: 'desc'
+  };
+  return instance.get(
+    `/news/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify(sorting))}`
+  );
 }
 
 /**
