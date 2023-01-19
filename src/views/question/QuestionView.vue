@@ -90,6 +90,7 @@ const searchVal = ref('name');
 const searchInputRef = ref();
 
 const sortData = ref();
+let searchData;
 
 //문의 내역 조회
 await questionStore.questionListAct(1, 10, 'desc');
@@ -99,10 +100,18 @@ const lastPage = ref(questionList.value[0].lastpage);
 
 //페이지 변경
 function changePage(page) {
-  if (!sortData.value) {
+  if (!sortData.value && !searchInputRef.value) {
     questionStore.questionListAct(page, showNum.value, 'desc');
-  } else {
+  } else if (sortData.value && !searchInputRef.value) {
     questionStore.questionListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionStore.searchQuestionListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionStore.searchQuestionListAct(page, showNum.value, sortData.value, searchData);
   }
   nowPageNum.value = page;
 }
@@ -113,9 +122,7 @@ function sorting(e) {
   if (!searchInputRef.value) {
     questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
   } else {
-    const searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
+    searchData = { [searchVal.value]: searchInputRef.value };
     questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
   }
 }
@@ -132,9 +139,7 @@ function handleSearchValue(e) {
 
 //검색 버튼 클릭
 async function searchBtnClick() {
-  const searchData = {
-    [searchVal.value]: searchInputRef.value
-  };
+  searchData = { [searchVal.value]: searchInputRef.value };
   await questionStore
     .searchQuestionListAct(1, listPage.value, 'desc', searchData)
     .then(() => {
