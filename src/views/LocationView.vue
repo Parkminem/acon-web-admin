@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <LocaleList />
           <div class="sortBox">
             <span class="">sort</span>
@@ -92,7 +92,18 @@ const lastPage = ref(locationList.value[0].lastpage);
 
 //게시물 갯수 변경
 watch(showNum, (newShowNum) => {
-  locationStore.locationListAct(locationList.value[0].nowpage, newShowNum);
+  function showList(num) {
+    const nowpage = locationList.value[0].nowpage;
+    listPage.value = Number(num);
+    locationStore.locationListAct(nowpage, num, 'desc').then(() => {
+      lastPage.value = locationList.value[0].lastpage;
+    });
+  }
+  if (newShowNum < locationList.value[0].rowcnt) {
+    showList(newShowNum);
+  } else {
+    showList(showNum.value);
+  }
 });
 
 //페이지 변경
