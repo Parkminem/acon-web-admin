@@ -88,9 +88,9 @@ const lastPage = ref(historyList.value[0].lastpage);
 // 게시물 갯수 변경
 watch(showNum, (newShowNum) => {
   function showList(num) {
-    const nowpage = historyList.value[0].nowpage;
+    const nowPage = historyList.value[0].nowpage;
     listPage.value = Number(num);
-    historyStore.historyListAct(nowpage, num).then(() => {
+    historyStore.historyListAct(nowPage, num).then(() => {
       lastPage.value = historyList.value[0].lastpage;
     });
   }

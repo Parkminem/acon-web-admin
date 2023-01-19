@@ -4,7 +4,7 @@
     <div class="section">
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <div class="sortBox">
             <span class="">sort</span>
             <select name="" id="" @change="sorting($event)">
@@ -65,7 +65,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ShowList from '@/components/utils/ShowList.vue';
 import Empty from '@/components/utils/Empty.vue';
@@ -97,6 +97,48 @@ await questionStore.questionListAct(1, 10, 'desc');
 
 const rowCnt = ref(questionList.value[0].rowcnt);
 const lastPage = ref(questionList.value[0].lastpage);
+
+//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
+const paginationConstant = () => {
+  nowPageNum.value = 1;
+  rowCnt.value = questionList.value[0].rowcnt;
+  lastPage.value = questionList.value[0].lastpage;
+};
+
+//게시물 갯수 변경 함수
+function showList(num) {
+  const nowPage = questionList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
+    });
+  }
+}
+
+watch(showNum, (newShowNum) => {
+  if (newShowNum < questionList.value[0].rowcnt) {
+    showList(newShowNum);
+  } else {
+    showList(showNum.value);
+  }
+});
 
 //페이지 변경
 function changePage(page) {
@@ -141,11 +183,9 @@ function handleSearchValue(e) {
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await questionStore
-    .searchQuestionListAct(1, listPage.value, 'desc', searchData)
+    .searchQuestionListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
-      nowPageNum.value = 1;
-      rowCnt.value = questionList.value[0].rowcnt;
-      lastPage.value = questionList.value[0].lastpage;
+      paginationConstant();
     })
     .catch((err) => {
       rowCnt.value = null;
