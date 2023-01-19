@@ -38,9 +38,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => pageFunc(page)"
-          @goNextPage="(page) => nextPageFunc(page)"
-          @goPrePage="(page) => prePageFunc(page)"
+          @goPage="(page) => changePage(page)"
+          @goNextPage="(page) => changePage(page)"
+          @goPrePage="(page) => changePage(page)"
         />
       </div>
     </div>
@@ -86,29 +86,13 @@ watch(showNum, (newShowNum) => {
 });
 
 //페이지 변경
-function pageFunc(page) {
+function changePage(page) {
   if (!sortData.value) {
     promotionStore.promotionListAct(page, showNum.value, 'desc');
   } else {
     promotionStore.promotionListAct(page, showNum.value, sortData.value);
   }
   nowPageNum.value = page;
-}
-function nextPageFunc(page) {
-  if (!sortData.value) {
-    promotionStore.promotionListAct(page + 1, showNum.value, 'desc');
-  } else {
-    promotionStore.promotionListAct(page + 1, showNum.value, sortData.value);
-  }
-  nowPageNum.value = page + 1;
-}
-function prePageFunc(page) {
-  if (!sortData.value) {
-    promotionStore.promotionListAct(page - 1, showNum.value, 'desc');
-  } else {
-    promotionStore.promotionListAct(page - 1, showNum.value, sortData.value);
-  }
-  nowPageNum.value = page - 1;
 }
 
 //등록일 sort

@@ -41,9 +41,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => pageFunc(page)"
-          @goNextPage="(page) => nextPageFunc(page)"
-          @goPrePage="(page) => prePageFunc(page)"
+          @goPage="(page) => changePage(page)"
+          @goNextPage="(page) => changePage(page)"
+          @goPrePage="(page) => changePage(page)"
         />
       </div>
     </div>
@@ -84,29 +84,13 @@ const rowCnt = questionTypeList.value[0].rowcnt;
 const lastPage = ref(questionTypeList.value[0].lastpage);
 
 //페이지 변경
-function pageFunc(page) {
+function changePage(page) {
   if (!sortData.value) {
     questionTypeStore.questionTypeListAct(page, showNum.value, 'desc');
   } else {
     questionTypeStore.questionTypeListAct(page, showNum.value, sortData.value);
   }
   nowPageNum.value = page;
-}
-function nextPageFunc(page) {
-  if (!sortData.value) {
-    questionTypeStore.questionTypeListAct(page + 1, showNum.value, 'desc');
-  } else {
-    questionTypeStore.questionTypeListAct(page + 1, showNum.value, sortData.value);
-  }
-  nowPageNum.value = page + 1;
-}
-function prePageFunc(page) {
-  if (!sortData.value) {
-    questionTypeStore.questionTypeListAct(page - 1, showNum.value, 'desc');
-  } else {
-    questionTypeStore.questionTypeListAct(page - 1, showNum.value, sortData.value);
-  }
-  nowPageNum.value = page - 1;
 }
 
 //등록하기 버튼 클릭

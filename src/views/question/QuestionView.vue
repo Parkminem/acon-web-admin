@@ -56,9 +56,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => pageFunc(page)"
-          @goNextPage="(page) => nextPageFunc(page)"
-          @goPrePage="(page) => prePageFunc(page)"
+          @goPage="(page) => changePage(page)"
+          @goNextPage="(page) => changePage(page)"
+          @goPrePage="(page) => changePage(page)"
         />
       </div>
     </div>
@@ -94,11 +94,11 @@ const sortData = ref();
 //문의 내역 조회
 await questionStore.questionListAct(1, 10, 'desc');
 
-const rowCnt = questionList.value[0].rowcnt;
+const rowCnt = ref(questionList.value[0].rowcnt);
 const lastPage = ref(questionList.value[0].lastpage);
 
 //페이지 변경
-function pageFunc(page) {
+function changePage(page) {
   if (!sortData.value) {
     questionStore.questionListAct(page, showNum.value, 'desc');
   } else {
@@ -106,27 +106,18 @@ function pageFunc(page) {
   }
   nowPageNum.value = page;
 }
-function nextPageFunc(page) {
-  if (!sortData.value) {
-    questionStore.questionListAct(page + 1, showNum.value, 'desc');
-  } else {
-    questionStore.questionListAct(page + 1, showNum.value, sortData.value);
-  }
-  nowPageNum.value = page + 1;
-}
-function prePageFunc(page) {
-  if (!sortData.value) {
-    questionStore.questionListAct(page - 1, showNum.value, 'desc');
-  } else {
-    questionStore.questionListAct(page - 1, showNum.value, sortData.value);
-  }
-  nowPageNum.value = page - 1;
-}
 
 //등록일 sort
 function sorting(e) {
   sortData.value = e.target.value;
-  questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
+  if (!searchInputRef.value) {
+    questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    const searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
+  }
 }
 
 //답변 등록 페이지로 이동
@@ -140,11 +131,23 @@ function handleSearchValue(e) {
 }
 
 //검색 버튼 클릭
-function searchBtnClick() {
+async function searchBtnClick() {
   const searchData = {
     [searchVal.value]: searchInputRef.value
   };
-  questionStore.searchQuestionListAct(1, listPage.value, 'desc', searchData);
+  await questionStore
+    .searchQuestionListAct(1, listPage.value, 'desc', searchData)
+    .then(() => {
+      nowPageNum.value = 1;
+      rowCnt.value = questionList.value[0].rowcnt;
+      lastPage.value = questionList.value[0].lastpage;
+    })
+    .catch((err) => {
+      rowCnt.value = null;
+      lastPage.value = null;
+      nowPageNum.value = null;
+      listPage.value = null;
+    });
 }
 </script>
 <style lang="scss" scoped></style>
