@@ -52,12 +52,24 @@ select {
       select {
         margin-left: 10px;
         font-size: 15px;
-        outline: none;
-        font-family: 'material-icons';
-        option {
-          font-family: 'material-icons';
-        }
       }
+    }
+  }
+  .searchBox {
+    display: flex;
+    align-items: center;
+    select {
+      font-size: 15px;
+    }
+    input {
+      margin: 0 10px;
+      max-width: 130px;
+    }
+    button {
+      background-color: #333;
+      color: #fff;
+      padding: 3px;
+      font-size: 13px;
     }
   }
 }

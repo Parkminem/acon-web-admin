@@ -32,7 +32,7 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log(error.response?.data);
+    // console.log(error.response?.data);
     if (error.response.data.status === 500) {
       alert('500 서버 에러');
     } else if (error.response.data.code === 'C006') {
@@ -40,7 +40,8 @@ instance.interceptors.response.use(
       localStorage.removeItem('token');
       router.push('/');
     } else {
-      console.log(error);
+      // console.log(error);
+      return Promise.reject(error);
     }
   }
 );

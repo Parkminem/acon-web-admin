@@ -21,6 +21,24 @@ export const useQuestion = defineStore('question', {
         .catch((err) => console.log(err));
     },
     /**
+     * 문의 내역 검색결과 조회
+     * @param  (현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건:키워드}))
+     */
+    async searchQuestionListAct(page, count, sortData, keyword) {
+      await questionApi
+        .fetchSearchQnaList(page, count, sortData, keyword)
+        .then((res) => {
+          this.questionList = res.data;
+        })
+        .catch((err) => {
+          if (err.response.data.code === 'L000') {
+            this.questionList = null;
+          } else {
+            console.log(err);
+          }
+        });
+    },
+    /**
      * 문의 내용 상세 조회
      * @param 고유번호
      */

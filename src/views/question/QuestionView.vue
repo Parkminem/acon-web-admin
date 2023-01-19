@@ -14,7 +14,24 @@
             </select>
           </div>
         </div>
-        <SearchBox />
+        <div class="searchBox">
+          <div class="searchSelect">
+            <select name="" id="" @change="handleSearchValue">
+              <option value="question_type_kr">문의유형</option>
+              <option value="name" selected>이름</option>
+              <option value="company">회사명</option>
+              <option value="phone">연락처</option>
+              <option value="email">이메일</option>
+              <option value="question_date">등록일</option>
+            </select>
+          </div>
+          <div class="searchInput">
+            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
+          </div>
+          <div class="searchBtn">
+            <button @click="searchBtnClick"><span>검색</span></button>
+          </div>
+        </div>
       </div>
       <Table :theadData="theadData.question">
         <Empty v-if="!questionList" />
@@ -51,7 +68,6 @@
 import { ref } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ShowList from '@/components/utils/ShowList.vue';
-import SearchBox from '@/components/utils/SearchBox.vue';
 import Empty from '@/components/utils/Empty.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
@@ -70,6 +86,8 @@ const { questionList } = storeToRefs(questionStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
+const searchVal = ref('name');
+const searchInputRef = ref();
 
 const sortData = ref();
 
@@ -114,6 +132,19 @@ function sorting(e) {
 //답변 등록 페이지로 이동
 function goAnswerPage(pk) {
   router.push(`/question/answer?pk=${pk}`);
+}
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
+}
+
+//검색 버튼 클릭
+function searchBtnClick() {
+  const searchData = {
+    [searchVal.value]: searchInputRef.value
+  };
+  questionStore.searchQuestionListAct(1, listPage.value, 'desc', searchData);
 }
 </script>
 <style lang="scss" scoped></style>

@@ -13,6 +13,18 @@ function fetchQnaList(page, count, sortData) {
 }
 
 /**
+ * 문의 내역 검색결과 조회
+ * @param(현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건:키워드}))
+ */
+function fetchSearchQnaList(page, count, sortData, keyword) {
+  return instance.get(
+    `/question/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ question_date: sortData })
+    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+  );
+}
+
+/**
  * 문의내역 상세 정보 조회
  * @param 고유번호
  */
@@ -28,6 +40,6 @@ function fetchAnswer(object) {
   return instance.post('question/answer', object);
 }
 
-const questionApi = { fetchQnaList, fetchDetailQna, fetchAnswer };
+const questionApi = { fetchQnaList, fetchSearchQnaList, fetchDetailQna, fetchAnswer };
 
 export default questionApi;
