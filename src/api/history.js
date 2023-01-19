@@ -1,12 +1,19 @@
 import instance from '@/api/instance';
-
+const keyword = {
+  year: '2021'
+};
 /**
  * sort 없는 연혁 리스트 조희
  * @param (페이지 넘버, 한 페이지 안의 게시물 수)
  */
 function fetchHistoryList(page, count) {
-  return instance.get(`/history/list?nowpage=${page}&listpage=${count}`);
+  return instance.get(
+    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ year: 'desc' })
+    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+  );
 }
+//키워드체크용 &keyword=${encodeURIComponent(JSON.stringify(keyword))}
 /**
  * sort한 연혁 리스트 조회
  * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)

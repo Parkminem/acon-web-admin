@@ -3,6 +3,7 @@ import router from '@/routes';
 
 const instance = axios.create({
   baseURL: 'http://222.239.218.187:9100/admin',
+  // baseURL: 'http://146.56.157.190:9100/admin', // dump
   'Content-Type': `application/json`
 });
 

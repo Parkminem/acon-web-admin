@@ -21,7 +21,6 @@
 </template>
 <script setup>
 import { pagination } from '@/utils/pagination';
-
 const props = defineProps({
   lastPage: Number,
   nowPage: Number

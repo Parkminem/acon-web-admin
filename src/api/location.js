@@ -6,7 +6,9 @@ import instance from '@/api/instance';
  */
 function fetchLocationList(page, count, sortData) {
   return instance.get(
-    `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ regdate: sortData }))}`
+    `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ regdate: sortData })
+    )}&keyword=${encodeURIComponent(JSON.stringify({ name_kr: '판교' }))}`
   );
 }
 

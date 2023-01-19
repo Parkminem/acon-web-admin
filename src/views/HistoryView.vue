@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
           <div class="sortBox">
             <span class="">sort</span>
@@ -16,7 +16,21 @@
             </select>
           </div>
         </div>
-        <SearchBox />
+        <div class="searchBox">
+          <div class="searchSelect">
+            <select name="" id="" @change="handleSearchValue">
+              <option value="year">년도</option>
+              <option value="month">월</option>
+              <option value="content_kr" selected>내용</option>
+            </select>
+          </div>
+          <div class="searchInput">
+            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
+          </div>
+          <div class="searchBtn">
+            <button @click="searchBtnClick"><span>검색</span></button>
+          </div>
+        </div>
       </div>
       <Table :theadData="theadData.history">
         <!-- t-body -->
@@ -56,7 +70,6 @@ import { ref, watch } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 import ShowList from '@/components/utils/ShowList.vue';
-import SearchBox from '@/components/utils/SearchBox.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
@@ -78,12 +91,21 @@ const { historyList } = storeToRefs(historyStore);
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
 const sortData = ref();
+const searchVal = ref('content_kr');
+const searchInputRef = ref();
 
 //연혁 리스트 조회
 await historyStore.historyListAct(1, 10);
 
 const rowCnt = historyList.value[0].rowcnt;
 const lastPage = ref(historyList.value[0].lastpage);
+
+//게시물 갯수가 바뀔 때 사용될 페이지네이션 변경 상수들
+const paginationConstant = () => {
+  nowPageNum.value = 1;
+  rowCnt.value = historyList.value[0].rowcnt;
+  lastPage.value = historyList.value[0].lastpage;
+};
 
 // 게시물 갯수 변경
 watch(showNum, (newShowNum) => {
@@ -115,6 +137,11 @@ function changePage(page) {
 function sorting(e) {
   sortData.value = e.target.value;
   historyStore.sortHistoryListAct(nowPageNum.value, listPage.value, sortData.value);
+}
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
 }
 
 //등록하기 버튼 클릭 함수
