@@ -130,7 +130,7 @@ function sorting(e) {
 //등록하기 버튼 클릭
 function clickRegisterBtn() {
   popupStore.locationOpen();
-  locationStore.locationListAct(nowPageNum.value, showNum.value);
+  locationStore.currentLocationPageAct(nowPageNum.value);
 }
 
 //자사 위치 삭제

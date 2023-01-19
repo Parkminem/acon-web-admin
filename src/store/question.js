@@ -12,9 +12,9 @@ export const useQuestion = defineStore('question', {
      * 문의내역 조회
      * @param (현재페이지, 한 페이지 당 총 게시물 수)
      */
-    async questionListAct(page, count) {
+    async questionListAct(page, count, sortData) {
       await questionApi
-        .fetchQnaList(page, count)
+        .fetchQnaList(page, count, sortData)
         .then((res) => {
           this.questionList = res.data;
         })

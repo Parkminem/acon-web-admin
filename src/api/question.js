@@ -2,12 +2,12 @@ import instance from '@/api/instance';
 
 /**
  * 문의내역 리스트 조회
- * @param (현재페이지, 한 페이지 당 총 게시물 수 )
+ * @param (현재페이지, 한 페이지 당 총 게시물 수, sort 값 )
  */
-function fetchQnaList(page, count) {
+function fetchQnaList(page, count, sortData) {
   return instance.get(
     `/question/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ question_date: 'desc' })
+      JSON.stringify({ question_date: sortData })
     )}`
   );
 }

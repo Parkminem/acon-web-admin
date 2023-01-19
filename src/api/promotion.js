@@ -1,7 +1,7 @@
 import instance from '@/api/instance';
 const jsonData = {
   sort: {
-    regdate: 'desc'
+    promotion_pk: 'desc'
   }
 };
 
