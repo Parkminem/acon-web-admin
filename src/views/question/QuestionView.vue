@@ -27,7 +27,10 @@
           <li>{{ qna.email }}</li>
           <li class="w10">{{ changeDate(qna.question_date) }}</li>
           <li class="w10">
-            <button v-if="!qna.answer_content" @click="goAnswerPage(qna.question_pk)"><span>등록</span></button>
+            <button @click="goAnswerPage(qna.question_pk)">
+              <span v-if="!qna.answer_content">등록</span>
+              <span v-else>보기</span>
+            </button>
           </li>
         </ul>
       </Table>
