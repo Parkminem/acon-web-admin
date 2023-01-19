@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <LocaleList />
           <div class="sortBox">
             <span class="">sort</span>
@@ -90,9 +90,8 @@ watch(showNum, (newShowNum) => {
   function showList(num) {
     const nowpage = historyList.value[0].nowpage;
     listPage.value = Number(num);
-    historyStore.historyListAct(nowpage, num).then((res) => {
-      console.log(res);
-      // lastPage.value = res.data[0].lastpage;
+    historyStore.historyListAct(nowpage, num).then(() => {
+      lastPage.value = historyList.value[0].lastpage;
     });
   }
   if (newShowNum < historyList.value[0].rowcnt) {
