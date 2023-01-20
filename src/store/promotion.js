@@ -24,6 +24,24 @@ export const usePromotion = defineStore('promotion', {
         });
     },
     /**
+     * 프로모션 검색 결과 조회
+     * @param (현재페이지, 한 페이지 당 총 게시물 수 , sort 값, 키워드({조건:키워드}))
+     */
+    async searchPromotionListAct(page, count, sortData, keyword) {
+      await promotionApi
+        .fetchSearchPromotionList(page, count, sortData, keyword)
+        .then((res) => {
+          this.promotionList = res.data;
+        })
+        .catch((err) => {
+          if (err.response.data.code === 'L000') {
+            this.promotionList = null;
+          } else {
+            console.log(err);
+          }
+        });
+    },
+    /**
      *  프로모션 상세 정보 조회 액션
      * @param 고유번호
      */

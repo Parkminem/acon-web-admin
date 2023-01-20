@@ -8,7 +8,7 @@ function fetchQnaTypeList(page, count, sortData) {
   return instance.get(
     `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
       JSON.stringify({ question_type_pk: sortData })
-    )}`
+    )}&keyword=${encodeURIComponent(JSON.stringify({ name_kr: '데이터' }))}`
   );
 }
 

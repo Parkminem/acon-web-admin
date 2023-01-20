@@ -13,6 +13,18 @@ function fetchPromotionList(page, count, sortData) {
 }
 
 /**
+ * 프로모션 검색결과 조회
+ * @param (현재페이지 넘버, 한 페이지 안의 게시물 수, sort값, 키워드({조건:키워드}))
+ */
+function fetchSearchPromotionList(page, count, sortData, keyword) {
+  return instance.get(
+    `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ regdate: sortData })
+    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+  );
+}
+
+/**
  * 프로모션 상세 정보 조회
  * @param 고유번호
  */
@@ -46,6 +58,7 @@ function fetchDeletePromotion(pk) {
 
 const promotionApi = {
   fetchPromotionList,
+  fetchSearchPromotionList,
   fetchDetailPromotion,
   fetchUploadPromotion,
   fetchEditPromotion,

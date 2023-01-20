@@ -29,7 +29,6 @@ export const useQuestion = defineStore('question', {
         .fetchSearchQnaList(page, count, sortData, keyword)
         .then((res) => {
           this.questionList = res.data;
-          console.log(this.questionList);
         })
         .catch((err) => {
           if (err.response.data.code === 'L000') {

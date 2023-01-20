@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <div class="sortBox">
             <span class="">sort</span>
             <select name="" id="" @change="sorting($event)">
@@ -15,7 +15,20 @@
             </select>
           </div>
         </div>
-        <SearchBox />
+        <div class="searchBox">
+          <div class="searchSelect">
+            <select name="" id="" @change="handleSearchValue">
+              <option value="promotion_name" selected>영상 이름</option>
+              <option value="promotion_url">영상 유튜브 주소</option>
+            </select>
+          </div>
+          <div class="searchInput">
+            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
+          </div>
+          <div class="searchBtn">
+            <button @click="searchBtnClick"><span>검색</span></button>
+          </div>
+        </div>
       </div>
       <Table :theadData="theadData.promotion">
         <empty v-if="!promotionList" />
@@ -50,7 +63,6 @@
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 import ShowList from '@/components/utils/ShowList.vue';
-import SearchBox from '@/components/utils/SearchBox.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
@@ -73,24 +85,72 @@ const { promotionList } = storeToRefs(promotionStore);
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
 const sortData = ref();
+const searchInputRef = ref();
+const searchVal = ref('promotion_name');
+let searchData;
 
 //프로모션 리스트 조회
 await promotionStore.promotionListAct(1, 10, 'desc');
 
-const rowCnt = promotionList.value[0].rowcnt;
+const rowCnt = ref(promotionList.value[0].rowcnt);
 const lastPage = ref(promotionList.value[0].lastpage);
 
-//게시물 갯수 변경
+//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
+const paginationConstant = () => {
+  nowPageNum.value = 1;
+  rowCnt.value = promotionList.value[0].rowcnt;
+  lastPage.value = promotionList.value[0].lastpage;
+};
+
+//게시물 갯수 변경 함수
+function showList(num) {
+  const nowPage = promotionList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    promotionStore.promotionListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    promotionStore.promotionListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    promotionStore.searchPromotionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    promotionStore.searchPromotionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
+    });
+  }
+}
+
 watch(showNum, (newShowNum) => {
-  promotionStore.promotionListAct(promotionList.value[0].nowpage, newShowNum);
+  if (newShowNum < promotionList.value[0].rowCnt) {
+    showList(newShowNum);
+  } else {
+    showList(showNum.value);
+  }
 });
 
 //페이지 변경
 function changePage(page) {
-  if (!sortData.value) {
+  if (!sortData.value && !searchInputRef.value) {
     promotionStore.promotionListAct(page, showNum.value, 'desc');
-  } else {
+  } else if (sortData.value && !searchInputRef.value) {
     promotionStore.promotionListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    promotionStore.searchPromotionListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    promotionStore.searchPromotionListAct(page, showNum.value, sortData.value, searchData);
   }
   nowPageNum.value = page;
 }
@@ -98,7 +158,12 @@ function changePage(page) {
 //등록일 sort
 function sorting(e) {
   sortData.value = e.target.value;
-  promotionStore.promotionListAct(nowPageNum.value, listPage.value, sortData.value);
+  if (!searchInputRef.value) {
+    promotionStore.promotionListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    promotionStore.searchPromotionListAct(1, listPage.value, sortData.value, searchData);
+  }
 }
 
 //등록하기 버튼 클릭
@@ -106,6 +171,28 @@ function clickRegisterBtn() {
   popupStore.promotionOpen();
   promotionStore.currentPromotionPageAct(nowPageNum.value);
 }
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
+}
+
+//검색 버튼 클릭
+async function searchBtnClick() {
+  searchData = { [searchVal.value]: searchInputRef.value };
+  await promotionStore
+    .searchPromotionListAct(1, showNum.value, 'desc', searchData)
+    .then(() => {
+      paginationConstant();
+    })
+    .catch((err) => {
+      rowCnt.value = null;
+      lastPage.value = null;
+      nowPageNum.value = null;
+      listPage.value = null;
+    });
+}
+
 //프로모션 삭제
 function deletePromotion(pk) {
   promotionApi
