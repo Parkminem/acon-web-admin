@@ -90,8 +90,8 @@ const onLogin = () => {
 };
 
 const onLogout = () => {
-  token = localStorage.removeItem('token');
-  location.reload();
+  localStorage.removeItem('token');
+  isLoggedIn.value = false;
 };
 </script>
 <style lang="scss" scoped>
