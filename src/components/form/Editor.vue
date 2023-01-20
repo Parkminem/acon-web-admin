@@ -1,58 +1,48 @@
 <template>
   <div class="inputBox">
     <label>{{ title }}</label>
-    <ckeditor :id="title" :config="editorConfig" :editor="editor" v-model="editorDesc" @input="handleInput"></ckeditor>
+    <textarea :id="title" name="a"></textarea>
+    <!-- <ckeditor :id="title" :editor="editor" v-model="editorDesc" @input="handleInput"></ckeditor> -->
   </div>
 </template>
 <script setup>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { ref } from 'vue';
-import { MyCustomUploadAdapterPlugin } from '@/utils/uploadAdapter';
+import 'suneditor/dist/css/suneditor.min.css';
+// import 'suneditor/assets/css/suneditor.css'
+// import 'suneditor/assets/css/suneditor-contents.css'
+import suneditor from 'suneditor';
 
-const editor = ClassicEditor;
+import { font, image, video } from 'suneditor/src/plugins';
+import plugins from 'suneditor/src/plugins';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
   title: String,
   modelValue: String,
-  val: String
+  val: String,
+  editorVar: Object
 });
-const editorDesc = ref(props.val);
-const emit = defineEmits();
 
-function handleInput() {
-  emit('write', editorDesc);
-}
-const editorConfig = {
-  toolbar: [
-    'heading',
-    '|',
-    'fontBackgroundColor',
-    'fontColor',
-    'fontSize',
-    'bold',
-    'italic',
-    '|',
-    'alignment',
-    'bulletedList',
-    'numberedList',
-    'indent',
-    'outdent',
-    '|',
-    'imageUpload',
-    'insertTable',
-    'link',
-    '|',
-    'undo',
-    'redo'
-  ],
-  table: {
-    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
-  },
-  image: {
-    resize: true,
-    toolbar: ['imageStyle:alignLeft', 'imageStyle:alignRight', 'imageStyle:inline', 'imageStyle:side']
-  },
-
-  extraPlugins: [MyCustomUploadAdapterPlugin]
-};
+onMounted(() => {
+  console.log(props.title);
+  props.editorVar.value = suneditor.create(props.title, {
+    plugins,
+    buttonList: [
+      ['undo', 'redo'],
+      ['font', 'fontSize', 'formatBlock'],
+      ['paragraphStyle', 'blockquote'],
+      ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
+      ['fontColor', 'hiliteColor', 'textStyle'],
+      ['removeFormat'],
+      '/', // Line break
+      ['outdent', 'indent'],
+      ['align', 'horizontalRule', 'list', 'lineHeight'],
+      ['table', 'link', 'image', 'video', 'audio' /** ,'math' */], // You must add the 'katex' library at options to use the 'math' plugin.
+      /** ['imageGallery'] */ // You must add the "imageGalleryUrl".
+      ['fullScreen', 'showBlocks', 'codeView'],
+      ['preview', 'print'],
+      ['save', 'template']
+      /** ['dir', 'dir_ltr', 'dir_rtl'] */ // "dir": Toggle text direction, "dir_ltr": Right to Left, "dir_rtl": Left to Right
+    ]
+  });
+});
 </script>
