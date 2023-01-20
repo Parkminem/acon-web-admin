@@ -1,7 +1,7 @@
 <template>
   <div class="loginWrap">
     <!-- v-if로 로그인 전, 후 박스 교체 -->
-    <div class="loginBox" v-if="!token">
+    <div class="loginBox" v-if="!isLoggedIn">
       <div class="title">
         <h1>LOGIN</h1>
       </div>
@@ -54,9 +54,11 @@
 <script setup>
 import { ref, onUpdated } from 'vue';
 import { useAuthStore } from '@/store/auth';
+import authApi from '@/api/auth';
 
 const idVal = ref('');
 const pwVal = ref('');
+const isLoggedIn = ref(false);
 
 const upDown = ref({ 1: false, 2: false });
 
@@ -67,7 +69,21 @@ onUpdated(() => {
 
 const authStore = useAuthStore();
 
-let token = localStorage.getItem('token');
+//토큰 만료인지 아닌지 체크
+if (localStorage.getItem('token')) {
+  authApi
+    .tokenAuth()
+    .then((res) => {
+      if (res.data.code === 'C007') {
+        isLoggedIn.value = true;
+      } else {
+        isLoggedIn.value = false;
+      }
+    })
+    .catch((err) => {
+      isLoggedIn.value = false;
+    });
+}
 
 const onLogin = () => {
   authStore.loginAct(idVal.value, pwVal.value);
