@@ -2,13 +2,24 @@ import instance from '@/api/instance';
 
 /**
  * 문의 유형 리스트 조회
- * @param (현재 페이지, 한 페이지 당 총 게시물 수)
+ * @param (현재 페이지, 한 페이지 당 총 게시물 수, sort값)
  */
 function fetchQnaTypeList(page, count, sortData) {
   return instance.get(
     `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
       JSON.stringify({ question_type_pk: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify({ name_kr: '데이터' }))}`
+    )}`
+  );
+}
+/**
+ * 문의 유형 검색결과 조회
+ * @param (현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건:키워드}))
+ */
+function fetchSearchQnaTypeList(page, count, sortData, Keyword) {
+  return instance.get(
+    `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ question_type_pk: sortData })
+    )}&keyword=${encodeURIComponent(JSON.stringify(Keyword))}`
   );
 }
 
@@ -49,6 +60,7 @@ const questionTypeApi = {
   fetchDetailQnaType,
   fetchUploadQnaType,
   fetchEditQnaType,
-  fetchDeleteQnaType
+  fetchDeleteQnaType,
+  fetchSearchQnaTypeList
 };
 export default questionTypeApi;

@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <LocaleList />
           <div class="sortBox">
             <span class="">sort</span>
@@ -16,7 +16,19 @@
             </select>
           </div>
         </div>
-        <SearchBox />
+        <div class="searchBox">
+          <div class="searchSelect">
+            <select name="" id="" @change="handleSearchValue">
+              <option value="name_kr" selected>문의유형</option>
+            </select>
+          </div>
+          <div class="searchInput">
+            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
+          </div>
+          <div class="searchBtn">
+            <button @click="searchBtnClick"><span>검색</span></button>
+          </div>
+        </div>
       </div>
       <Table :theadData="theadData.questionType">
         <Empty v-if="!questionTypeList" />
@@ -50,11 +62,10 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 import ShowList from '@/components/utils/ShowList.vue';
-import SearchBox from '@/components/utils/SearchBox.vue';
 import Table from '@/components/utils/Table.vue';
 import Empty from '@/components/utils/Empty.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
@@ -75,20 +86,74 @@ const { questionTypeList } = storeToRefs(questionTypeStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
+const searchVal = ref('name_kr');
+const searchInputRef = ref();
+
 const sortData = ref();
+let searchData;
 
 //문의 유형 리스트 조회
 await questionTypeStore.questionTypeListAct(1, 10, 'desc');
 
-const rowCnt = questionTypeList.value[0].rowcnt;
+const rowCnt = ref(questionTypeList.value[0].rowcnt);
 const lastPage = ref(questionTypeList.value[0].lastpage);
+
+//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
+const paginationConstant = () => {
+  nowPageNum.value = 1;
+  rowCnt.value = questionTypeList.value[0].rowcnt;
+  lastPage.value = questionTypeList.value[0].lastpage;
+};
+
+//게시물 갯수 변경 함수
+function showList(num) {
+  const nowPage = questionTypeList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
+    });
+  }
+}
+
+watch(showNum, (newShowNum) => {
+  if (newShowNum < questionTypeList.value[0].rowcnt) {
+    showList(newShowNum);
+  } else {
+    showList(showNum.value);
+  }
+});
 
 //페이지 변경
 function changePage(page) {
-  if (!sortData.value) {
+  if (!sortData.value && !searchInputRef.value) {
     questionTypeStore.questionTypeListAct(page, showNum.value, 'desc');
-  } else {
+  } else if (sortData.value && !searchInputRef.value) {
     questionTypeStore.questionTypeListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionTypeStore.searchQuestionTypeListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionTypeStore.searchQuestionTypeListAct(page, showNum.value, sortData.value, searchData);
   }
   nowPageNum.value = page;
 }
@@ -102,7 +167,33 @@ function clickRegisterBtn() {
 //등록 순서 sort
 function sorting(e) {
   sortData.value = e.target.value;
-  questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+  if (!searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionTypeStore.searchQuestionTypeListAct(1, listPage.value, sortData.value, searchData);
+  }
+}
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
+}
+
+//검색 버튼 클릭
+async function searchBtnClick() {
+  searchData = { [searchVal.value]: searchInputRef.value };
+  await questionTypeStore
+    .searchQuestionTypeListAct(1, showNum.value, 'desc', searchData)
+    .then(() => {
+      paginationConstant();
+    })
+    .catch((err) => {
+      rowCnt.value = null;
+      lastPage.value = null;
+      nowPageNum.value = null;
+      listPage.value = null;
+    });
 }
 
 //문의 유형 삭제
