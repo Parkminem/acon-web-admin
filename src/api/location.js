@@ -11,8 +11,16 @@ function fetchLocationList(page, count, sortData) {
 }
 
 /**
- *
+ * 위치 검색결과 조회
+ * @param (현재페이지 , 한 페이지 당 총 게시물 수, sort값, 키워드({조건 : 키워드}))
  */
+function fetchSearchLocationList(page, count, sortData, keyword) {
+  return instance.get(
+    `/location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ regdate: sortData })
+    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+  );
+}
 
 /**
  * 자사 위치 상세 정보 반환
@@ -50,7 +58,8 @@ const locationApi = {
   fetchDetailLocation,
   fetchUploadLocation,
   fetchEditLocation,
-  fetchDeleteLocation
+  fetchDeleteLocation,
+  fetchSearchLocationList
 };
 
 export default locationApi;
