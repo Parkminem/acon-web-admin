@@ -6,11 +6,13 @@ import instance from '@/api/instance';
  */
 function fetchLocationList(page, count, sortData) {
   return instance.get(
-    `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ regdate: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify({ name_kr: '판교' }))}`
+    `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ regdate: sortData }))}`
   );
 }
+
+/**
+ *
+ */
 
 /**
  * 자사 위치 상세 정보 반환

@@ -11,7 +11,7 @@ export const usePromotion = defineStore('promotion', {
   actions: {
     /**
      * 프로모션 리스트 조회 액션
-     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수)
+     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수, sort 값)
      */
     async promotionListAct(page, count, sortData) {
       await promotionApi

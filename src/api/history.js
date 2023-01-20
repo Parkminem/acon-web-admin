@@ -3,24 +3,23 @@ const keyword = {
   year: '2021'
 };
 /**
- * sort 없는 연혁 리스트 조희
- * @param (페이지 넘버, 한 페이지 안의 게시물 수)
+ * 연혁 리스트 조희
+ * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)
  */
-function fetchHistoryList(page, count) {
+function fetchHistoryList(page, count, sortData) {
   return instance.get(
-    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ year: 'desc' })
-    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ year: sortData }))}`
   );
 }
-//키워드체크용 &keyword=${encodeURIComponent(JSON.stringify(keyword))}
 /**
  * sort한 연혁 리스트 조회
  * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)
  */
-function fetchSortHistoryList(page, count, sortData) {
+function fetchSearchHistoryList(page, count, sortData, keyword) {
   return instance.get(
-    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ year: sortData }))}`
+    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+      JSON.stringify({ year: sortData })
+    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
   );
 }
 /**
@@ -60,7 +59,7 @@ const historyApi = {
   fetchUploadHistory,
   fetchEditHistory,
   fecthDeleteHistory,
-  fetchSortHistoryList
+  fetchSearchHistoryList
 };
 
 export default historyApi;

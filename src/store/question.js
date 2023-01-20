@@ -10,7 +10,7 @@ export const useQuestion = defineStore('question', {
   actions: {
     /**
      * 문의내역 조회
-     * @param (현재페이지, 한 페이지 당 총 게시물 수)
+     * @param (현재페이지, 한 페이지 당 총 게시물 수, sort 값)
      */
     async questionListAct(page, count, sortData) {
       await questionApi

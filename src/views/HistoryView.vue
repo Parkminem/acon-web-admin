@@ -5,7 +5,7 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="tableTop">
         <div class="left">
-          <!-- <ShowList /> -->
+          <ShowList />
           <LocaleList />
           <div class="sortBox">
             <span class="">sort</span>
@@ -93,11 +93,12 @@ const listPage = ref(showNum.value);
 const sortData = ref();
 const searchVal = ref('content_kr');
 const searchInputRef = ref();
+let searchData;
 
 //연혁 리스트 조회
-await historyStore.historyListAct(1, 10);
+await historyStore.historyListAct(1, 10, 'desc');
 
-const rowCnt = historyList.value[0].rowcnt;
+const rowCnt = ref(historyList.value[0].rowcnt);
 const lastPage = ref(historyList.value[0].lastpage);
 
 //게시물 갯수가 바뀔 때 사용될 페이지네이션 변경 상수들
@@ -107,15 +108,34 @@ const paginationConstant = () => {
   lastPage.value = historyList.value[0].lastpage;
 };
 
-// 게시물 갯수 변경
-watch(showNum, (newShowNum) => {
-  function showList(num) {
-    const nowPage = historyList.value[0].nowpage;
-    listPage.value = Number(num);
-    historyStore.historyListAct(nowPage, num).then(() => {
-      lastPage.value = historyList.value[0].lastpage;
+// 게시물 갯수 변경 함수
+function showList(num) {
+  const nowPage = historyList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    historyStore.historyListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    historyStore.historyListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    historyStore.seartchHistoryListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    historyStore.seartchHistoryListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
     });
   }
+}
+
+watch(showNum, (newShowNum) => {
   if (newShowNum < historyList.value[0].rowcnt) {
     showList(newShowNum);
   } else {
@@ -125,10 +145,18 @@ watch(showNum, (newShowNum) => {
 
 //페이지 변경
 function changePage(page) {
-  if (!sortData.value) {
-    historyStore.historyListAct(page, showNum.value);
+  if (!sortData.value && !searchInputRef.value) {
+    historyStore.historyListAct(page, showNum.value, 'desc');
+  } else if (sortData.value && !searchInputRef.value) {
+    historyStore.historyListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    historyStore.seartchHistoryListAct(page, showNum.value, 'desc', searchData);
   } else {
-    historyStore.sortHistoryListAct(page, showNum.value, sortData.value);
+    searchData = { [searchVal.value]: searchInputRef.value };
+    historyStore.seartchHistoryListAct(page, showNum.value, sortData.value, searchData);
   }
   nowPageNum.value = page;
 }
@@ -136,12 +164,32 @@ function changePage(page) {
 //년도 sort
 function sorting(e) {
   sortData.value = e.target.value;
-  historyStore.sortHistoryListAct(nowPageNum.value, listPage.value, sortData.value);
+  if (!searchInputRef.value) {
+    historyStore.historyListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    historyStore.seartchHistoryListAct(1, listPage.value, sortData.value, searchData);
+  }
 }
 
 //검색 조건 변경
 function handleSearchValue(e) {
   searchVal.value = e.target.value;
+}
+
+async function searchBtnClick() {
+  searchData = { [searchVal.value]: searchInputRef.value };
+  await historyStore
+    .seartchHistoryListAct(1, showNum.value, 'desc', searchData)
+    .then(() => {
+      paginationConstant();
+    })
+    .catch((err) => {
+      rowCnt.value = null;
+      lastPage.value = null;
+      nowPageNum.value = null;
+      listPage.value = null;
+    });
 }
 
 //등록하기 버튼 클릭 함수
