@@ -182,7 +182,9 @@ async function searchBtnClick() {
 }
 
 //갱신 버튼 클릭
-function clickRenewalHandler() {}
+function clickRenewalHandler() {
+  portfolioStore.renewalPortfolioAct(1, showNum.value, 'desc');
+}
 </script>
 <style lang="scss" scoped>
 .renewalBtn {

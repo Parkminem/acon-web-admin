@@ -39,7 +39,23 @@ export const usePortfolio = defineStore('portfolio', {
           }
         });
     },
-
+    /**
+     * 포트폴리오 갱신 후 최신 리스트 조회
+     * @param(현재페이지 넘버, 한 페이지 안의 게시물 수, sort값)
+     */
+    async renewalPortfolioAct(page, count, sortData) {
+      this.portfolioList = null;
+      await portfolioApi
+        .fetchRenewalPortfolio()
+        .then((res) => {
+          if (res.data.status === 200) {
+            this.portfolioListAct(page, count, sortData);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     /**
      * 현재 페이지 저장 액션
      * @param 현재 페이지

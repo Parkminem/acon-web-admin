@@ -24,9 +24,17 @@ function fetchSearchPortfolioList(page, count, sortData, keyword) {
   );
 }
 
+/**
+ * 포트폴리오 갱신
+ */
+function fetchRenewalPortfolio() {
+  return instance.put('/portfolio/sync');
+}
+
 const portfolioApi = {
   fetchPortfolioList,
-  fetchSearchPortfolioList
+  fetchSearchPortfolioList,
+  fetchRenewalPortfolio
 };
 
 export default portfolioApi;
