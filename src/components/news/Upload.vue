@@ -38,7 +38,6 @@ import { ref, reactive, toRefs } from 'vue';
 import { useNewsStore } from '@/store/news';
 import { storeToRefs } from 'pinia';
 import newsApi from '@/api/news';
-import router from '@/routes';
 
 const newsStore = useNewsStore();
 const { detailNews } = storeToRefs(newsStore);
@@ -66,10 +65,10 @@ function emitFile(val) {
   thumbnail.value = val;
 }
 
-let krDesc = ref('');
-let idDesc = ref('');
-let ptDesc = ref('');
-let enDesc = ref('');
+let krDesc = ref();
+let idDesc = ref();
+let ptDesc = ref();
+let enDesc = ref();
 
 // 수정 렌더링 시 데이터 삽입
 if (detailNews.value) {
@@ -117,7 +116,7 @@ function onUpload() {
     .fetchUploadNews(formData) //
     .then((res) => {
       console.log(res);
-      router.push('/news');
+      window.location.href = '/news';
     })
     .catch((err) => {
       console.log(err);
@@ -134,13 +133,13 @@ function editNews() {
   formData.append('content_id', idEditor.value.value.getContents(true));
   formData.append('content_pt', ptEditor.value.value.getContents(true));
   formData.append('content_us', enEditor.value.value.getContents(true));
-
+  console.log(...formData);
   newsApi
     .fetchEditNews(detailNews.value.news_pk, formData)
     .then((res) => {
       if (res.data.status === 200) {
         alert('수정이 완료되었습니다');
-        router.push('/news');
+        window.location.href = '/news';
       }
     })
     .catch((err) => {

@@ -17,7 +17,6 @@ import { onMounted } from 'vue';
 
 const props = defineProps({
   title: String,
-  modelValue: String,
   editorVar: Object,
   name: String,
   desc: String
