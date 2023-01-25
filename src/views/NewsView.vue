@@ -12,8 +12,8 @@
       </div>
       <Table :theadData="theadData.news">
         <!-- t-body -->
-        <ul class="td" v-for="(news, index) of newsStore.newsList" :key="news.pk">
-          <li class="w10">{{ index + 1 }}</li>
+        <ul class="td" v-for="(news, index) of newsStore.newsList" :key="news.news_pk">
+          <li class="w10">{{ news.news_pk }}</li>
           <li v-if="locale === 'kr'">{{ news.title_kr }}</li>
           <li v-if="locale === 'en'">{{ news.title_en }}</li>
           <li v-if="locale === 'id'">{{ news.title_id }}</li>

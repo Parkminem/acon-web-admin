@@ -1,8 +1,7 @@
 <template>
   <div class="inputBox">
     <label>{{ title }}</label>
-    <textarea :id="title" name="a"></textarea>
-    <!-- <ckeditor :id="title" :editor="editor" v-model="editorDesc" @input="handleInput"></ckeditor> -->
+    <textarea :id="title" :name="name" :desc="desc"></textarea>
   </div>
 </template>
 <script setup>
@@ -10,20 +9,21 @@ import 'suneditor/dist/css/suneditor.min.css';
 // import 'suneditor/assets/css/suneditor.css'
 // import 'suneditor/assets/css/suneditor-contents.css'
 import suneditor from 'suneditor';
+import lang from 'suneditor/src/lang';
 
 import { font, image, video } from 'suneditor/src/plugins';
 import plugins from 'suneditor/src/plugins';
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 
 const props = defineProps({
   title: String,
   modelValue: String,
-  val: String,
-  editorVar: Object
+  editorVar: Object,
+  name: String,
+  desc: String
 });
 
 onMounted(() => {
-  console.log(props.title);
   props.editorVar.value = suneditor.create(props.title, {
     plugins,
     buttonList: [
@@ -42,7 +42,9 @@ onMounted(() => {
       ['preview', 'print'],
       ['save', 'template']
       /** ['dir', 'dir_ltr', 'dir_rtl'] */ // "dir": Toggle text direction, "dir_ltr": Right to Left, "dir_rtl": Left to Right
-    ]
+    ],
+    lang: lang.ko
   });
+  props.editorVar.value.setContents(props.desc);
 });
 </script>
