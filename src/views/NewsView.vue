@@ -62,7 +62,8 @@ const { newsList } = storeToRefs(newsStore);
 
 // 소식 등록하기로 이동
 function goUpload() {
-  router.push('/news/upload');
+  // router.push('/news/upload');
+  window.location.href = '/news/upload';
 }
 
 // 소식 리스트 불러오기
