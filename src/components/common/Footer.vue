@@ -1,6 +1,9 @@
 <template>
   <div class="footer">
-    <p>© Copyright 2022. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
+    <p class="footer__text">
+      © Copyright 2022. All right reserved. Template by
+      <a href="https://colorlib.com/wp/" class="footer__link">Colorlib</a>.
+    </p>
   </div>
 </template>
 <script setup></script>
@@ -8,15 +11,15 @@
 .footer {
   background-color: #fff;
   padding: 30px 0;
-  p {
+  &__text {
     width: 100%;
     text-align: center;
     font-weight: 300;
     color: #676666;
     font-size: $fontM;
-    a {
-      color: #007bff;
-    }
+  }
+  &__link {
+    color: #007bff;
   }
 }
 </style>
