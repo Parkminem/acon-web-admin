@@ -18,10 +18,10 @@
           v-model="isActiveRef"
           :checked="isActiveRef"
         />
-        <Editor title="내용(한국어)" @write="emitKrDesc" :val="krDesc" :editorVar="krEditor" />
-        <Editor title="내용(인도네시아어)" @write="emitIdDesc" :val="idDesc" :editorVar="idEditor" />
-        <Editor title="내용(포르투갈어)" @write="emitPtDesc" :val="ptDesc" :editorVar="ptEditor" />
-        <Editor title="내용(영어)" @write="emitEnDesc" :val="enDesc" :editorVar="enEditor" />
+        <Editor name="content_kr" title="내용(한국어)" :editorVar="krEditor" :desc="krDesc" />
+        <Editor name="content_id" title="내용(인도네시아어)" :editorVar="idEditor" :desc="idDesc" />
+        <Editor name="content_pt" title="내용(포르투갈어)" :editorVar="ptEditor" :desc="ptDesc" />
+        <Editor name="content_us" title="내용(영어)" :editorVar="enEditor" :desc="enDesc" />
         <button class="submitBtn" @click.prevent="onUpload" v-if="!detailNews">완료</button>
         <button class="submitBtn" @click.prevent="editNews" v-else>수정</button>
       </form>
@@ -38,7 +38,6 @@ import { ref, reactive, toRefs } from 'vue';
 import { useNewsStore } from '@/store/news';
 import { storeToRefs } from 'pinia';
 import newsApi from '@/api/news';
-import router from '@/routes';
 
 const newsStore = useNewsStore();
 const { detailNews } = storeToRefs(newsStore);
@@ -52,33 +51,24 @@ function editorRefSetting() {
   });
   return toRefs(state);
 }
+
 const { krEditor, idEditor, ptEditor, enEditor } = editorRefSetting();
+
 const krTitle = ref('');
 const idTitle = ref('');
 const ptTitle = ref('');
 const enTitle = ref('');
 const thumbnail = ref('');
-const krDesc = ref('');
-const idDesc = ref('');
-const ptDesc = ref('');
-const enDesc = ref('');
 const isActiveRef = ref('');
 
 function emitFile(val) {
   thumbnail.value = val;
 }
-function emitKrDesc(val) {
-  krDesc.value = val.value;
-}
-function emitIdDesc(val) {
-  idDesc.value = val.value;
-}
-function emitPtDesc(val) {
-  ptDesc.value = val.value;
-}
-function emitEnDesc(val) {
-  enDesc.value = val.value;
-}
+
+let krDesc = ref();
+let idDesc = ref();
+let ptDesc = ref();
+let enDesc = ref();
 
 // 수정 렌더링 시 데이터 삽입
 if (detailNews.value) {
@@ -87,72 +77,69 @@ if (detailNews.value) {
   ptTitle.value = detailNews.value.title_pt;
   enTitle.value = detailNews.value.title_us;
   thumbnail.value = detailNews.value.thumbnail_origin_name;
-  krDesc.value = detailNews.value.content_kr;
-  idDesc.value = detailNews.value.content_id;
-  ptDesc.value = detailNews.value.content_pt;
-  enDesc.value = detailNews.value.content_us;
+  krDesc = ref(detailNews.value.content_kr);
+  idDesc = ref(detailNews.value.content_id);
+  ptDesc = ref(detailNews.value.content_pt);
+  enDesc = ref(detailNews.value.content_us);
   if (detailNews.value.active_flag == 1) {
     isActiveRef.value = '1';
   } else {
     isActiveRef.value = '-1';
   }
-  console.log(thumbnail.value);
 }
 
 // 뉴스 등록
 function onUpload() {
-  console.log(krEditor.value.value.getContents(true));
-  console.log(...new FormData(document.getElementById('form')));
-  if (
-    krTitle.value.length === 0 ||
-    idTitle.value.length === 0 ||
-    ptTitle.value.length === 0 ||
-    enTitle.value.length === 0 ||
-    thumbnail.value.length === 0 ||
-    !isActiveRef.value.length ||
-    krDesc.value.length === 0 ||
-    idDesc.value.length === 0 ||
-    ptDesc.value.length === 0 ||
-    enDesc.value.length === 0
-  ) {
-    alert('모든 내용을 입력해주세요.');
-  } else {
-    const form = document.getElementById('form');
-    const formData = new FormData(form);
+  // if (
+  //   krTitle.value.length === 0 ||
+  //   idTitle.value.length === 0 ||
+  //   ptTitle.value.length === 0 ||
+  //   enTitle.value.length === 0 ||
+  //   thumbnail.value.length === 0 ||
+  //   !isActiveRef.value.length ||
+  //   krDesc.value.length === 0 ||
+  //   idDesc.value.length === 0 ||
+  //   ptDesc.value.length === 0 ||
+  //   enDesc.value.length === 0
+  // ) {
+  //   alert('모든 내용을 입력해주세요.');
+  // } else {
+  const form = document.getElementById('form');
+  const formData = new FormData(form);
 
-    formData.append('content_kr', krDesc.value);
-    formData.append('content_id', idDesc.value);
-    formData.append('content_pt', ptDesc.value);
-    formData.append('content_us', enDesc.value);
-
-    newsApi
-      .fetchUploadNews(formData) //
-      .then((res) => {
-        console.log(res);
-        router.push('/news');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  formData.append('content_kr', krEditor.value.value.getContents(true));
+  formData.append('content_id', idEditor.value.value.getContents(true));
+  formData.append('content_pt', ptEditor.value.value.getContents(true));
+  formData.append('content_us', enEditor.value.value.getContents(true));
+  console.log(...formData);
+  newsApi
+    .fetchUploadNews(formData) //
+    .then((res) => {
+      console.log(res);
+      window.location.href = '/news';
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
+// }
 
 // 뉴스 수정
 function editNews() {
   const form = document.getElementById('form');
   const formData = new FormData(form);
 
-  formData.append('content_kr', krDesc.value);
-  formData.append('content_id', idDesc.value);
-  formData.append('content_pt', ptDesc.value);
-  formData.append('content_us', enDesc.value);
-
+  formData.append('content_kr', krEditor.value.value.getContents(true));
+  formData.append('content_id', idEditor.value.value.getContents(true));
+  formData.append('content_pt', ptEditor.value.value.getContents(true));
+  formData.append('content_us', enEditor.value.value.getContents(true));
+  console.log(...formData);
   newsApi
     .fetchEditNews(detailNews.value.news_pk, formData)
     .then((res) => {
       if (res.data.status === 200) {
         alert('수정이 완료되었습니다');
-        router.push('/news');
+        window.location.href = '/news';
       }
     })
     .catch((err) => {
