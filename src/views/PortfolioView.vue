@@ -1,7 +1,10 @@
 <template>
-  <SubTitle>문의내역</SubTitle>
+  <SubTitle>포트폴리오</SubTitle>
   <div class="container">
     <div class="section">
+      <div class="renewalBtn">
+        <button @click="clickRenewalHandler"><span>갱신</span></button>
+      </div>
       <div class="tableTop">
         <div class="left">
           <ShowList />
@@ -17,12 +20,7 @@
         <div class="searchBox">
           <div class="searchSelect">
             <select name="" id="" @change="handleSearchValue">
-              <option value="question_type_kr">문의유형</option>
-              <option value="name" selected>이름</option>
-              <option value="company">회사명</option>
-              <option value="phone">연락처</option>
-              <option value="email">이메일</option>
-              <option value="question_date">등록일</option>
+              <option value="title" selected>영상 이름</option>
             </select>
           </div>
           <div class="searchInput">
@@ -33,22 +31,17 @@
           </div>
         </div>
       </div>
-      <Table :theadData="theadData.question">
-        <Empty v-if="!questionList" />
-        <ul class="td" v-else v-for="(qna, idx) in questionList" :key="qna.question_pk">
-          <li class="w10">{{ qna.nowpage > 1 ? (qna.nowpage - 1) * 10 + (idx + 1) : idx + 1 }}</li>
-          <li class="w10">{{ qna.question_type_kr }}</li>
-          <li class="w10">{{ qna.name }}</li>
-          <li class="w10">{{ qna.company }}</li>
-          <li class="w10">{{ qna.phone }}</li>
-          <li>{{ qna.email }}</li>
-          <li class="w10">{{ new Date(qna.question_date).toLocaleDateString() }}</li>
-          <li class="w10">
-            <button @click="goAnswerPage(qna.question_pk)">
-              <span v-if="!qna.answer_content">등록</span>
-              <span v-else>보기</span>
-            </button>
+      <Table :theadData="theadData.portfolio">
+        <empty v-if="!portfolioList" />
+        <ul v-else class="td" v-for="(i, idx) in portfolioList" :key="i.id">
+          <li class="w10">{{ i.nowpage > 1 ? (i.nowpage - 1) * 10 + (idx + 1) : idx + 1 }}</li>
+          <li class="">{{ i.title }}</li>
+          <li class="w20">
+            <a :href="`https://www.youtube.com/watch?v=${i.video_id}`" target="_blank"
+              >https://www.youtube.com/watch?v={{ i.video_id }}</a
+            >
           </li>
+          <li class="w10">{{ new Date(i.regdate).toLocaleDateString() }}</li>
         </ul>
       </Table>
       <div class="tableBottom">
@@ -65,74 +58,73 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ShowList from '@/components/utils/ShowList.vue';
-import Empty from '@/components/utils/Empty.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
-import { theadData } from '@/utils/theadData';
+import Empty from '@/components/utils/Empty.vue';
+import { usePortfolio } from '@/store/portfolio';
 import { useSelect } from '@/store/utils';
-import { useQuestion } from '@/store/question';
+import { theadData } from '@/utils/theadData';
+import portfolioApi from '@/api/portfolio';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import router from '@/routes';
 
+const portfolioStore = usePortfolio();
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
-const questionStore = useQuestion();
-const { questionList } = storeToRefs(questionStore);
+const { portfolioList } = storeToRefs(portfolioStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
-const searchVal = ref('name');
-const searchInputRef = ref();
-
 const sortData = ref();
+const searchInputRef = ref();
+const searchVal = ref('title');
 let searchData;
 
-//문의 내역 조회
-await questionStore.questionListAct(1, 10, 'desc');
+//포트폴리오 리스트 조회
+await portfolioStore.portfolioListAct(1, 10, 'desc');
 
-const rowCnt = ref(questionList.value[0].rowcnt);
-const lastPage = ref(questionList.value[0].lastpage);
+const rowCnt = ref(portfolioList.value[0].rowcnt);
+const lastPage = ref(portfolioList.value[0].lastpage);
 
 //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
 const paginationConstant = () => {
   nowPageNum.value = 1;
-  rowCnt.value = questionList.value[0].rowcnt;
-  lastPage.value = questionList.value[0].lastpage;
+  rowCnt.value = portfolioList.value[0].rowcnt;
+  lastPage.value = portfolioList.value[0].lastpage;
 };
 
 //게시물 갯수 변경 함수
 function showList(num) {
-  const nowPage = questionList.value[0].nowpage;
+  const nowPage = portfolioList.value[0].nowpage;
   listPage.value = Number(num);
   if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
+    portfolioStore.portfolioListAct(nowPage, showNum.value, 'desc').then(() => {
       paginationConstant();
     });
   } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
+    portfolioStore.portfolioListAct(nowPage, showNum.value, sortData.value).then(() => {
       paginationConstant();
     });
   } else if (!sortData.value && searchInputRef.value) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+    portfolioStore.searchPortfolioListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
       paginationConstant();
     });
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    portfolioStore.searchPortfolioListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   }
 }
 
 watch(showNum, (newShowNum) => {
-  if (newShowNum < questionList.value[0].rowcnt) {
+  if (newShowNum < portfolioList.value[0].rowCnt) {
     showList(newShowNum);
   } else {
     showList(showNum.value);
@@ -142,17 +134,17 @@ watch(showNum, (newShowNum) => {
 //페이지 변경
 function changePage(page) {
   if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, 'desc');
+    portfolioStore.portfolioListAct(page, showNum.value, 'desc');
   } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, sortData.value);
+    portfolioStore.portfolioListAct(page, showNum.value, sortData.value);
   } else if (!sortData.value && searchInputRef.value) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    questionStore.searchQuestionListAct(page, showNum.value, 'desc', searchData);
+    portfolioStore.searchPortfolioListAct(page, showNum.value, 'desc', searchData);
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(page, showNum.value, sortData.value, searchData);
+    portfolioStore.searchPortfolioListAct(page, showNum.value, sortData.value, searchData);
   }
   nowPageNum.value = page;
 }
@@ -161,16 +153,11 @@ function changePage(page) {
 function sorting(e) {
   sortData.value = e.target.value;
   if (!searchInputRef.value) {
-    questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
+    portfolioStore.portfolioListAct(nowPageNum.value, listPage.value, sortData.value);
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
+    portfolioStore.searchPortfolioListAct(1, listPage.value, sortData.value, searchData);
   }
-}
-
-//답변 등록 페이지로 이동
-function goAnswerPage(pk) {
-  router.push(`/question/answer?pk=${pk}`);
 }
 
 //검색 조건 변경
@@ -181,8 +168,8 @@ function handleSearchValue(e) {
 //검색 버튼 클릭
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
-  await questionStore
-    .searchQuestionListAct(1, showNum.value, 'desc', searchData)
+  await portfolioStore
+    .searchPortfolioListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })
@@ -193,5 +180,22 @@ async function searchBtnClick() {
       listPage.value = null;
     });
 }
+
+//갱신 버튼 클릭
+function clickRenewalHandler() {}
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.renewalBtn {
+  button {
+    padding: 11px 17px;
+    background-color: #343a40;
+    color: #fff;
+    border-radius: 3px;
+    transition: all 0.25s ease-out;
+    margin-bottom: 20px;
+    &:hover {
+      background-color: #000;
+    }
+  }
+}
+</style>

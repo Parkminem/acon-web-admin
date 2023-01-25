@@ -36,6 +36,11 @@
               </ul>
             </li>
             <li class="depth01">
+              <router-link to="/portfolio"
+                ><span class="material-icons"> handyman </span><span>포트폴리오</span></router-link
+              >
+            </li>
+            <li class="depth01" v-if="false">
               <router-link to="/promotion"
                 ><span class="material-icons"> handyman </span><span>홍보영상</span></router-link
               >
