@@ -45,3 +45,25 @@ function handleInput(event) {
   emit('update:modelValue', value);
 }
 </script>
+<style lang="scss" scoped>
+.radioBox {
+  font-size: $fontL;
+  &:not(&:last-child) {
+    margin-bottom: 5px;
+  }
+  input[type='radio'] {
+    vertical-align: middle;
+    appearance: none;
+    background-color: #ddd;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    margin-right: 10px;
+    border-radius: 100px;
+    &:checked {
+      border: 5px solid #333;
+      background-color: #fff;
+    }
+  }
+}
+</style>

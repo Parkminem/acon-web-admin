@@ -1,13 +1,13 @@
 <template>
   <div class="cover" @click="popupStore.partnerClose"></div>
-  <div class="inner">
-    <div class="popupHeader">
-      <h1 v-if="!detailPartner">파트너사 등록</h1>
-      <h1 v-else>파트너사 수정</h1>
+  <div class="popup">
+    <div class="popup__header">
+      <h1 v-if="!detailPartner" class="popup__header__title">파트너사 등록</h1>
+      <h1 v-else class="popup__header__title">파트너사 수정</h1>
       <button @click="popupStore.partnerClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" enctype="multipart/form-data" id="form">
-      <div class="popupBody">
+      <div class="popup__body">
         <Input name="name_kr" title="파트너사명(한국어)" placeholder="IDEACONCERT" v-model="krPartner" />
         <Input name="name_id" title="파트너사명(인도네시아어)" placeholder="IDEACONCERT" v-model="idPartner" />
         <Input name="name_pt" title="파트너사명(포르투갈어)" placeholder="IDEACONCERT" v-model="ptPartner" />
@@ -15,9 +15,11 @@
         <Input name="url" title="파트너사 홈페이지" placeholder="http://ideaconcert.com" v-model="homepage" />
         <File title="로고" @fileValue="emitFile" :name="fileName" />
       </div>
-      <div class="popupFooter">
-        <button v-if="!detailPartner" @click.prevent="uploadPartner"><span>등록</span></button>
-        <button v-else @click.prevent="editPartner"><span>수정</span></button>
+      <div class="popup__footer">
+        <button v-if="!detailPartner" @click.prevent="uploadPartner" class="popup__footer__btn">
+          <span>등록</span>
+        </button>
+        <button v-else @click.prevent="editPartner" class="popup__footer__btn"><span>수정</span></button>
       </div>
     </form>
   </div>

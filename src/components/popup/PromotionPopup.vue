@@ -1,13 +1,13 @@
 <template>
   <div class="cover" @click="popupStore.promotionClose"></div>
-  <div class="inner">
-    <div class="popupHeader">
-      <h1 v-if="!detailPromotion">프로모션 영상 등록</h1>
-      <h1 v-else>프로모션 영상 수정</h1>
+  <div class="popup">
+    <div class="popup__header">
+      <h1 v-if="!detailPromotion" class="popup__header__title">프로모션 영상 등록</h1>
+      <h1 v-else class="popup__header__title">프로모션 영상 수정</h1>
       <button @click="popupStore.promotionClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" id="form">
-      <div class="popupBody">
+      <div class="popup__body">
         <Input name="promotion_name" title="홍보영상 이름" placeholder="쿠키런" v-model="name" />
         <Input
           name="promotion_url"
@@ -17,9 +17,11 @@
         />
         <Checkbox name="view_status" title="홍보영상 공개 여부" v-model="openCheck" :checked="openCheck" />
       </div>
-      <div class="popupFooter">
-        <button v-if="!detailPromotion" @click.prevent="uploadPromotion"><span>등록</span></button>
-        <button v-else @click.prevent="editPromotion"><span>수정</span></button>
+      <div class="popup__footer">
+        <button v-if="!detailPromotion" @click.prevent="uploadPromotion" class="popup__footer__btn">
+          <span>등록</span>
+        </button>
+        <button v-else @click.prevent="editPromotion" class="popup__footer__btn"><span>수정</span></button>
       </div>
     </form>
   </div>

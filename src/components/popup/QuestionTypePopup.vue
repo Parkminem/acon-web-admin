@@ -1,21 +1,23 @@
 <template>
   <div class="cover" @click="popupStore.questionTypeClose"></div>
-  <div class="inner">
-    <div class="popupHeader">
-      <h1 v-if="!detailQuestionType">문의유형 등록</h1>
-      <h1 v-else>문의유형 등록</h1>
+  <div class="popup">
+    <div class="popup__header">
+      <h1 v-if="!detailQuestionType" class="popup__header__title">문의유형 등록</h1>
+      <h1 v-else class="popup__header__title">문의유형 등록</h1>
       <button @click="popupStore.questionTypeClose"><span class="material-icons"> close </span></button>
     </div>
     <form action="" id="form">
-      <div class="popupBody">
+      <div class="popup__body">
         <Input name="name_kr" title="문의유형명(한국어)" v-model="krType" />
         <Input name="name_id" title="문의유형명(인도네시아어)" v-model="idType" />
         <Input name="name_pt" title="문의유형명(포르투갈어)" v-model="ptType" />
         <Input name="name_us" title="문의유형명(영어)" v-model="enType" />
       </div>
-      <div class="popupFooter">
-        <button v-if="!detailQuestionType" @click.prevent="uploadQuestionType"><span>등록</span></button>
-        <button v-else @click.prevent="editQuestionType"><span>수정</span></button>
+      <div class="popup__footer">
+        <button v-if="!detailQuestionType" @click.prevent="uploadQuestionType" class="popup__footer__btn">
+          <span>등록</span>
+        </button>
+        <button v-else @click.prevent="editQuestionType" class="popup__footer__btn"><span>수정</span></button>
       </div>
     </form>
   </div>

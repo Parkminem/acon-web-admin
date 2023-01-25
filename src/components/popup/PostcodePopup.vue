@@ -72,5 +72,17 @@ if (!locationPopupState.value) {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/assets/style/popup.scss';
+.address {
+  margin-bottom: 10px;
+  background-color: #e9ecef;
+}
+.addressBtn {
+  width: 100%;
+  border: 1px solid #222;
+  padding: 7px 0;
+  font-size: $fontM - 1;
+  &:active {
+    border: none;
+  }
+}
 </style>

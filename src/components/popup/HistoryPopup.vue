@@ -1,13 +1,13 @@
 <template>
   <div class="cover" @click="popupStore.historyClose"></div>
-  <div class="inner">
-    <div class="popupHeader">
-      <h1 v-if="!detailHistory">연혁 등록</h1>
-      <h1 v-else>연혁 수정</h1>
+  <div class="popup">
+    <div class="popup__header">
+      <h1 v-if="!detailHistory" class="popup__header__title">연혁 등록</h1>
+      <h1 v-else class="popup__header__title">연혁 수정</h1>
       <button @click="popupStore.historyClose"><span class="material-icons"> close </span></button>
     </div>
-    <form action="" id="form">
-      <div class="popupBody">
+    <form action="" class="popup__form">
+      <div class="popup__body">
         <Select name="year" title="년도" id="year" :arr="yearArr" v-model="yearRef" :selected="Number(yearRef)" />
         <Select name="month" title="월" id="month" :arr="monthArr" v-model="monthRef" :selected="Number(monthRef)" />
         <Radio
@@ -23,9 +23,11 @@
         <Input name="content_pt" title="내용(포르투갈어)" v-model="contentPtRef" placeholder="IDEACONCERT" />
         <Input name="content_us" title="내용(영어)" v-model="contentEnRef" placeholder="IDEACONCERT" />
       </div>
-      <div class="popupFooter">
-        <button v-if="!detailHistory" @click.prevent="uploadHistory"><span>등록</span></button>
-        <button v-else @click.prevent="editHistory"><span>수정</span></button>
+      <div class="popup__footer">
+        <button v-if="!detailHistory" @click.prevent="uploadHistory" class="popup__footer__btn">
+          <span>등록</span>
+        </button>
+        <button v-else @click.prevent="editHistory" class="popup__footer__btn"><span>수정</span></button>
       </div>
     </form>
   </div>
