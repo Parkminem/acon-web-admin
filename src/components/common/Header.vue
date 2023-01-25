@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :style="{ left: moveLeft() + 'px' }">
+  <header class="header" :style="{ left: moveLeft() + 'px' }">
     <div class="header__inner">
       <div class="header__logo">
         <div class="logo">
@@ -101,7 +101,7 @@
       <span></span>
       <span></span>
     </div>
-  </div>
+  </header>
 </template>
 <script setup>
 import { ref } from 'vue';

@@ -1,10 +1,10 @@
 <template>
-  <div class="footer">
+  <footer class="footer">
     <p class="footer__text">
       © Copyright 2022. All right reserved. Template by
       <a href="https://colorlib.com/wp/" class="footer__link">Colorlib</a>.
     </p>
-  </div>
+  </footer>
 </template>
 <script setup></script>
 <style lang="scss" scoped>

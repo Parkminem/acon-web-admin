@@ -214,4 +214,3 @@ function deleteHistory(pk) {
     .catch((err) => alert('삭제에 실패했습니다.'));
 }
 </script>
-<style lang="scss" scoped></style>
