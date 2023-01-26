@@ -8,11 +8,35 @@ export const useNewsStore = defineStore('news', {
     detailNews: null
   }),
   actions: {
-    async newsListAct(page, count) {
-      await newsApi.fetchNewsList(page, count).then((res) => {
-        this.newsList = res.data;
-      });
+    /**
+     * 뉴스 리스트 조회 액션
+     * @param (현재 페이지 넘버, 한페이지 안의 게시물, sort값 )
+     */
+    async newsListAct(page, count, sortData) {
+      await newsApi
+        .fetchNewsList(page, count, sortData)
+        .then((res) => {
+          this.newsList = res.data;
+        })
+        .catch((err) => console.log(err));
     },
+
+    /**
+     * @param
+     */
+    async searchNewsListAct(page, count, sortData, keyword) {
+      await newsApi
+        .fetchSearchNewsList(page, count, sortData, keyword)
+        .then((res) => {
+          this.newsList = res.data;
+        })
+        .catch((err) => console.log(err));
+    },
+
+    /**
+     * 뉴스 상세 조회 액션
+     * @param 고유번호
+     */
     async newsDetailAct(pk) {
       await newsApi
         .fetchDetailNews(pk)
