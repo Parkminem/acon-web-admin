@@ -200,17 +200,19 @@ function clickRegisterBtn() {
 
 // 연혁 삭제
 function deleteHistory(pk) {
-  historyApi
-    .fecthDeleteHistory(pk)
-    .then((res) => {
-      if (res.status === 200) {
-        if (!sortData.value) {
-          historyStore.historyListAct(nowPageNum.value, showNum.value, 'desc');
-        } else {
-          historyStore.historyListAct(nowPageNum.value, showNum.value, sortData.value);
+  if (window.confirm('삭제하시겠습니까?')) {
+    historyApi
+      .fecthDeleteHistory(pk)
+      .then((res) => {
+        if (res.status === 200) {
+          if (!sortData.value) {
+            historyStore.historyListAct(nowPageNum.value, showNum.value, 'desc');
+          } else {
+            historyStore.historyListAct(nowPageNum.value, showNum.value, sortData.value);
+          }
         }
-      }
-    })
-    .catch((err) => alert('삭제에 실패했습니다.'));
+      })
+      .catch((err) => alert('삭제에 실패했습니다.'));
+  } else return false;
 }
 </script>

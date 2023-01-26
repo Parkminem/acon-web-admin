@@ -49,16 +49,18 @@ await partnersStore.partnersListAct();
 
 //파트너사 삭제
 function deletePartner(pk) {
-  partnersApi
-    .fetchDeletePartners(pk)
-    .then((res) => {
-      if (res.data.status === 200) {
-        partnersStore.partnersListAct();
-      }
-    })
-    .catch((err) => {
-      alert('삭제에 실패하였습니다.');
-    });
+  if (window.confirm('삭제하시겠습니까?')) {
+    partnersApi
+      .fetchDeletePartners(pk)
+      .then((res) => {
+        if (res.data.status === 200) {
+          partnersStore.partnersListAct();
+        }
+      })
+      .catch((err) => {
+        alert('삭제에 실패하였습니다.');
+      });
+  } else return false;
 }
 </script>
 <style lang="scss" scoped>

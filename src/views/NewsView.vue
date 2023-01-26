@@ -41,7 +41,6 @@
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 import ShowList from '@/components/utils/ShowList.vue';
-import SearchBox from '@/components/utils/SearchBox.vue';
 import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';

@@ -208,18 +208,20 @@ async function searchBtnClick() {
 
 //자사 위치 삭제
 function deleteLocation(pk) {
-  locationApi
-    .fetchDeleteLocation(pk)
-    .then((res) => {
-      if (res.data.status === 200) {
-        if (!sortData.value) {
-          locationStore.locationListAct(nowPageNum.value, showNum.value, 'desc');
-        } else {
-          locationStore.locationListAct(nowPageNum.value, showNum.value, sortData.value);
+  if (window.confirm('삭제하시겠습니까?')) {
+    locationApi
+      .fetchDeleteLocation(pk)
+      .then((res) => {
+        if (res.data.status === 200) {
+          if (!sortData.value) {
+            locationStore.locationListAct(nowPageNum.value, showNum.value, 'desc');
+          } else {
+            locationStore.locationListAct(nowPageNum.value, showNum.value, sortData.value);
+          }
         }
-      }
-    })
-    .catch((err) => alert('삭제에 실패하였습니다.'));
+      })
+      .catch((err) => alert('삭제에 실패하였습니다.'));
+  } else return false;
 }
 </script>
 <style lang="scss" scoped></style>

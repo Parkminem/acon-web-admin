@@ -198,18 +198,20 @@ async function searchBtnClick() {
 
 //문의 유형 삭제
 function deleteQuestionType(pk) {
-  questionTypeApi
-    .fetchDeleteQnaType(pk)
-    .then((res) => {
-      if (res.data.status === 200) {
-        if (!sortData.value) {
-          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, 'desc');
-        } else {
-          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+  if (window.confirm('삭제하시겠습니까?')) {
+    questionTypeApi
+      .fetchDeleteQnaType(pk)
+      .then((res) => {
+        if (res.data.status === 200) {
+          if (!sortData.value) {
+            questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, 'desc');
+          } else {
+            questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+          }
         }
-      }
-    })
-    .catch((err) => alert('삭제에 실패하였습니다.'));
+      })
+      .catch((err) => alert('삭제에 실패하였습니다.'));
+  } else return false;
 }
 </script>
 <style lang="scss" scoped></style>

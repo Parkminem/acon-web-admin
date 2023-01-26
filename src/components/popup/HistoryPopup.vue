@@ -6,7 +6,7 @@
       <h1 v-else class="popup__header__title">연혁 수정</h1>
       <button @click="popupStore.historyClose"><span class="material-icons"> close </span></button>
     </div>
-    <form action="" class="popup__form">
+    <form action="" class="popup__form" id="form">
       <div class="popup__body">
         <Select name="year" title="년도" id="year" :arr="yearArr" v-model="yearRef" :selected="Number(yearRef)" />
         <Select name="month" title="월" id="month" :arr="monthArr" v-model="monthRef" :selected="Number(monthRef)" />

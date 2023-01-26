@@ -32,7 +32,7 @@
         </div>
       </div>
       <Table :theadData="theadData.portfolio">
-        <empty v-if="!portfolioList" />
+        <Empty v-if="!portfolioList" />
         <ul v-else class="td" v-for="(i, idx) in portfolioList" :key="i.id">
           <li class="w10">{{ i.nowpage > 1 ? (i.nowpage - 1) * 10 + (idx + 1) : idx + 1 }}</li>
           <li class="">{{ i.title }}</li>
