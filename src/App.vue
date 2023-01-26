@@ -36,40 +36,38 @@ select {
 .section {
   background-color: #fff;
   padding: 30px;
-}
-/* 테이블 위의 셀렉트, search input을 묶어주는 div, 
-테이블 밑의 글 갯수, 페이지네이션을 묶어주는 div */
-.tableTop,
-.tableBottom {
-  display: flex;
-  justify-content: space-between;
-  color: #333;
-  .left {
+  &__top,
+  &__bottom {
     display: flex;
-    align-items: center;
-    .sortBox {
-      select {
-        margin-left: 10px;
-        font-size: 15px;
-      }
-    }
+    justify-content: space-between;
+    color: #333;
   }
-  .searchBox {
+  &__left {
     display: flex;
     align-items: center;
-    select {
-      font-size: 15px;
-    }
-    input {
-      margin: 0 10px;
-      max-width: 130px;
-    }
-    button {
-      background-color: #333;
-      color: #fff;
-      padding: 3px;
-      font-size: 13px;
-    }
+  }
+}
+.sort-box {
+  &__select {
+    margin-left: 10px;
+    font-size: 15px;
+  }
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  &__select {
+    font-size: 15px;
+  }
+  &__input-box__input {
+    margin: 0 10px;
+    max-width: 130px;
+  }
+  &__btn-box__btn {
+    background-color: #333;
+    color: #fff;
+    padding: 3px;
+    font-size: 13px;
   }
 }
 </style>

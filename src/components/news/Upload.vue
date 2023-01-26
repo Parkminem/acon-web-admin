@@ -1,7 +1,7 @@
 <template>
   <SubTitle>소식</SubTitle>
   <div class="container">
-    <div class="section">
+    <section class="section">
       <div class="title" v-if="!detailNews">소식 업로드</div>
       <div class="title" v-else>소식 수정</div>
       <form action="" id="form">
@@ -25,7 +25,7 @@
         <button class="submitBtn" @click.prevent="onUpload" v-if="!detailNews">완료</button>
         <button class="submitBtn" @click.prevent="editNews" v-else>수정</button>
       </form>
-    </div>
+    </section>
   </div>
 </template>
 <script setup>

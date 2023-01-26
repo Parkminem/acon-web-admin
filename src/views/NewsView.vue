@@ -1,31 +1,34 @@
 <template>
   <SubTitle>소식</SubTitle>
   <div class="container">
-    <div class="section">
+    <section class="section">
       <ResisterBtn @clickRegister="onUpload" />
-      <div class="tableTop">
-        <div class="left">
+      <div class="section__top">
+        <div class="section__left">
           <ShowList />
           <LocaleList />
-          <div class="sortBox">
+          <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting">
+            <select name="" id="" @change="sorting" class="sort-box__select">
               <option value="desc">최신순</option>
               <option value="asc">등록일순</option>
             </select>
           </div>
         </div>
-        <div class="searchBox">
-          <div class="searchSelect">
-            <select name="" id="" @change="handleSearchValue">
-              <option value="content_kr" selected>내용</option>
-            </select>
+        <div class="search-box">
+          <select name="" id="" @change="handleSearchValue" class="search-box__select">
+            <option value="content_kr" selected>내용</option>
+          </select>
+          <div class="search-box__input-box">
+            <input
+              type="text"
+              v-model="searchInputRef"
+              @keydown.enter="searchBtnClick"
+              class="search-box__input-box__input"
+            />
           </div>
-          <div class="searchInput">
-            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
-          </div>
-          <div class="searchBtn">
-            <button @click="searchBtnClick"><span>검색</span></button>
+          <div class="search-box__btn-box">
+            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
           </div>
         </div>
       </div>
@@ -50,7 +53,7 @@
         </ul>
         <!-- t-body -->
       </Table>
-      <div class="tableBottom">
+      <div class="section__bottom">
         <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
@@ -60,7 +63,7 @@
           @goPrePage="(page) => changePage(page)"
         />
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
