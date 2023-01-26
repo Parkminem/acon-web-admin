@@ -1,5 +1,5 @@
 <template>
-  <div class="main" :style="{ paddingLeft: movePadding() + 'px' }">
+  <main class="main" :style="{ paddingLeft: movePadding() + 'px' }">
     <Header />
     <div class="contents">
       <Suspense>
@@ -12,7 +12,7 @@
       </Suspense>
       <Footer />
     </div>
-  </div>
+  </main>
   <HistoryPopup v-if="historyPopupState" />
   <PartnersPopup v-if="partnerPopupState" />
   <LocationPopup v-if="locationPopupState" />

@@ -21,3 +21,12 @@ function handleInput() {
   emit('update:modelValue', isCheck.value);
 }
 </script>
+<style lang="scss" scoped>
+.checkBox {
+  display: flex;
+  flex-direction: column;
+  input[type='checkbox'] {
+    margin-top: 10px;
+  }
+}
+</style>

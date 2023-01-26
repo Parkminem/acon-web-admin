@@ -20,3 +20,10 @@ function handleInput(event) {
   emit('update:modelValue', value);
 }
 </script>
+<style lang="scss" scoped>
+select {
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid rgba(170, 170, 170, 0.3);
+}
+</style>

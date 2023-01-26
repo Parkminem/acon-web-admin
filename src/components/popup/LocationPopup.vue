@@ -1,13 +1,13 @@
 <template>
   <div class="cover" @click="popupStore.locationClose"></div>
-  <div class="inner">
-    <div class="popupHeader">
-      <h1 v-if="!detailLocation">위치 등록</h1>
-      <h1 v-else>위치 수정</h1>
+  <div class="popup">
+    <div class="popup__header">
+      <h1 v-if="!detailLocation" class="popup__header__title">위치 등록</h1>
+      <h1 v-else class="popup__header__title">위치 수정</h1>
       <button @click="popupStore.locationClose"><span class="material-icons"> close </span></button>
     </div>
     <form id="form">
-      <div class="popupBody">
+      <div class="popup__body">
         <Input name="name_kr" title="위치명(한국어)" placeholder="판교 본사" v-model="krArea" />
         <Input name="name_id" title="위치명(인도네시아어)" placeholder="판교 본사" v-model="idArea" />
         <Input name="name_pt" title="위치명(포르투갈어)" placeholder="판교 본사" v-model="ptArea" />
@@ -61,9 +61,11 @@
         </Input>
         <Checkbox name="check_open" title="공개 여부(푸터 정보란)" v-model="openCheck" :checked="openCheck" />
       </div>
-      <div class="popupFooter">
-        <button v-if="!detailLocation" @click.prevent="uploadLocation"><span>등록</span></button>
-        <button v-else @click.prevent="editLocation"><span>수정</span></button>
+      <div class="popup__footer">
+        <button v-if="!detailLocation" @click.prevent="uploadLocation" class="popup__footer__btn">
+          <span>등록</span>
+        </button>
+        <button v-else @click.prevent="editLocation" class="popup__footer__btn"><span>수정</span></button>
       </div>
     </form>
   </div>

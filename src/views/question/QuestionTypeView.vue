@@ -1,32 +1,35 @@
 <template>
   <SubTitle>문의유형</SubTitle>
   <div class="container">
-    <div class="section">
+    <section class="section">
       <ResisterBtn @clickRegister="clickRegisterBtn" />
-      <div class="tableTop">
-        <div class="left">
+      <div class="section__top">
+        <div class="section__left">
           <ShowList />
           <LocaleList />
-          <div class="sortBox">
+          <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)">
+            <select name="" id="" @change="sorting($event)" class="sort-box__select">
               <option value="" disabled selected><span>번호</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
             </select>
           </div>
         </div>
-        <div class="searchBox">
-          <div class="searchSelect">
-            <select name="" id="" @change="handleSearchValue">
-              <option value="name_kr" selected>문의유형</option>
-            </select>
+        <div class="search-box">
+          <select name="" id="" @change="handleSearchValue" class="search-box__select">
+            <option value="name_kr" selected>문의유형</option>
+          </select>
+          <div class="search-box__input-box">
+            <input
+              type="text"
+              v-model="searchInputRef"
+              @keydown.enter="searchBtnClick"
+              class="search-box__input-box__input"
+            />
           </div>
-          <div class="searchInput">
-            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
-          </div>
-          <div class="searchBtn">
-            <button @click="searchBtnClick"><span>검색</span></button>
+          <div class="search-box__btn-box">
+            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
           </div>
         </div>
       </div>
@@ -48,7 +51,7 @@
           </li>
         </ul>
       </Table>
-      <div class="tableBottom">
+      <div class="section__bottom">
         <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
@@ -58,7 +61,7 @@
           @goPrePage="(page) => changePage(page)"
         />
       </div>
-    </div>
+    </section>
   </div>
 </template>
 <script setup>
@@ -198,18 +201,20 @@ async function searchBtnClick() {
 
 //문의 유형 삭제
 function deleteQuestionType(pk) {
-  questionTypeApi
-    .fetchDeleteQnaType(pk)
-    .then((res) => {
-      if (res.data.status === 200) {
-        if (!sortData.value) {
-          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, 'desc');
-        } else {
-          questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+  if (window.confirm('삭제하시겠습니까?')) {
+    questionTypeApi
+      .fetchDeleteQnaType(pk)
+      .then((res) => {
+        if (res.data.status === 200) {
+          if (!sortData.value) {
+            questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, 'desc');
+          } else {
+            questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+          }
         }
-      }
-    })
-    .catch((err) => alert('삭제에 실패하였습니다.'));
+      })
+      .catch((err) => alert('삭제에 실패하였습니다.'));
+  } else return false;
 }
 </script>
 <style lang="scss" scoped></style>

@@ -1,35 +1,38 @@
 <template>
   <SubTitle>문의내역</SubTitle>
   <div class="container">
-    <div class="section">
-      <div class="tableTop">
-        <div class="left">
+    <section class="section">
+      <div class="section__top">
+        <div class="section__left">
           <ShowList />
-          <div class="sortBox">
+          <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)">
+            <select name="" id="" @change="sorting($event)" class="sort-box__select">
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
             </select>
           </div>
         </div>
-        <div class="searchBox">
-          <div class="searchSelect">
-            <select name="" id="" @change="handleSearchValue">
-              <option value="question_type_kr">문의유형</option>
-              <option value="name" selected>이름</option>
-              <option value="company">회사명</option>
-              <option value="phone">연락처</option>
-              <option value="email">이메일</option>
-              <option value="question_date">등록일</option>
-            </select>
+        <div class="search-box">
+          <select name="" id="" @change="handleSearchValue" class="search-box__select">
+            <option value="question_type_kr">문의유형</option>
+            <option value="name" selected>이름</option>
+            <option value="company">회사명</option>
+            <option value="phone">연락처</option>
+            <option value="email">이메일</option>
+            <option value="question_date">등록일</option>
+          </select>
+          <div class="search-box__input-box">
+            <input
+              type="text"
+              v-model="searchInputRef"
+              @keydown.enter="searchBtnClick"
+              class="search-box__input-box__input"
+            />
           </div>
-          <div class="searchInput">
-            <input type="text" v-model="searchInputRef" @keydown.enter="searchBtnClick" />
-          </div>
-          <div class="searchBtn">
-            <button @click="searchBtnClick"><span>검색</span></button>
+          <div class="search-box__btn-box">
+            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
           </div>
         </div>
       </div>
@@ -51,7 +54,7 @@
           </li>
         </ul>
       </Table>
-      <div class="tableBottom">
+      <div class="section__bottom">
         <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
@@ -61,7 +64,7 @@
           @goPrePage="(page) => changePage(page)"
         />
       </div>
-    </div>
+    </section>
   </div>
 </template>
 <script setup>
