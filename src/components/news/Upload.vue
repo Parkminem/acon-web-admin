@@ -18,10 +18,10 @@
           v-model="isActiveRef"
           :checked="isActiveRef"
         />
-        <Editor name="content_kr" title="내용(한국어)" :editorVar="krEditor" :desc="krDesc" />
-        <Editor name="content_id" title="내용(인도네시아어)" :editorVar="idEditor" :desc="idDesc" />
-        <Editor name="content_pt" title="내용(포르투갈어)" :editorVar="ptEditor" :desc="ptDesc" />
-        <Editor name="content_us" title="내용(영어)" :editorVar="enEditor" :desc="enDesc" />
+        <Editor title="내용(한국어)" :editorVar="krEditor" :desc="krDesc" />
+        <Editor title="내용(인도네시아어)" :editorVar="idEditor" :desc="idDesc" />
+        <Editor title="내용(포르투갈어)" :editorVar="ptEditor" :desc="ptDesc" />
+        <Editor title="내용(영어)" :editorVar="enEditor" :desc="enDesc" />
         <button class="submitBtn" @click.prevent="onUpload" v-if="!detailNews">완료</button>
         <button class="submitBtn" @click.prevent="editNews" v-else>수정</button>
       </form>
@@ -90,39 +90,39 @@ if (detailNews.value) {
 
 // 뉴스 등록
 function onUpload() {
-  // if (
-  //   krTitle.value.length === 0 ||
-  //   idTitle.value.length === 0 ||
-  //   ptTitle.value.length === 0 ||
-  //   enTitle.value.length === 0 ||
-  //   thumbnail.value.length === 0 ||
-  //   !isActiveRef.value.length ||
-  //   krDesc.value.length === 0 ||
-  //   idDesc.value.length === 0 ||
-  //   ptDesc.value.length === 0 ||
-  //   enDesc.value.length === 0
-  // ) {
-  //   alert('모든 내용을 입력해주세요.');
-  // } else {
-  const form = document.getElementById('form');
-  const formData = new FormData(form);
+  if (
+    krTitle.value.length === 0 ||
+    idTitle.value.length === 0 ||
+    ptTitle.value.length === 0 ||
+    enTitle.value.length === 0 ||
+    thumbnail.value.length === 0 ||
+    !isActiveRef.value.length ||
+    krEditor.value.value.getContents(true).length === 0 ||
+    idEditor.value.value.getContents(true).length === 0 ||
+    ptEditor.value.value.getContents(true).length === 0 ||
+    enEditor.value.value.getContents(true).length === 0
+  ) {
+    alert('모든 내용을 입력해주세요.');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
 
-  formData.append('content_kr', krEditor.value.value.getContents(true));
-  formData.append('content_id', idEditor.value.value.getContents(true));
-  formData.append('content_pt', ptEditor.value.value.getContents(true));
-  formData.append('content_us', enEditor.value.value.getContents(true));
-  console.log(...formData);
-  newsApi
-    .fetchUploadNews(formData) //
-    .then((res) => {
-      console.log(res);
-      window.location.href = '/news';
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    formData.append('content_kr', krEditor.value.value.getContents(true));
+    formData.append('content_id', idEditor.value.value.getContents(true));
+    formData.append('content_pt', ptEditor.value.value.getContents(true));
+    formData.append('content_us', enEditor.value.value.getContents(true));
+
+    newsApi
+      .fetchUploadNews(formData)
+      .then((res) => {
+        console.log(res);
+        window.location.href = '/news';
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
-// }
 
 // 뉴스 수정
 function editNews() {
