@@ -11,7 +11,7 @@ function fetchNewsList(page, count, sortData) {
 }
 
 /**
- * sort한 소식 리스트 조회
+ * search 소식 리스트 조회
  * @param (페이지 넘버, 한 페이지 안의 게시물 수 , sort값)
  */
 function fetchSearchNewsList(page, count, sortData, keyword) {

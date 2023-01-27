@@ -47,6 +47,11 @@
               ><span class="material-icons"> handyman </span><span>포트폴리오</span></router-link
             >
           </li>
+          <li class="navi__depth01">
+            <router-link to="/contents" class="navi__depth01__link"
+              ><span class="material-icons">handyman</span><span>콘텐츠</span></router-link
+            >
+          </li>
           <li class="navi__depth01" v-if="false">
             <router-link to="/promotion" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>홍보영상</span></router-link

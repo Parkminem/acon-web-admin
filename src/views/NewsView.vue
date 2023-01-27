@@ -43,7 +43,7 @@
           <li v-if="locale === 'pt'">{{ news.title_pt }}</li>
           <li class="w10">관리자</li>
           <li class="w10">{{ news.active_flag === 1 ? '활성화' : '비활성화' }}</li>
-          <li class="w10">{{ news.regdate }}</li>
+          <li class="w10">{{ new Date(news.regdate).toLocaleDateString() }}</li>
           <li class="w10">
             <button @click="newsStore.newsDetailAct(news.news_pk)"><span>수정</span></button>
           </li>

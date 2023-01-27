@@ -56,5 +56,14 @@ export const theadData = {
     { width: '', name: '영상 이름' },
     { width: 'w20', name: '영상 유튜브 주소' },
     { width: 'w10', name: '등록일' }
+  ],
+  contents: [
+    { width: 'w10', name: '번호' },
+    { width: '', name: '제목' },
+    { width: 'w10', name: '썸네일' },
+    { width: 'w10', name: '작품소개서' },
+    { width: 'w10', name: 'Introduction' },
+    { width: 'w10', name: '수정' },
+    { width: 'w10', name: '삭제' }
   ]
 };
