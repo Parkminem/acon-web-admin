@@ -1,7 +1,7 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>{{ title }}</label>
-    <div class="fileBox">
+    <div class="file-box">
       <input type="file" name="file" id="file" ref="file" @change="fileUpload" />
       <label for="file"
         ><span class="fileName">{{ fileName }}</span
@@ -30,7 +30,7 @@ function fileUpload(event) {
 }
 </script>
 <style lang="scss" scoped>
-.fileBox {
+.file-box {
   width: 100%;
   label {
     display: flex;

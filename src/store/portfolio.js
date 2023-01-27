@@ -32,7 +32,7 @@ export const usePortfolio = defineStore('portfolio', {
           this.portfolioList = res.data;
         })
         .catch((err) => {
-          if (err.response.data.code === 'L000') {
+          if (err.response.data.code === 'N999') {
             this.portfolioList = null;
           } else {
             console.log(err);

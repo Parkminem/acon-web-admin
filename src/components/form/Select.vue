@@ -1,5 +1,5 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>{{ title }}</label>
     <select :name="name" :id="id" @change="handleInput">
       <option :value="i" v-for="i in arr" :key="i" :selected="i === selected">{{ i }}</option>

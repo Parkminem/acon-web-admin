@@ -1,5 +1,5 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>{{ title }}</label>
     <slot></slot>
     <input type="text" :placeholder="placeholder" :id="title" :value="modelValue" @input="handleInput" :name="name" />
@@ -20,7 +20,7 @@ function handleInput(event) {
 </script>
 <style lang="scss">
 //부모 컴포넌트에서 조작하는 부분이 있어 scoped 하면 안됨
-.inputBox {
+.input-box {
   input[type='text'] {
     padding: 12px;
     border-radius: 5px;

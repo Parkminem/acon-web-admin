@@ -1,5 +1,5 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>{{ title }}</label>
     <textarea :id="title" :desc="desc"></textarea>
   </div>

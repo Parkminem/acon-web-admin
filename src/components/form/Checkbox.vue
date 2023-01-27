@@ -1,6 +1,6 @@
 <template>
-  <div class="inputBox">
-    <div class="checkBox">
+  <div class="input-box">
+    <div class="check-box">
       <label>{{ title }}</label>
       <input type="checkbox" :id="title" v-model="isCheck" @change="handleInput" :checked="checked" />
     </div>
@@ -22,7 +22,7 @@ function handleInput() {
 }
 </script>
 <style lang="scss" scoped>
-.checkBox {
+.check-box {
   display: flex;
   flex-direction: column;
   input[type='checkbox'] {

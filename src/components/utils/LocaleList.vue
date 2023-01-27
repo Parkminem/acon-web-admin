@@ -23,7 +23,7 @@ watch(lang, (newlang) => {
 <style lang="scss">
 .LocaleList {
   display: flex;
-  .selectBox {
+  .select-box {
     margin: 0 10px;
     select {
       font-size: 15px;
