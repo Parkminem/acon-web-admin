@@ -1,5 +1,5 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>주소(한국어)</label>
     <input type="text" class="address" v-model="post" placeholder="우편번호" readonly />
     <input type="text" class="address" v-model="address01" placeholder="도로명주소(한국어)" readonly />

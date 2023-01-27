@@ -1,7 +1,7 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>{{ title }}</label>
-    <div class="radioBox">
+    <div class="radio-box">
       <label for="active01"
         ><input
           :name="name"
@@ -13,7 +13,7 @@
         /><span>예</span></label
       >
     </div>
-    <div class="radioBox">
+    <div class="radio-box">
       <label for="active02"
         ><input
           :name="name"
@@ -46,7 +46,7 @@ function handleInput(event) {
 }
 </script>
 <style lang="scss" scoped>
-.radioBox {
+.radio-box {
   font-size: $fontL;
   &:not(&:last-child) {
     margin-bottom: 5px;

@@ -32,7 +32,7 @@ export const useLocation = defineStore('location', {
           this.locationList = res.data;
         })
         .catch((err) => {
-          if (err.response.data.code === 'L000') {
+          if (err.response.data.code === 'N999') {
             this.locationList = null;
           } else {
             console.log(err);

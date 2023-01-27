@@ -1,11 +1,11 @@
 <template>
-  <div class="tableBox">
-    <ul class="tHead">
+  <div class="table-box">
+    <ul class="table-box__head">
       <li v-for="th in theadData" :class="[th.width]">
         {{ th.name }}
       </li>
     </ul>
-    <div class="tbody">
+    <div class="table-box__body">
       <slot></slot>
     </div>
   </div>

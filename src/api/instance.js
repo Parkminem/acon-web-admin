@@ -41,7 +41,6 @@ instance.interceptors.response.use(
       localStorage.removeItem('token');
       router.push('/');
     } else {
-      // console.log(error);
       return Promise.reject(error);
     }
   }

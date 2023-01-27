@@ -32,7 +32,7 @@ export const useHistory = defineStore('history', {
           this.historyList = res.data;
         })
         .catch((err) => {
-          if (err.response.data.code === 'H000') {
+          if (err.response.data.code === 'N999') {
             this.historyList = null;
           } else {
             console.log(err);

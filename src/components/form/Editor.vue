@@ -1,7 +1,7 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>{{ title }}</label>
-    <textarea :id="title" :name="name" :desc="desc"></textarea>
+    <textarea :id="title" :desc="desc"></textarea>
   </div>
 </template>
 <script setup>
@@ -18,7 +18,6 @@ import { onMounted } from 'vue';
 const props = defineProps({
   title: String,
   editorVar: Object,
-  name: String,
   desc: String
 });
 

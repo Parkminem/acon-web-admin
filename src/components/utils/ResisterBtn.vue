@@ -1,11 +1,11 @@
 <template>
-  <div class="registerBtn">
+  <div class="register-btn">
     <button @click="$emit('clickRegister')"><span>등록하기</span></button>
   </div>
 </template>
 <script setup></script>
 <style lang="scss" scoped>
-.registerBtn {
+.register-btn {
   button {
     padding: 11px 17px;
     background-color: #343a40;

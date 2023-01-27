@@ -36,7 +36,7 @@
         <!-- t-body -->
         <Empty v-if="!newsStore.newsList" />
         <ul class="td" v-for="(news, index) of newsStore.newsList" :key="news.news_pk">
-          <li class="w10">{{ news.news_pk }}</li>
+          <li class="w10">{{ nowPageNum > 1 ? (nowPageNum - 1) * 10 + (index + 1) : index + 1 }}</li>
           <li v-if="locale === 'kr'">{{ news.title_kr }}</li>
           <li v-if="locale === 'en'">{{ news.title_us }}</li>
           <li v-if="locale === 'id'">{{ news.title_id }}</li>

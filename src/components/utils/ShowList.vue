@@ -1,5 +1,5 @@
 <template>
-  <div class="showBox">
+  <div class="show-box">
     <span>Show</span>
     <Selete :options="select.show" v-model="showVal" :selected="showNum.toString()" />
   </div>
@@ -22,9 +22,9 @@ watch(showVal, (newShowVal) => {
 });
 </script>
 <style lang="scss">
-.showBox {
+.show-box {
   display: flex;
-  .selectBox {
+  .select-box {
     margin: 0 10px;
     select {
       font-size: 15px;
