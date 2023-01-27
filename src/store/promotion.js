@@ -34,7 +34,7 @@ export const usePromotion = defineStore('promotion', {
           this.promotionList = res.data;
         })
         .catch((err) => {
-          if (err.response.data.code === 'L000') {
+          if (err.response.data.code === 'N999') {
             this.promotionList = null;
           } else {
             console.log(err);

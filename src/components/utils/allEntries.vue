@@ -1,5 +1,5 @@
 <template>
-  <div class="entryBox">
+  <div class="entry-box">
     <!-- 숫자 부분 데이터바인딩 -->
     <p>Showing {{ nowPage }} to {{ listPage }} of {{ rowCnt }} entries</p>
   </div>
@@ -12,7 +12,7 @@ defineProps({
 });
 </script>
 <style lang="scss" scoped>
-.entryBox {
+.entry-box {
   p {
     font-size: $fontL;
   }

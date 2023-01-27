@@ -2,3 +2,10 @@
 <template>
   <div class="empty"><p>No data available in table</p></div>
 </template>
+<style lang="scss">
+.empty {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+}
+</style>

@@ -114,7 +114,7 @@
           <div class="form-head">
             <div class="form__row">
               <div class="form__col">
-                <div class="name col1"><span>언어</span></div>
+                <div class="form__name col1"><span>언어</span></div>
                 <div class="form__text">
                   <label for="kr"
                     ><input

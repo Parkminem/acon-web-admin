@@ -32,7 +32,7 @@ export const useQuestionType = defineStore('questionType', {
           this.questionTypeList = res.data;
         })
         .catch((err) => {
-          if (err.response.data.code === 'L000') {
+          if (err.response.data.code === 'N999') {
             this.questionTypeList = null;
           } else {
             console.log(err);
