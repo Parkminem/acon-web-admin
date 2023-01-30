@@ -7,7 +7,12 @@
           <ShowList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="sorting($event, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -59,9 +64,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          @goPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+          @goNextPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+          @goPrePage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
         />
       </div>
     </section>
@@ -80,6 +85,7 @@ import { useSelect } from '@/store/utils';
 import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import router from '@/routes';
+import { handleSearchValue, sorting, changePage } from '@/utils/module';
 
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
@@ -136,49 +142,15 @@ function showList(num) {
 
 watch(showNum, (newShowNum) => {
   if (newShowNum < questionList.value[0].rowcnt) {
-    showList(newShowNum);
+    new showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
   } else {
-    showList(showNum.value);
+    new showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
   }
 });
-
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    questionStore.searchQuestionListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
-  }
-}
 
 //답변 등록 페이지로 이동
 function goAnswerPage(pk) {
   router.push(`/question/answer?pk=${pk}`);
-}
-
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
 }
 
 //검색 버튼 클릭
