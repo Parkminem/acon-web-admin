@@ -9,7 +9,7 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)" class="sort-box__select">
+            <select name="" id="" @change="sorting" class="sort-box__select">
               <option value="" disabled selected><span>번호</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
