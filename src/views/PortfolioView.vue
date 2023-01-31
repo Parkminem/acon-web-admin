@@ -70,7 +70,6 @@ import Empty from '@/components/utils/Empty.vue';
 import { usePortfolio } from '@/store/portfolio';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
-import portfolioApi from '@/api/portfolio';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 

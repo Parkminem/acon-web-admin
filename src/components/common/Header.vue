@@ -47,12 +47,18 @@
               ><span class="material-icons"> handyman </span><span>포트폴리오</span></router-link
             >
           </li>
-          <li class="navi__depth01" v-if="false">
+          <li class="navi__depth01">
+            <router-link to="/workspace" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>업무 공간</span></router-link
+            >
+          </li>
+
+          <!-- <li class="navi__depth01" >
             <router-link to="/promotion" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>홍보영상</span></router-link
             >
           </li>
-          <li class="navi__depth01 arrow" @click="slideToggle(2)" v-if="false">
+          <li class="navi__depth01 arrow" @click="slideToggle(2)" >
             <div class="box">
               <div class="left"><span class="material-icons"> handyman </span><span>재물관리</span></div>
               <span class="material-icons arrowIcon"> expand_more </span>
@@ -78,21 +84,21 @@
               </li>
             </ul>
           </li>
-          <li class="navi__depth01" v-if="false">
+          <li class="navi__depth01" >
             <router-link to="/organization" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>조직도</span></router-link
             >
           </li>
-          <li class="navi__depth01" v-if="false">
+          <li class="navi__depth01" >
             <router-link to="/cooperation" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>업무협업시스템</span></router-link
             >
           </li>
-          <li class="navi__depth01" v-if="false">
+          <li class="navi__depth01" >
             <router-link to="/toonflix" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>툰플릭스 관리자</span></router-link
             >
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
