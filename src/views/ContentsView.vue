@@ -2,9 +2,7 @@
   <SubTitle>콘텐츠</SubTitle>
   <div class="container">
     <section class="section">
-      <div class="renewalBtn">
-        <button @click="clickRenewalHandler"><span>등록</span></button>
-      </div>
+      <ResisterBtn @clickRegister="usePopupStore().contentOpen" />
       <div class="section__top">
         <div class="section__left">
           <ShowList />
@@ -46,10 +44,10 @@
           <li class="w10">{{ content.file_url_kr ? 'O' : 'X' }}</li>
           <li class="w10">{{ content.file_url_us ? 'O' : 'X' }}</li>
           <li class="w10">
-            <button @click="newsStore.newsDetailAct(news.news_pk)"><span>수정</span></button>
+            <button @click="contentStore.contentsDetailAct(content.contents_pk)"><span>수정</span></button>
           </li>
           <li class="w10">
-            <button @click="deleteNews(news.news_pk)"><span>삭제</span></button>
+            <button @click="deleteContent(content.contents_pk)"><span>삭제</span></button>
           </li>
         </ul>
       </Table>
@@ -69,6 +67,7 @@
 <script setup>
 import { useContentsStore } from '@/store/contents';
 import LocaleList from '@/components/utils/LocaleList.vue';
+import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 
 import SubTitle from '@/components/common/SubTitle.vue';
 import ShowList from '@/components/utils/ShowList.vue';
@@ -80,6 +79,8 @@ import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { usePopupStore } from '@/store/popup';
+import contentsApi from '@/api/contents';
 
 const selectStore = useSelect();
 const { locale, showNum } = storeToRefs(selectStore);
@@ -91,6 +92,8 @@ const searchInputRef = ref();
 const searchVal = ref('title');
 let searchData;
 
+const popupStore = usePopupStore();
+
 // 콘텐츠 리스트 조회
 
 const contentStore = useContentsStore();
@@ -99,6 +102,20 @@ const { contentsList } = storeToRefs(contentStore);
 
 const rowCnt = ref(contentsList.value[0].rowcnt);
 const lastPage = ref(contentsList.value[0].lastpage);
+
+function deleteContent(pk) {
+  if (window.confirm('삭제하시겠습니까?')) {
+    contentsApi
+      .fetchDeleteContent(pk)
+      .then((res) => {
+        if (res.data.status === 200) {
+          contentStore.contentsListAct();
+          location.reload();
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+}
 
 //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
 

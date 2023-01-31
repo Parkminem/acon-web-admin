@@ -2,8 +2,8 @@
   <div class="input-box">
     <label>{{ title }}</label>
     <div class="file-box">
-      <input type="file" name="file" id="file" ref="file" @change="fileUpload" />
-      <label for="file"
+      <input type="file" :name="dataName" :id="dataName" ref="file" @change="fileUpload" />
+      <label :for="dataName"
         ><span class="fileName">{{ fileName }}</span
         ><span class="btn">Browse</span></label
       >
@@ -12,21 +12,20 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+
 const props = defineProps({
   title: String,
-  name: { typs: String, required: false }
+  name: { typs: String, required: false },
+  dataName: String
 });
 const emit = defineEmits();
 const file = ref();
 const fileName = ref(props.name);
 
 function fileUpload(event) {
-  if (file.value.files[0].type.split('/')[0] !== 'image') {
-    alert('이미지 파일만 선택할 수 있습니다.');
-  } else {
-    fileName.value = file.value.files[0].name;
-    emit('fileValue', event.target);
-  }
+  fileName.value = file.value.files[0].name;
+  emit('fileValue', event.target);
+  console.log(fileName.value);
 }
 </script>
 <style lang="scss" scoped>

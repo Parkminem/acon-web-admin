@@ -9,7 +9,7 @@
         <Input name="title_id" title="제목(인도네시아어)" v-model="idTitle" />
         <Input name="title_pt" title="제목(포르투갈어)" v-model="ptTitle" />
         <Input name="title_us" title="제목(영어)" v-model="enTitle" />
-        <File title="썸네일" @fileValue="emitFile" :name="thumbnail" />
+        <File title="썸네일" @fileValue="emitFile" :name="thumbnail" dataName="file" />
         <Radio
           name="active_flag"
           title="활성화 여부"

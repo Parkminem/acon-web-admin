@@ -18,6 +18,7 @@
   <LocationPopup v-if="locationPopupState" />
   <QuestionTypePopup v-if="questionTypePopupState" />
   <PromotionPopup v-if="promotionPopupState" />
+  <ContentsPopup v-if="contentPopupState" />
 </template>
 <script setup>
 import Header from '@/components/common/Header.vue';
@@ -28,15 +29,23 @@ import LocationPopup from '@/components/popup/LocationPopup.vue';
 import QuestionTypePopup from '@/components/popup/QuestionTypePopup.vue';
 import PromotionPopup from '@/components/popup/PromotionPopup.vue';
 import Loading from '@/components/utils/Loading.vue';
+import ContentsPopup from '@/components/popup/ContentsPopup.vue';
 
 import { useHeaderStore } from '@/store/header';
 import { usePopupStore } from '@/store/popup';
 import { storeToRefs } from 'pinia';
+
 const headerStore = useHeaderStore();
 const popupStore = usePopupStore();
 const { slideState } = storeToRefs(headerStore);
-const { historyPopupState, partnerPopupState, locationPopupState, questionTypePopupState, promotionPopupState } =
-  storeToRefs(popupStore);
+const {
+  historyPopupState,
+  partnerPopupState,
+  locationPopupState,
+  questionTypePopupState,
+  promotionPopupState,
+  contentPopupState
+} = storeToRefs(popupStore);
 
 const movePadding = () => {
   if (slideState.value) return 280;

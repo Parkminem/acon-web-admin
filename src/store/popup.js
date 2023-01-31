@@ -4,6 +4,7 @@ import { useHistory } from '@/store/history';
 import { useLocation } from '@/store/location';
 import { useQuestionType } from '@/store/questionType';
 import { usePromotion } from '@/store/promotion';
+import { useContentsStore } from '@/store/contents';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
@@ -11,7 +12,8 @@ export const usePopupStore = defineStore('popup', {
     partnerPopupState: false,
     locationPopupState: false,
     questionTypePopupState: false,
-    promotionPopupState: false
+    promotionPopupState: false,
+    contentPopupState: false
   }),
   actions: {
     historyOpen() {
@@ -53,6 +55,14 @@ export const usePopupStore = defineStore('popup', {
       const promotionStore = usePromotion();
       promotionStore.resetDetailPromotionAct();
       this.promotionPopupState = false;
+    },
+    contentOpen() {
+      this.contentPopupState = true;
+    },
+    contentClose() {
+      const contentsStore = useContentsStore();
+      contentsStore.resetDetailContentsAct();
+      this.contentPopupState = false;
     }
   }
 });
