@@ -55,36 +55,22 @@ export function changePage(page, act, searchAct) {
 // export class showList {
 //   constructor(num, list, act, searchAct) {
 //     //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-//     const nowPage = list[0].nowpage;
 //     this.listPage = Number(num);
 //     if (!this.sortData && !this.searchInputRef) {
-//       act(nowPage, num, 'desc').then(() => {
-//         this.nowPageNum = 1;
-//         this.rowCnt = list[0].rowcnt;
-//         this.lastPage = list[0].lastpage;
-//       });
+//       act(list[0].nowpage, num, 'desc');
 //     } else if (this.sortData && !this.searchInputRef) {
-//       list(nowPage, num, this.sortData).then(() => {
-//         this.nowPageNum = 1;
-//         this.rowCnt = list[0].rowcnt;
-//         this.lastPage = list[0].lastpage;
-//       });
+//       act(list[0].nowpage, num, this.sortData);
 //     } else if (!this.sortData && this.searchInputRef) {
 //       this.searchData = {
 //         [this.searchVal]: this.searchInputRef
 //       };
-//       searchAct(nowPage, num, 'desc', this.searchData).then(() => {
-//         this.nowPageNum = 1;
-//         this.rowCnt = list[0].rowcnt;
-//         this.lastPage = list[0].lastpage;
-//       });
+//       searchAct(list[0].nowpage, num, 'desc', this.searchData);
 //     } else {
 //       this.searchData = { [this.searchVal]: this.searchInputRef };
-//       searchAct(nowPage, num, this.sortData, this.searchData).then(() => {
-//         this.nowPageNum = 1;
-//         this.rowCnt = list[0].rowcnt;
-//         this.lastPage = list[0].lastpage;
-//       });
+//       searchAct(list[0].nowpage, num, this.sortData, this.searchData);
 //     }
+//     this.nowPageNum = 1;
+//     this.rowCnt = list[0].rowcnt;
+//     this.lastPage = list[0].lastpage;
 //   }
 // }
