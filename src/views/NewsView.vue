@@ -9,7 +9,12 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="sorting($event, newsStore.newsListAct, newsStore.searchNewsListAct)"
+              class="sort-box__select"
+            >
               <option value="desc">최신순</option>
               <option value="asc">등록일순</option>
             </select>
@@ -58,9 +63,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          @goPage="(page) => changePage(page, newsStore.newsListAct, newsStore.searchNewsListAct)"
+          @goNextPage="(page) => changePage(page, newsStore.newsListAct, newsStore.searchNewsListAct)"
+          @goPrePage="(page) => changePage(page, newsStore.newsListAct, newsStore.searchNewsListAct)"
         />
       </div>
     </section>
@@ -83,6 +88,7 @@ import { storeToRefs } from 'pinia';
 import { useNewsStore } from '@/store/news';
 import { ref, watch } from 'vue';
 import newsApi from '@/api/news';
+import { sorting, changePage, handleSearchValue } from '@/utils/module';
 
 const selectStore = useSelect();
 const newsStore = useNewsStore();
@@ -149,21 +155,41 @@ watch(showNum, (newShowNum) => {
   }
 });
 
-// sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    newsStore.newsListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    newsStore.searchNewsListAct(1, listPage.value, sortData.value, searchData);
-  }
-}
+// // sort
+// function sorting(e) {
+//   sortData.value = e.target.value;
+//   if (!searchInputRef.value) {
+//     newsStore.newsListAct(nowPageNum.value, listPage.value, sortData.value);
+//   } else {
+//     searchData = { [searchVal.value]: searchInputRef.value };
+//     newsStore.searchNewsListAct(1, listPage.value, sortData.value, searchData);
+//   }
+// }
 
-// 검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
-}
+// // 검색 조건 변경
+// function handleSearchValue(e) {
+//   searchVal.value = e.target.value;
+// }
+
+// // 페이지 변경
+// function changePage(page) {
+//   if (!sortData.value && !searchInputRef.value) {
+//     newsStore.newsListAct(page, showNum.value, 'desc');
+//   } else if (sortData.value && !searchInputRef.value) {
+//     newsStore.newsListAct(page, showNum.value, sortData.value);
+//   } else if (!sortData.value && searchInputRef.value) {
+//     searchData = {
+//       [searchVal.value]: searchInputRef.value
+//     };
+//     newsStore.searchNewsListAct(page, showNum.value, 'desc', searchData);
+//   } else {
+//     searchData = {
+//       [searchVal.value]: searchInputRef.value
+//     };
+//     newsStore.searchNewsListAct(page, showNum.value, sortData.value, searchData);
+//   }
+//   nowPageNum.value = page;
+// }
 
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
@@ -179,26 +205,6 @@ async function searchBtnClick() {
       nowPageNum.value = null;
       listPage.value = null;
     });
-}
-
-// 페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    newsStore.newsListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    newsStore.newsListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    newsStore.searchNewsListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    newsStore.searchNewsListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
 }
 
 // 소식 삭제

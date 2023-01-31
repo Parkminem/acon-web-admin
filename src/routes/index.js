@@ -66,6 +66,11 @@ const routes = [
         component: () => import('@/views/ContentsView.vue')
       },
       {
+        path: '/workspace',
+        name: 'workSpace',
+        component: () => import('@/views/WorkSpaceView.vue')
+      },
+      {
         path: '/employee',
         name: 'employee',
         component: () => import('@/views/management/EmployeeView.vue')

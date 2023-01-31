@@ -9,7 +9,12 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="sorting($event, locationStore.locationListAct, locationStore.searchLocationListAct)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -66,9 +71,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          @goPage="(page) => changePage(page, locationStore.locationListAct, locationStore.searchLocationListAct)"
+          @goNextPage="(page) => changePage(page, locationStore.locationListAct, locationStore.searchLocationListAct)"
+          @goPrePage="(page) => changePage(page, locationStore.locationListAct, locationStore.searchLocationListAct)"
         />
       </div>
     </section>
@@ -90,6 +95,7 @@ import { useLocation } from '@/store/location';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import locationApi from '@/api/location';
+import { handleSearchValue, sorting, changePage } from '@/utils/module';
 
 const selectStore = useSelect();
 const locationStore = useLocation();
@@ -153,44 +159,10 @@ watch(showNum, (newShowNum) => {
   }
 });
 
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    locationStore.locationListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    locationStore.locationListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    locationStore.searchLocationListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    locationStore.searchLocationListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    locationStore.locationListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    locationStore.searchLocationListAct(1, listPage.value, sortData.value, searchData);
-  }
-}
-
 //등록하기 버튼 클릭
 function clickRegisterBtn() {
   popupStore.locationOpen();
   locationStore.currentLocationPageAct(nowPageNum.value);
-}
-
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
 }
 
 //검색 버튼 클릭
