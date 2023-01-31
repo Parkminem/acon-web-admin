@@ -9,7 +9,14 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="
+                sorting($event, questionTypeStore.questionTypeListAct, questionTypeStore.searchQuestionTypeListAct)
+              "
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>번호</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -89,7 +96,7 @@ import { useQuestionType } from '@/store/questionType';
 import { theadData } from '@/utils/theadData';
 import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
-import { changePage, handleSearchValue } from '@/utils/module';
+import { changePage, handleSearchValue, sorting } from '@/utils/module';
 
 const questionTypeStore = useQuestionType();
 const selectStore = useSelect();
@@ -157,17 +164,6 @@ watch(showNum, (newShowNum) => {
 function clickRegisterBtn() {
   popupStore.questionTypeOpen();
   questionTypeStore.currentQuestionTypeAct(nowPageNum.value);
-}
-
-//등록 순서 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionTypeStore.searchQuestionTypeListAct(1, listPage.value, sortData.value, searchData);
-  }
 }
 
 //검색 버튼 클릭
