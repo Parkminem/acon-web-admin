@@ -85,7 +85,7 @@ import { useSelect } from '@/store/utils';
 import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import router from '@/routes';
-import { handleSearchValue, sorting, changePage, showList } from '@/utils/module';
+import { handleSearchValue, sorting, changePage } from '@/utils/module';
 
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
@@ -114,37 +114,37 @@ const paginationConstant = () => {
 };
 
 //게시물 갯수 변경 함수
-// function showList(num) {
-//   const nowPage = questionList.value[0].nowpage;
-//   listPage.value = Number(num);
-//   if (!sortData.value && !searchInputRef.value) {
-//     questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
-//       paginationConstant();
-//     });
-//   } else if (sortData.value && !searchInputRef.value) {
-//     questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
-//       paginationConstant();
-//     });
-//   } else if (!sortData.value && searchInputRef.value) {
-//     searchData = {
-//       [searchVal.value]: searchInputRef.value
-//     };
-//     questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-//       paginationConstant();
-//     });
-//   } else {
-//     searchData = { [searchVal.value]: searchInputRef.value };
-//     questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-//       paginationConstant();
-//     });
-//   }
-// }
+function showList(num) {
+  const nowPage = questionList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
+    });
+  }
+}
 
 watch(showNum, (newShowNum) => {
   if (newShowNum < questionList.value[0].rowcnt) {
-    new showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+    showList(newShowNum);
   } else {
-    new showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+    showList(showNum.value);
   }
 });
 

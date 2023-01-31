@@ -96,7 +96,7 @@ import { useQuestionType } from '@/store/questionType';
 import { theadData } from '@/utils/theadData';
 import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
-import { changePage, handleSearchValue, sorting, showList } from '@/utils/module';
+import { changePage, handleSearchValue, sorting } from '@/utils/module';
 
 const questionTypeStore = useQuestionType();
 const selectStore = useSelect();
@@ -126,47 +126,37 @@ const paginationConstant = () => {
 };
 
 //게시물 갯수 변경 함수
-// function showList(num) {
-//   const nowPage = questionTypeList.value[0].nowpage;
-//   listPage.value = Number(num);
-//   if (!sortData.value && !searchInputRef.value) {
-//     questionTypeStore.questionTypeListAct(nowPage, showNum.value, 'desc').then(() => {
-//       paginationConstant();
-//     });
-//   } else if (sortData.value && !searchInputRef.value) {
-//     questionTypeStore.questionTypeListAct(nowPage, showNum.value, sortData.value).then(() => {
-//       paginationConstant();
-//     });
-//   } else if (!sortData.value && searchInputRef.value) {
-//     searchData = {
-//       [searchVal.value]: searchInputRef.value
-//     };
-//     questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-//       paginationConstant();
-//     });
-//   } else {
-//     searchData = { [searchVal.value]: searchInputRef.value };
-//     questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-//       paginationConstant();
-//     });
-//   }
-// }
+function showList(num) {
+  const nowPage = questionTypeList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
+    });
+  }
+}
 
 watch(showNum, (newShowNum) => {
   if (newShowNum < questionTypeList.value[0].rowcnt) {
-    new showList(
-      newShowNum,
-      questionTypeList.value,
-      questionTypeStore.questionTypeListAct,
-      questionTypeStore.searchQuestionTypeListAct
-    );
+    showList(newShowNum);
   } else {
-    new showList(
-      showNum.value,
-      questionTypeList.value,
-      questionTypeStore.questionTypeListAct,
-      questionTypeStore.searchQuestionTypeListAct
-    );
+    showList(showNum.value);
   }
 });
 
