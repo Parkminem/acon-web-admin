@@ -91,20 +91,24 @@ if (detailContent.value) {
 // 컨텐츠 등록
 
 function uploadContent() {
-  const form = document.getElementById('form');
-  const formData = new FormData(form);
-  console.log(...formData);
+  if (file.value.length == 0 || data_kr.value.length == 0 || data_us.value.length == 0) {
+    alert('파일을 입력해주세요.');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    console.log(...formData);
 
-  contentsApi
-    .fetchUploadContent(formData)
-    .then((res) => {
-      if (res.data.status === 200) {
-        popupStore.contentClose();
-        contentsStore.contentsListAct();
-      }
-      location.reload();
-    })
-    .catch((err) => console.log(err));
+    contentsApi
+      .fetchUploadContent(formData)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.contentClose();
+          contentsStore.contentsListAct();
+        }
+        location.reload();
+      })
+      .catch((err) => console.log(err));
+  }
 }
 
 // 컨텐츠 수정
@@ -121,37 +125,22 @@ function editContent() {
       })
       .catch((err) => console.log(err));
   };
-  //파일 수정X
 
-  // if (
-  //   detailContent.value.thumbnail_origin_name === file.value &&
-  //   detailContent.value.data_kr === data_kr.value &&
-  //   detailContent.value.data_us === data_us.value
-  // ) {
-  //   const form = document.getElementById('form');
-  //   const formData = new FormData(form);
-  //   formData.delete('file');
-  //   console.log(...formData);
-  //   edit(formData);
-  // }
-  //파일 수정
-  // if (file.value) {
   const form = document.getElementById('form');
   const formData = new FormData(form);
-  if (detailContent.value.thumbnail_origin_name === file.value) {
+  if (detailContent.value.thumbnail_origin_name == file.value) {
     formData.delete('file');
-    edit(formData);
-  } else if (detailContent.value.data_kr === data_kr.value) {
-    formData.delete('data_kr');
-    edit(formData);
-  } else if (detailContent.value.data_us === data_us.value) {
-    formData.delete('data_us');
-  } else {
-    edit(formData);
   }
-  console.log(...formData);
+  if (detailContent.value.file_url_kr == data_kr.value) {
+    formData.delete('data_kr');
+  }
+  if (detailContent.value.file_url_us == data_us.value) {
+    formData.delete('data_us');
+  }
 
-  // }
+  edit(formData);
+
+  console.log(...formData);
   // location.reload();
 }
 </script>

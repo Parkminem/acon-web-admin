@@ -63,7 +63,8 @@ export const theadData = {
     { width: 'w10', name: '썸네일' },
     { width: 'w10', name: '작품소개서' },
     { width: 'w10', name: 'Introduction' },
-    { width: 'w10', name: '수정' }
+    { width: 'w10', name: '수정' },
+    { width: 'w10', name: '삭제' }
   ],
   workSpace: [
     { width: 'w10', name: '번호' },
