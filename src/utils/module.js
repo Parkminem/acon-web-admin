@@ -45,32 +45,41 @@ export function changePage(page, act, searchAct) {
   this.nowPageNum = page;
 }
 
-// /**
-//  * 게시물 갯수 변경 함수(페이지네이션 변경)
-//  * @param {게시물갯수} num
-//  * @param {리스트} list
-//  * @param {list불러오는action} act
-//  * @param {searchList불러오는action} searchAct
-//  */
-// export class showList {
-//   constructor(num, list, act, searchAct) {
-//     //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-//     this.listPage = Number(num);
-//     if (!this.sortData && !this.searchInputRef) {
-//       act(list[0].nowpage, num, 'desc');
-//     } else if (this.sortData && !this.searchInputRef) {
-//       act(list[0].nowpage, num, this.sortData);
-//     } else if (!this.sortData && this.searchInputRef) {
-//       this.searchData = {
-//         [this.searchVal]: this.searchInputRef
-//       };
-//       searchAct(list[0].nowpage, num, 'desc', this.searchData);
-//     } else {
-//       this.searchData = { [this.searchVal]: this.searchInputRef };
-//       searchAct(list[0].nowpage, num, this.sortData, this.searchData);
-//     }
-//     this.nowPageNum = 1;
-//     this.rowCnt = list[0].rowcnt;
-//     this.lastPage = list[0].lastpage;
-//   }
-// }
+/**
+ * 게시물 갯수 변경 함수(페이지네이션 변경)
+ * @param {게시물갯수} num
+ * @param {리스트} list
+ * @param {list불러오는action} act
+ * @param {searchList불러오는action} searchAct
+ */
+export function showList(num, list, act, searchAct) {
+  if (!this.sortData && !this.searchInputRef) {
+    act(list[0].nowpage, num, 'desc').then((result) => {
+      this.nowPageNum = 1;
+      this.rowCnt = result[0].rowcnt;
+      this.lastPage = result[0].lastpage;
+    });
+  } else if (this.sortData && !this.searchInputRef) {
+    act(list[0].nowpage, num, this.sortData).then((result) => {
+      this.nowPageNum = 1;
+      this.rowCnt = result[0].rowcnt;
+      this.lastPage = result[0].lastpage;
+    });
+  } else if (!this.sortData && this.searchInputRef) {
+    this.searchData = {
+      [this.searchVal]: this.searchInputRef
+    };
+    searchAct(list[0].nowpage, num, 'desc', this.searchData).then((result) => {
+      this.nowPageNum = 1;
+      this.rowCnt = result[0].rowcnt;
+      this.lastPage = result[0].lastpage;
+    });
+  } else {
+    this.searchData = { [this.searchVal]: this.searchInputRef };
+    searchAct(list[0].nowpage, num, this.sortData, this.searchData).then((result) => {
+      this.nowPageNum = 1;
+      this.rowCnt = result[0].rowcnt;
+      this.lastPage = result[0].lastpage;
+    });
+  }
+}

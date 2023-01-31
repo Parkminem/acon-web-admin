@@ -12,13 +12,18 @@ export const useQuestion = defineStore('question', {
      * 문의내역 조회
      * @param (현재페이지, 한 페이지 당 총 게시물 수, sort 값)
      */
+    // async questionListAct(page, count, sortData) {
+    //   await questionApi
+    //     .fetchQnaList(page, count, sortData)
+    //     .then((res) => {
+    //       this.questionList = res.data;
+    //     })
+    //     .catch((err) => console.log(err));
+    // },
     async questionListAct(page, count, sortData) {
-      await questionApi
-        .fetchQnaList(page, count, sortData)
-        .then((res) => {
-          this.questionList = res.data;
-        })
-        .catch((err) => console.log(err));
+      const result = await questionApi.fetchQnaList(page, count, sortData);
+      this.questionList = result.data;
+      return result.data;
     },
     /**
      * 문의 내역 검색결과 조회
