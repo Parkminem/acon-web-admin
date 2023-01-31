@@ -8,7 +8,12 @@
           <ShowList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="sorting($event, promotionStore.promotionListAct, promotionStore.searchPromotionListAct)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -54,9 +59,13 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          @goPage="(page) => changePage(page, promotionStore.promotionListAct, promotionStore.searchPromotionListAct)"
+          @goNextPage="
+            (page) => changePage(page, promotionStore.promotionListAct, promotionStore.searchPromotionListAct)
+          "
+          @goPrePage="
+            (page) => changePage(page, promotionStore.promotionListAct, promotionStore.searchPromotionListAct)
+          "
         />
       </div>
     </section>
@@ -78,6 +87,7 @@ import { theadData } from '@/utils/theadData';
 import promotionApi from '@/api/promotion';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { sorting, changePage, handleSearchValue } from '@/utils/module';
 
 const promotionStore = usePromotion();
 const selectStore = useSelect();
@@ -140,44 +150,10 @@ watch(showNum, (newShowNum) => {
   }
 });
 
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    promotionStore.promotionListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    promotionStore.promotionListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    promotionStore.searchPromotionListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    promotionStore.searchPromotionListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    promotionStore.promotionListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    promotionStore.searchPromotionListAct(1, listPage.value, sortData.value, searchData);
-  }
-}
-
 //등록하기 버튼 클릭
 function clickRegisterBtn() {
   popupStore.promotionOpen();
   promotionStore.currentPromotionPageAct(nowPageNum.value);
-}
-
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
 }
 
 //검색 버튼 클릭

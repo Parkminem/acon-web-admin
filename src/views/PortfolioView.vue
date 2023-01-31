@@ -10,7 +10,12 @@
           <ShowList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="sorting($event, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -52,9 +57,13 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          @goPage="(page) => changePage(page, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)"
+          @goNextPage="
+            (page) => changePage(page, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)
+          "
+          @goPrePage="
+            (page) => changePage(page, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)
+          "
         />
       </div>
     </section>
@@ -72,6 +81,7 @@ import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { sorting, changePage, handleSearchValue } from '@/utils/module';
 
 const portfolioStore = usePortfolio();
 const selectStore = useSelect();
@@ -132,40 +142,6 @@ watch(showNum, (newShowNum) => {
     showList(showNum.value);
   }
 });
-
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    portfolioStore.portfolioListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    portfolioStore.portfolioListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    portfolioStore.searchPortfolioListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    portfolioStore.searchPortfolioListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    portfolioStore.portfolioListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    portfolioStore.searchPortfolioListAct(1, listPage.value, sortData.value, searchData);
-  }
-}
-
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
-}
 
 //검색 버튼 클릭
 async function searchBtnClick() {

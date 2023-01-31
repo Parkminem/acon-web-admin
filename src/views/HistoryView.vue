@@ -9,7 +9,12 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting($event)" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="sorting($event, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>년도</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -60,9 +65,9 @@
         <Pagination
           :lastPage="Number(lastPage)"
           :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          @goPage="(page) => changePage(page, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
+          @goNextPage="(page) => changePage(page, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
+          @goPrePage="(page) => changePage(page, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
         />
       </div>
     </section>
@@ -84,6 +89,7 @@ import { useHistory } from '@/store/history';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { storeToRefs } from 'pinia';
+import { handleSearchValue, sorting, changePage } from '@/utils/module';
 
 const historyStore = useHistory();
 const selectStore = useSelect();
@@ -145,40 +151,6 @@ watch(showNum, (newShowNum) => {
     showList(showNum.value);
   }
 });
-
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    historyStore.historyListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    historyStore.historyListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    historyStore.seartchHistoryListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    historyStore.seartchHistoryListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//년도 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    historyStore.historyListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    historyStore.seartchHistoryListAct(1, listPage.value, sortData.value, searchData);
-  }
-}
-
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
-}
 
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
