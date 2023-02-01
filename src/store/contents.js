@@ -19,7 +19,12 @@ export const useContentsStore = defineStore('contents', {
         .then((res) => {
           this.contentsList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.status == 404) {
+            this.contentsList = null;
+          }
+        });
     },
     /**
      * 콘텐츠 검색 결과 조회 액션
