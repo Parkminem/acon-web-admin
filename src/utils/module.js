@@ -1,6 +1,7 @@
 /**
  * 게시판 검색어 조건 변경
  * @param e
+ * @param {검색조건} searchVal
  */
 export function handleSearchValue(e) {
   this.searchVal = e.target.value;
@@ -11,14 +12,19 @@ export function handleSearchValue(e) {
  * @param  e
  * @param {list불러오는action} act
  * @param {searchList불러오는action} searchAct
+ * @param {sort값} sortData
+ * @param {검색어} searchInputRef
+ * @param {현재페이지} nowPageNum
+ * @param {한페이지당갯수} listPage
+ * @param {검색조건} searchVal
  */
-export function sorting(e, act, searchAct) {
-  this.sortData = e.target.value;
-  if (!this.searchInputRef) {
-    act(this.nowPageNum, this.listPage, this.sortData);
+export function sorting(e, act, searchAct, sortData, searchInputRef, nowPageNum, listPage, searchVal, searchData) {
+  sortData = e.target.value;
+  if (!searchInputRef) {
+    act(nowPageNum, listPage, sortData);
   } else {
-    this.searchData = { [this.searchVal]: this.searchInputRef };
-    searchAct(1, this.listPage, this.sortData, this.searchData);
+    searchData = { [searchVal]: searchInputRef };
+    searchAct(1, listPage, sortData, searchData);
   }
 }
 

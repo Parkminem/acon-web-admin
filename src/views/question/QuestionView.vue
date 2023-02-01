@@ -10,7 +10,19 @@
             <select
               name=""
               id=""
-              @change="sorting($event, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+              @change="
+                sorting(
+                  $event,
+                  questionStore.questionListAct,
+                  questionStore.searchQuestionListAct,
+                  sortData,
+                  searchInputRef,
+                  nowPageNum,
+                  listPage,
+                  searchVal,
+                  searchData
+                )
+              "
               class="sort-box__select"
             >
               <option value="" disabled selected><span>등록일</span></option>
@@ -179,6 +191,7 @@ function goAnswerPage(pk) {
 //검색 버튼 클릭
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
+  console.log(searchData);
   await questionStore
     .searchQuestionListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
