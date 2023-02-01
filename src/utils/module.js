@@ -54,13 +54,13 @@ export function changePage(page, act, searchAct) {
  */
 export function showList(num, list, act, searchAct) {
   if (!this.sortData && !this.searchInputRef) {
-    act(list[0].nowpage, num, 'desc').then((result) => {
+    act(list[0].nowpage, num, 'desc').then(function (result) {
       this.nowPageNum = 1;
       this.rowCnt = result[0].rowcnt;
       this.lastPage = result[0].lastpage;
     });
   } else if (this.sortData && !this.searchInputRef) {
-    act(list[0].nowpage, num, this.sortData).then((result) => {
+    act(list[0].nowpage, num, this.sortData).then(function (result) {
       this.nowPageNum = 1;
       this.rowCnt = result[0].rowcnt;
       this.lastPage = result[0].lastpage;
@@ -69,14 +69,14 @@ export function showList(num, list, act, searchAct) {
     this.searchData = {
       [this.searchVal]: this.searchInputRef
     };
-    searchAct(list[0].nowpage, num, 'desc', this.searchData).then((result) => {
+    searchAct(list[0].nowpage, num, 'desc', this.searchData).then(function (result) {
       this.nowPageNum = 1;
       this.rowCnt = result[0].rowcnt;
       this.lastPage = result[0].lastpage;
     });
   } else {
     this.searchData = { [this.searchVal]: this.searchInputRef };
-    searchAct(list[0].nowpage, num, this.sortData, this.searchData).then((result) => {
+    searchAct(list[0].nowpage, num, this.sortData, this.searchData).then(function (result) {
       this.nowPageNum = 1;
       this.rowCnt = result[0].rowcnt;
       this.lastPage = result[0].lastpage;

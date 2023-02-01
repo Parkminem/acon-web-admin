@@ -140,17 +140,36 @@ const paginationConstant = () => {
 //   }
 // }
 
-watch(showNum, (newShowNum) => {
-  if (newShowNum < questionList.value[0].rowcnt) {
-    listPage.value = Number(newShowNum);
-    // showList(newShowNum);
-    showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
-  } else {
-    listPage.value = Number(showNum.value);
-    // showList(showNum.value);
-    showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
-  }
-});
+// watch(
+//   showNum,
+//   (newShowNum) => {
+//     // if (newShowNum < questionList.value[0].rowcnt) {
+//     //   listPage.value = Number(newShowNum);
+//     //   // showList(newShowNum);
+//     //   showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+//     // } else {
+//     //   listPage.value = Number(showNum.value);
+//     //   // showList(showNum.value);
+//     //   showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+//     // }
+//   },
+//   { flush: 'post' }
+// );
+watch(
+  showNum,
+  function (newShowNum) {
+    if (newShowNum < questionList.value[0].rowcnt) {
+      listPage.value = Number(newShowNum);
+      // showList(newShowNum);
+      showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+    } else {
+      listPage.value = Number(showNum.value);
+      // showList(showNum.value);
+      showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+    }
+  },
+  { flush: 'post' }
+);
 
 //답변 등록 페이지로 이동
 function goAnswerPage(pk) {
