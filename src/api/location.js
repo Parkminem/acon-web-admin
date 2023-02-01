@@ -1,25 +1,27 @@
 import instance from '@/api/instance';
 
 /**
- * 자사 위치 리스트 조회
- * @param (현재 페이지, 한 페이지 안의 게시물 수, sort 값)
+ * 자사위치 리스트 조회
+ * @param {페이지} page
+ * @param {한페이지당컨텐츠수} count
+ * @param {sort값} sortData
+ * @param {키워드} keyword
+ * @returns 자사위치리스트
  */
-function fetchLocationList(page, count, sortData) {
-  return instance.get(
-    `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ regdate: sortData }))}`
-  );
-}
-
-/**
- * 위치 검색결과 조회
- * @param (현재페이지 , 한 페이지 당 총 게시물 수, sort값, 키워드({조건 : 키워드}))
- */
-function fetchSearchLocationList(page, count, sortData, keyword) {
-  return instance.get(
-    `/location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ regdate: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
-  );
+function fetchLocationList(page, count, sortData, keyword) {
+  if (!keyword) {
+    return instance.get(
+      `location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}`
+    );
+  } else {
+    return instance.get(
+      `/location/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    );
+  }
 }
 
 /**
@@ -58,8 +60,7 @@ const locationApi = {
   fetchDetailLocation,
   fetchUploadLocation,
   fetchEditLocation,
-  fetchDeleteLocation,
-  fetchSearchLocationList
+  fetchDeleteLocation
 };
 
 export default locationApi;

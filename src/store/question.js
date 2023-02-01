@@ -9,8 +9,12 @@ export const useQuestion = defineStore('question', {
   }),
   actions: {
     /**
-     * 문의내역 조회
-     * @param (현재페이지, 한 페이지 당 총 게시물 수, sort 값)
+     * 문의내역 리스트 조회 액션
+     * @param {페이지} page
+     * @param {한페이지당컨텐츠수} count
+     * @param {sort값} sortData
+     * @param {키워드} keyword
+     * @returns 문의내역리스트
      */
     // async questionListAct(page, count, sortData) {
     //   await questionApi
@@ -20,8 +24,8 @@ export const useQuestion = defineStore('question', {
     //     })
     //     .catch((err) => console.log(err));
     // },
-    async questionListAct(page, count, sortData) {
-      const result = await questionApi.fetchQnaList(page, count, sortData);
+    async questionListAct(page, count, sortData, keyword) {
+      const result = await questionApi.fetchQnaList(page, count, sortData, keyword);
       this.questionList = result.data;
       return result.data;
     },

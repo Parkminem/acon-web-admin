@@ -193,7 +193,7 @@ async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   console.log(searchData);
   await questionStore
-    .searchQuestionListAct(1, showNum.value, 'desc', searchData)
+    .questionListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })

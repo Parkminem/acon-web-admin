@@ -136,12 +136,12 @@ function showList(num) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    newsStore.searchNewsListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    newsStore.newsListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    newsStore.searchNewsListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    newsStore.newsListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   }
@@ -195,7 +195,7 @@ async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
 
   await newsStore
-    .searchNewsListAct(1, showNum.value, 'desc', searchData)
+    .newsListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })

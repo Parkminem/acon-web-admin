@@ -2,25 +2,26 @@ import instance from '@/api/instance';
 
 /**
  * 문의 유형 리스트 조회
- * @param (현재 페이지, 한 페이지 당 총 게시물 수, sort값)
+ * @param {페이지} page
+ * @param {한페이지당컨텐츠수} count
+ * @param {sort값} sortData
+ * @param {키워드} keyword
+ * @returns 문의유형리스트
  */
-function fetchQnaTypeList(page, count, sortData) {
-  return instance.get(
-    `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ question_type_pk: sortData })
-    )}`
-  );
-}
-/**
- * 문의 유형 검색결과 조회
- * @param (현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건:키워드}))
- */
-function fetchSearchQnaTypeList(page, count, sortData, Keyword) {
-  return instance.get(
-    `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ question_type_pk: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify(Keyword))}`
-  );
+function fetchQnaTypeList(page, count, sortData, keyword) {
+  if (!keyword) {
+    return instance.get(
+      `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ question_type_pk: sortData })
+      )}`
+    );
+  } else {
+    return instance.get(
+      `/question/type/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ question_type_pk: sortData })
+      )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    );
+  }
 }
 
 /**
@@ -60,7 +61,6 @@ const questionTypeApi = {
   fetchDetailQnaType,
   fetchUploadQnaType,
   fetchEditQnaType,
-  fetchDeleteQnaType,
-  fetchSearchQnaTypeList
+  fetchDeleteQnaType
 };
 export default questionTypeApi;

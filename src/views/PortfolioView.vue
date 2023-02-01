@@ -124,12 +124,12 @@ function showList(num) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    portfolioStore.searchPortfolioListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+    portfolioStore.portfolioListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
       paginationConstant();
     });
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    portfolioStore.searchPortfolioListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    portfolioStore.portfolioListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   }
@@ -147,7 +147,7 @@ watch(showNum, (newShowNum) => {
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await portfolioStore
-    .searchPortfolioListAct(1, showNum.value, 'desc', searchData)
+    .portfolioListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })

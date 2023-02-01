@@ -9,24 +9,15 @@ export const useNewsStore = defineStore('news', {
   }),
   actions: {
     /**
-     * 뉴스 리스트 조회 액션
-     * @param (현재 페이지 넘버, 한페이지 안의 게시물, sort값 )
+     * 소식 리스트 조회 액션
+     * @param {페이지} page
+     * @param {한페이지당컨텐츠수} count
+     * @param {sort값} sortData
+     * @param {키워드} keyword
      */
-    async newsListAct(page, count, sortData) {
+    async newsListAct(page, count, sortData, keyword) {
       await newsApi
-        .fetchNewsList(page, count, sortData)
-        .then((res) => {
-          this.newsList = res.data;
-        })
-        .catch((err) => console.log(err));
-    },
-
-    /**
-     * @param
-     */
-    async searchNewsListAct(page, count, sortData, keyword) {
-      await newsApi
-        .fetchSearchNewsList(page, count, sortData, keyword)
+        .fetchNewsList(page, count, sortData, keyword)
         .then((res) => {
           this.newsList = res.data;
         })

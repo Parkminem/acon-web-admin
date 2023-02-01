@@ -133,12 +133,12 @@ function showList(num) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    historyStore.seartchHistoryListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+    historyStore.historyListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
       paginationConstant();
     });
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    historyStore.seartchHistoryListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    historyStore.historyListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   }
@@ -152,10 +152,11 @@ watch(showNum, (newShowNum) => {
   }
 });
 
+//검색 기능
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await historyStore
-    .seartchHistoryListAct(1, showNum.value, 'desc', searchData)
+    .historyListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })
