@@ -5,7 +5,11 @@ import router from '@/routes';
 export const useQuestion = defineStore('question', {
   state: () => ({
     questionList: null,
-    detailQuestion: null
+    detailQuestion: null,
+    questionPage: 1,
+    questionSortVal: 'desc',
+    questionSearchVal: 'name',
+    questionSearchWord: null
   }),
   actions: {
     /**
@@ -16,18 +20,19 @@ export const useQuestion = defineStore('question', {
      * @param {키워드} keyword
      * @returns 문의내역리스트
      */
-    // async questionListAct(page, count, sortData) {
-    //   await questionApi
-    //     .fetchQnaList(page, count, sortData)
-    //     .then((res) => {
-    //       this.questionList = res.data;
-    //     })
-    //     .catch((err) => console.log(err));
-    // },
     async questionListAct(page, count, sortData, keyword) {
-      const result = await questionApi.fetchQnaList(page, count, sortData, keyword);
-      this.questionList = result.data;
-      return result.data;
+      await questionApi
+        .fetchQnaList(page, count, sortData, keyword)
+        .then((res) => {
+          this.questionList = res.data;
+        })
+        .catch((err) => {
+          if (err.response.data.code === 'N999') {
+            this.questionList = null;
+          } else {
+            console.log(err);
+          }
+        });
     },
     /**
      * 문의 내역 검색결과 조회
@@ -72,6 +77,24 @@ export const useQuestion = defineStore('question', {
           }
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * 쿼리변경
+     * @param {sort값} sortVal
+     * @param {검색어} searchWord
+     * @param {변경할 페이지} page
+     */
+    changeQuery(sortVal, searchWord, page) {
+      if (!page) page = this.questionPage;
+      if (!searchWord) searchWord = this.questionSearchWord;
+      if (!sortVal) sortVal = this.questionSortVal;
+      router.push({
+        query: {
+          page: page,
+          sort: sortVal,
+          keyword: searchWord
+        }
+      });
     }
   }
 });

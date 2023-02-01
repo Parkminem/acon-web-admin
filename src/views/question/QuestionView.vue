@@ -10,19 +10,7 @@
             <select
               name=""
               id=""
-              @change="
-                sorting(
-                  $event,
-                  questionStore.questionListAct,
-                  questionStore.searchQuestionListAct,
-                  sortData,
-                  searchInputRef,
-                  nowPageNum,
-                  listPage,
-                  searchVal,
-                  searchData
-                )
-              "
+              @change="questionStore.changeQuery($event.target.value, searchInputRef, nowPage)"
               class="sort-box__select"
             >
               <option value="" disabled selected><span>등록일</span></option>
@@ -32,7 +20,7 @@
           </div>
         </div>
         <div class="search-box">
-          <select name="" id="" @change="handleSearchValue" class="search-box__select">
+          <select name="" id="" @change="" class="search-box__select">
             <option value="question_type_kr">문의유형</option>
             <option value="name" selected>이름</option>
             <option value="company">회사명</option>
@@ -44,12 +32,14 @@
             <input
               type="text"
               v-model="searchInputRef"
-              @keydown.enter="searchBtnClick"
+              @keydown.enter="questionStore.changeQuery(null, searchInputRef, null)"
               class="search-box__input-box__input"
             />
           </div>
           <div class="search-box__btn-box">
-            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
+            <button @click="questionStore.changeQuery(null, searchInputRef, null)" class="search-box__btn-box__btn">
+              <span>검색</span>
+            </button>
           </div>
         </div>
       </div>
@@ -72,14 +62,11 @@
         </ul>
       </Table>
       <div class="section__bottom">
-        <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
-        <Pagination
-          :lastPage="Number(lastPage)"
-          :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
-          @goNextPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
-          @goPrePage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
-        />
+        <AllEntries :nowPage="Number(nowPage)" :listPage="showNum" :rowCnt="rowCnt" />
+        <Pagination :lastPage="lastPage" :nowPage="Number(questionPage)" />
+        <!-- @goPage="(page) => "
+          @goNextPage="(page) => "
+          @goPrePage="(page) => " -->
       </div>
     </section>
   </div>
@@ -97,112 +84,51 @@ import { useSelect } from '@/store/utils';
 import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import router from '@/routes';
+import { useRoute } from 'vue-router';
 import { handleSearchValue, sorting, changePage, showList } from '@/utils/module';
 
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
 const questionStore = useQuestion();
-const { questionList } = storeToRefs(questionStore);
+const { questionList, questionPage, questionSortVal, questionSearchVal, questionSearchWord } =
+  storeToRefs(questionStore);
+const route = useRoute();
 
-const nowPageNum = ref(1);
-const listPage = ref(showNum.value);
-const searchVal = ref('name');
 const searchInputRef = ref();
+const nowPage = ref();
+const rowCnt = ref();
+const lastPage = ref();
+const sortData = ref('desc');
+const searchVal = ref('name');
 
-const sortData = ref();
-let searchData;
-
-//문의 내역 조회
-await questionStore.questionListAct(1, 10, 'desc');
-
-const rowCnt = ref(questionList.value[0].rowcnt);
-const lastPage = ref(questionList.value[0].lastpage);
-
-//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-const paginationConstant = () => {
-  nowPageNum.value = 1;
-  rowCnt.value = questionList.value[0].rowcnt;
-  lastPage.value = questionList.value[0].lastpage;
-};
-
-//게시물 갯수 변경 함수
-// function showList(num) {
-//   const nowPage = questionList.value[0].nowpage;
-//   listPage.value = Number(num);
-//   if (!sortData.value && !searchInputRef.value) {
-//     questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
-//       paginationConstant();
-//     });
-//   } else if (sortData.value && !searchInputRef.value) {
-//     questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
-//       paginationConstant();
-//     });
-//   } else if (!sortData.value && searchInputRef.value) {
-//     searchData = {
-//       [searchVal.value]: searchInputRef.value
-//     };
-//     questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-//       paginationConstant();
-//     });
-//   } else {
-//     searchData = { [searchVal.value]: searchInputRef.value };
-//     questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-//       paginationConstant();
-//     });
-//   }
-// }
-
-// watch(
-//   showNum,
-//   (newShowNum) => {
-//     // if (newShowNum < questionList.value[0].rowcnt) {
-//     //   listPage.value = Number(newShowNum);
-//     //   // showList(newShowNum);
-//     //   showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
-//     // } else {
-//     //   listPage.value = Number(showNum.value);
-//     //   // showList(showNum.value);
-//     //   showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
-//     // }
-//   },
-//   { flush: 'post' }
-// );
+//라우터 변경 감지
 watch(
-  showNum,
-  function (newShowNum) {
-    if (newShowNum < questionList.value[0].rowcnt) {
-      listPage.value = Number(newShowNum);
-      // showList(newShowNum);
-      showList(newShowNum, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+  () => route,
+  (to, from) => {
+    const { page, sort, keyword } = route.query;
+    if (page) nowPage.value = page;
+    if (sort) sortData.value = sort;
+    if (keyword) {
+      let word = { [searchVal.value]: searchInputRef.value };
+      questionStore.questionListAct(nowPage.value, showNum.value, sortData.value, word);
     } else {
-      listPage.value = Number(showNum.value);
-      // showList(showNum.value);
-      showList(showNum.value, questionList.value, questionStore.questionListAct, questionStore.searchQuestionListAct);
+      questionStore.questionListAct(nowPage.value, showNum.value, sortData.value);
     }
   },
-  { flush: 'post' }
+  { deep: true }
 );
+
+//문의 내역 조회
+await questionStore.questionListAct(route.query.page, showNum.value, route.query.sort, route.query.keyword);
+
+rowCnt.value = questionList.value[0].rowcnt;
+lastPage.value = questionList.value[0].lastpage;
+
+//sort값 변경
 
 //답변 등록 페이지로 이동
 function goAnswerPage(pk) {
   router.push(`/question/answer?pk=${pk}`);
-}
-
-//검색 버튼 클릭
-async function searchBtnClick() {
-  searchData = { [searchVal.value]: searchInputRef.value };
-  console.log(searchData);
-  await questionStore
-    .questionListAct(1, showNum.value, 'desc', searchData)
-    .then(() => {
-      paginationConstant();
-    })
-    .catch((err) => {
-      rowCnt.value = null;
-      lastPage.value = null;
-      nowPageNum.value = null;
-      listPage.value = null;
-    });
 }
 </script>
 <style lang="scss" scoped></style>

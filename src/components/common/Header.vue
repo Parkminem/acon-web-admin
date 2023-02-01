@@ -38,7 +38,9 @@
                 <router-link to="/questiontype" class="navi__depth02__link"><span>문의유형</span></router-link>
               </li>
               <li>
-                <router-link to="/question" class="navi__depth02__link"><span>문의내역</span></router-link>
+                <router-link :to="{ path: '/question', query: { page: '1', sort: 'desc' } }" class="navi__depth02__link"
+                  ><span>문의내역</span></router-link
+                >
               </li>
             </ul>
           </li>
