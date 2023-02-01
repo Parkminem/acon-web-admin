@@ -203,7 +203,7 @@ async function searchBtnClick() {
     })
     .catch((err) => {
       rowCnt.value = null;
-      // lastPage.value = null;
+      lastPage.value = null;
       nowPageNum.value = null;
       listPage.value = null;
     });

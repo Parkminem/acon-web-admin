@@ -13,10 +13,22 @@
         <Input name="title_pt" title="제목(포르투갈어)" v-model="ptTitle" />
         <Input name="title_us" title="제목(영어)" v-model="enTitle" />
 
-        <Input name="content_kr" title="내용(한국어)" v-model="krContents" />
-        <Input name="content_id" title="내용(인도네시아어)" v-model="idContents" />
-        <Input name="content_pt" title="내용(포르투갈어)" v-model="ptContents" />
-        <Input name="content_us" title="내용(영어)" v-model="enContents" />
+        <div class="input-box">
+          <label>내용(한국어)</label>
+          <textarea class="textarea" name="content_kr" cols="50" rows="10" v-model="krContents"></textarea>
+        </div>
+        <div class="input-box">
+          <label>내용(인도네시아어)</label>
+          <textarea class="textarea" name="content_id" cols="50" rows="10" v-model="idContents"></textarea>
+        </div>
+        <div class="input-box">
+          <label>내용(포르투갈어)</label>
+          <textarea class="textarea" name="content_pt" cols="50" rows="10" v-model="ptContents"></textarea>
+        </div>
+        <div class="input-box">
+          <label>내용(영어))</label>
+          <textarea class="textarea" name="content_us" cols="50" rows="10" v-model="enContents"></textarea>
+        </div>
 
         <File title="썸네일" @fileValue="emitFile" :name="file" dataName="file" />
         <File title="작품소개서(한국어)" @fileValue="emitDataKr" :name="data_kr" dataName="data_kr" />
@@ -146,4 +158,14 @@ function editContent() {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/style/popup.scss';
+.textarea {
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid rgba(170, 170, 170, 0.3);
+  outline: none;
+  resize: none;
+  &:focus {
+    border-color: #80bdff;
+  }
+}
 </style>
