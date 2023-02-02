@@ -18,11 +18,14 @@ export const useContentsStore = defineStore('contents', {
         .fetchContentsList(page, count)
         .then((res) => {
           this.contentsList = res.data;
+          console.log(this.contentsList);
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.data.status == 404) {
+          if (err.response.data.code === 'N999') {
             this.contentsList = null;
+          } else {
+            //
           }
         });
     },

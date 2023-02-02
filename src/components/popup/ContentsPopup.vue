@@ -132,7 +132,7 @@ function editContent() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.contentClose();
-          contentsStore.contentsListAct();
+          contentsStore.contentsListAct(1, 10);
         }
       })
       .catch((err) => console.log(err));

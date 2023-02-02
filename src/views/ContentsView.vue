@@ -40,9 +40,21 @@
           <li v-if="locale === 'id'">{{ content.title_id }}</li>
           <li v-if="locale === 'pt'">{{ content.title_pt }}</li>
           <li v-if="locale === 'en'">{{ content.title_us }}</li>
-          <li class="w10">{{ content.thumbnail_file_url ? 'O' : 'X' }}</li>
-          <li class="w10">{{ content.file_url_kr ? 'O' : 'X' }}</li>
-          <li class="w10">{{ content.file_url_us ? 'O' : 'X' }}</li>
+          <li class="w10">
+            <a :href="url + content.thumbnail_file_url" target="_blank">
+              <span class="material-icons-outlined" @click="clickIcons"> image </span>
+            </a>
+          </li>
+          <li class="w10">
+            <a :href="url + content.file_url_kr" target="_blank">
+              <span class="material-icons-outlined" @click="clickIcons"> folder </span>
+            </a>
+          </li>
+          <li class="w10">
+            <a :href="url + content.file_url_us" target="_blank">
+              <span class="material-icons-outlined" @click="clickIcons"> folder </span>
+            </a>
+          </li>
           <li class="w10">
             <button @click="contentStore.contentsDetailAct(content.contents_pk)"><span>수정</span></button>
           </li>
@@ -82,6 +94,8 @@ import { storeToRefs } from 'pinia';
 import { usePopupStore } from '@/store/popup';
 import contentsApi from '@/api/contents';
 
+const url = 'http://data.ideaconcert.com';
+
 const selectStore = useSelect();
 const { locale, showNum } = storeToRefs(selectStore);
 
@@ -100,8 +114,16 @@ const contentStore = useContentsStore();
 await contentStore.contentsListAct(1, 10);
 const { contentsList } = storeToRefs(contentStore);
 
-const rowCnt = ref(contentsList.value[0].rowcnt);
-const lastPage = ref(contentsList.value[0].lastpage);
+let rowCnt = ref(0);
+let lastPage = ref(0);
+
+if (contentsList) {
+  rowCnt = ref(contentsList.value[0].rowcnt);
+  lastPage = ref(contentsList.value[0].lastpage);
+}
+
+console.log(`rowcnt: ${rowCnt.value}`);
+console.log(`lastpage: ${lastPage.value}`);
 
 function deleteContent(pk) {
   if (window.confirm('삭제하시겠습니까?')) {
@@ -203,7 +225,7 @@ async function searchBtnClick() {
     })
     .catch((err) => {
       rowCnt.value = null;
-      // lastPage.value = null;
+      lastPage.value = null;
       nowPageNum.value = null;
       listPage.value = null;
     });
