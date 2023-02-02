@@ -68,10 +68,10 @@ export const theadData = {
   ],
   workSpace: [
     { width: 'w10', name: '번호' },
-    { width: 'w10', name: '지역' },
-    { width: '', name: '이미지' },
+    { width: '', name: '지역' },
     { width: 'w10', name: '등록일' },
-    { width: 'w10', name: '활성화 여부' },
+    // { width: 'w10', name: '활성화 여부' },
+    { width: 'w10', name: '수정' },
     { width: 'w10', name: '삭제' }
   ]
 };
