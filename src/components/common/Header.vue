@@ -38,7 +38,9 @@
                 <router-link to="/questiontype" class="navi__depth02__link"><span>문의유형</span></router-link>
               </li>
               <li>
-                <router-link :to="{ path: '/question', query: { page: '1', sort: 'desc' } }" class="navi__depth02__link"
+                <router-link
+                  :to="{ path: '/question', query: { page: '1', sort: 'desc', list: showNum } }"
+                  class="navi__depth02__link"
                   ><span>문의내역</span></router-link
                 >
               </li>
@@ -120,8 +122,11 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useHeaderStore } from '@/store/header';
+import { useSelect } from '@/store/utils';
 const headerStore = useHeaderStore();
+const selectStore = useSelect();
 const { slideState } = storeToRefs(headerStore);
+const { showNum } = storeToRefs(selectStore);
 
 const moveLeft = () => {
   if (slideState.value) return 0;

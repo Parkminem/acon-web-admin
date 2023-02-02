@@ -134,7 +134,7 @@ lastPage.value = questionList.value[0].lastpage;
  * @param {검색어} keyword
  * @param {변경할페이지} page
  */
-function changeQueryHandler(sort, keyword, page) {
+function changeQueryHandler(sort, keyword, page, list) {
   if (!page) page = nowPage.value;
   if (!keyword) keyword = searchInputRef.value;
   if (!sort) sort = sortData.value;
@@ -143,6 +143,7 @@ function changeQueryHandler(sort, keyword, page) {
     query: {
       page,
       sort,
+      list,
       keyword
     }
   });
