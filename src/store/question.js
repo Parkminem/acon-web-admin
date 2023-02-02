@@ -5,11 +5,7 @@ import router from '@/routes';
 export const useQuestion = defineStore('question', {
   state: () => ({
     questionList: null,
-    detailQuestion: null,
-    questionPage: 1,
-    questionSortVal: 'desc',
-    questionSearchVal: 'name',
-    questionSearchWord: null
+    detailQuestion: null
   }),
   actions: {
     /**
@@ -77,24 +73,6 @@ export const useQuestion = defineStore('question', {
           }
         })
         .catch((err) => console.log(err));
-    },
-    /**
-     * 쿼리변경
-     * @param {sort값} sortVal
-     * @param {검색어} searchWord
-     * @param {변경할 페이지} page
-     */
-    changeQuery(sortVal, searchWord, page) {
-      if (!page) page = this.questionPage;
-      if (!searchWord) searchWord = this.questionSearchWord;
-      if (!sortVal) sortVal = this.questionSortVal;
-      router.push({
-        query: {
-          page: page,
-          sort: sortVal,
-          keyword: searchWord
-        }
-      });
     }
   }
 });
