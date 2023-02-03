@@ -82,7 +82,7 @@ function uploadPartner() {
           partnersStore.partnersListAct();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('등록에 실패하였습니다.'));
   }
 }
 //파트너사 수정

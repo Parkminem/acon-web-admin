@@ -99,7 +99,7 @@ function deleteWorkSpace(pk) {
           workSpaceStore.workSpaceListAct(1, 10, 'desc');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('삭제에 실패하였습니다.'));
   }
 }
 </script>

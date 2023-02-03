@@ -115,11 +115,10 @@ function onUpload() {
     newsApi
       .fetchUploadNews(formData)
       .then((res) => {
-        console.log(res);
         window.location.href = '/news';
       })
       .catch((err) => {
-        console.log(err);
+        alert('등록에 실패하였습니다.');
       });
   }
 }
@@ -133,7 +132,7 @@ function editNews() {
   formData.append('content_id', idEditor.value.value.getContents(true));
   formData.append('content_pt', ptEditor.value.value.getContents(true));
   formData.append('content_us', enEditor.value.value.getContents(true));
-  console.log(...formData);
+  // console.log(...formData);
   newsApi
     .fetchEditNews(detailNews.value.news_pk, formData)
     .then((res) => {
@@ -143,7 +142,7 @@ function editNews() {
       }
     })
     .catch((err) => {
-      console.log(err);
+      alert('수정에 실패하였습니다.');
     });
 }
 </script>

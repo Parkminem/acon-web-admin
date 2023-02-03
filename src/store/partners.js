@@ -18,7 +18,7 @@ export const usePartners = defineStore('partners', {
         .then((res) => {
           this.partnersList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 파트너사 상세 정보 조회 액션
@@ -32,7 +32,7 @@ export const usePartners = defineStore('partners', {
           const popupStore = usePopupStore();
           popupStore.partnerOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailPartner 값 초기화

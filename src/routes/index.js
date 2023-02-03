@@ -128,7 +128,8 @@ const routes = [
         component: () => import('@/views/LoginView.vue')
       }
     ]
-  }
+  },
+  { path: '/:pathMatch(.*)*', redirect: '/main' }
 ];
 
 const router = createRouter({

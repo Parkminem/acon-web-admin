@@ -19,7 +19,7 @@ export const useQuestionType = defineStore('questionType', {
         .then((res) => {
           this.questionTypeList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 문의 유형 검색결과 조회
@@ -35,7 +35,7 @@ export const useQuestionType = defineStore('questionType', {
           if (err.response.data.code === 'N999') {
             this.questionTypeList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
@@ -53,7 +53,7 @@ export const useQuestionType = defineStore('questionType', {
           this.questionTypePage = page;
           popupStore.questionTypeOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailQuestionType 값 초기화 액션

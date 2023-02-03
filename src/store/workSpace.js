@@ -15,7 +15,6 @@ export const useWorkSpace = defineStore('workSpace', {
      * @param {한페이지안컨텐츠수} count
      * @param {sort값} sortData
      * @param {키워드} keyword
-     * @returns
      */
     async workSpaceListAct(page, count, sortData, keyword) {
       await workSpaceApi
@@ -27,13 +26,13 @@ export const useWorkSpace = defineStore('workSpace', {
           if (err.response.data.code === 'N999') {
             this.workSpaceList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
     /**
      * 업무 공간 상세 위치 조회 액션
-     * @param {*} pk
+     * @param {지역고유번호} pk
      */
     async detailWorkSpaceAct(pk) {
       await workSpaceApi
@@ -41,7 +40,7 @@ export const useWorkSpace = defineStore('workSpace', {
         .then((res) => {
           this.detailWorkSpace = res.data[0];
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 업무 공간 상세 이미지 조회 액션
@@ -53,7 +52,7 @@ export const useWorkSpace = defineStore('workSpace', {
         .then((res) => {
           this.detailImages = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 업무공간 데이터에서 불러온 이미지를 삭제 할 경우, 그 이미지를 모음
@@ -83,7 +82,7 @@ export const useWorkSpace = defineStore('workSpace', {
           try {
             await workSpaceApi.fetchDeleteWorkSpaceImage(i.careers_pk, i.seq);
           } catch (err) {
-            console.log(err);
+            alert('삭제에 실패하였습니다.');
           }
         });
         this.deletedImages = null;
@@ -98,9 +97,8 @@ export const useWorkSpace = defineStore('workSpace', {
     async addWorkSpaceImageAct(pk, formData) {
       try {
         const result = await workSpaceApi.fetchAddWorkSpaceImage(pk, formData);
-        console.log(result);
       } catch (err) {
-        console.log(err);
+        alert('등록에 실패하였습니다.');
       }
     },
     /**

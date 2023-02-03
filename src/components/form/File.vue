@@ -25,7 +25,7 @@ const fileName = ref(props.name);
 function fileUpload(event) {
   fileName.value = file.value.files[0].name;
   emit('fileValue', event.target);
-  console.log(fileName.value);
+  // console.log(fileName.value);
 }
 </script>
 <style lang="scss" scoped>

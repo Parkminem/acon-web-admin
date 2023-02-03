@@ -18,7 +18,7 @@ export const usePortfolio = defineStore('portfolio', {
           this.portfolioList = res.data;
         })
         .catch((err) => {
-          console.log(err);
+          alert('조회에 실패하였습니다.');
         });
     },
     /**
@@ -35,7 +35,7 @@ export const usePortfolio = defineStore('portfolio', {
           if (err.response.data.code === 'N999') {
             this.portfolioList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
@@ -53,7 +53,7 @@ export const usePortfolio = defineStore('portfolio', {
           }
         })
         .catch((err) => {
-          console.log(err);
+          alert('조회에 실패하였습니다.');
         });
     },
     /**

@@ -140,7 +140,7 @@ function uploadWorkSpace() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert('등록에 실패하였습니다.');
       });
   }
 }
@@ -149,7 +149,6 @@ function uploadWorkSpace() {
 function deleteFileHandler(idx) {
   srcs.value.splice(idx, 1);
   fileArr.value.splice(idx, 1);
-  console.log(fileArr.value);
   if (fileArr.value.length === 0) {
     fileName.value = '';
   } else {
@@ -200,7 +199,7 @@ async function editWorkSpace() {
       await popupStore.workSpaceClose();
       await workSpaceStore.workSpaceListAct(1, 10, 'desc');
     } catch (err) {
-      console.log(err);
+      alert('수정에 실패하였습니다.');
     }
   }
 }

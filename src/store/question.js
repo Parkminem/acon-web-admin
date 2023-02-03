@@ -18,7 +18,7 @@ export const useQuestion = defineStore('question', {
         .then((res) => {
           this.questionList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 문의 내역 검색결과 조회
@@ -34,7 +34,7 @@ export const useQuestion = defineStore('question', {
           if (err.response.data.code === 'N999') {
             this.questionList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
@@ -48,7 +48,7 @@ export const useQuestion = defineStore('question', {
         .then((res) => {
           this.detailQuestion = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 답변 하기
@@ -62,7 +62,7 @@ export const useQuestion = defineStore('question', {
             router.push('/question');
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('등록에 실패하였습니다.'));
     }
   }
 });

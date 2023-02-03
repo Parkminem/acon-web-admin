@@ -108,7 +108,7 @@ function uploadContent() {
   } else {
     const form = document.getElementById('form');
     const formData = new FormData(form);
-    console.log(...formData);
+    // console.log(...formData);
 
     contentsApi
       .fetchUploadContent(formData)
@@ -119,7 +119,7 @@ function uploadContent() {
         }
         location.reload();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('등록에 실패하였습니다.'));
   }
 }
 
@@ -135,7 +135,7 @@ function editContent() {
           contentsStore.contentsListAct();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('수정에 실패하였습니다.'));
   };
 
   const form = document.getElementById('form');
@@ -152,7 +152,7 @@ function editContent() {
 
   edit(formData);
 
-  console.log(...formData);
+  // console.log(...formData);
   // location.reload();
 }
 </script>

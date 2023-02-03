@@ -113,7 +113,7 @@ function deleteContent(pk) {
           location.reload();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('삭제에 실패하였습니다.'));
   }
 }
 
