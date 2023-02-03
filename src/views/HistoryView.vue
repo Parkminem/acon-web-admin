@@ -102,13 +102,16 @@ const listPage = ref(showNum.value);
 const sortData = ref();
 const searchVal = ref('content_kr');
 const searchInputRef = ref();
+const rowCnt = ref(0);
+const lastPage = ref(0);
 let searchData;
 
 //연혁 리스트 조회
 await historyStore.historyListAct(1, 10, 'desc');
-
-const rowCnt = ref(historyList.value[0].rowcnt);
-const lastPage = ref(historyList.value[0].lastpage);
+if (historyList.value) {
+  rowCnt.value = historyList.value[0].rowcnt;
+  lastPage.value = historyList.value[0].lastpage;
+}
 
 //게시물 갯수가 바뀔 때 사용될 페이지네이션 변경 상수들
 const paginationConstant = () => {

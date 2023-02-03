@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div class="pagination" v-if="lastPage > 1">
     <ul>
       <li v-if="pagination(nowPage, lastPage).preBtn">
         <button @click="$emit('goPrePage', pagination(nowPage, lastPage).startPage - 1)">

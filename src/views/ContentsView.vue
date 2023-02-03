@@ -122,8 +122,8 @@ if (contentsList) {
   lastPage = ref(contentsList.value[0].lastpage);
 }
 
-console.log(`rowcnt: ${rowCnt.value}`);
-console.log(`lastpage: ${lastPage.value}`);
+// console.log(`rowcnt: ${rowCnt.value}`);
+// console.log(`lastpage: ${lastPage.value}`);
 
 function deleteContent(pk) {
   if (window.confirm('삭제하시겠습니까?')) {
@@ -135,7 +135,7 @@ function deleteContent(pk) {
           location.reload();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('삭제에 실패하였습니다.'));
   }
 }
 

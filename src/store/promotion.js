@@ -20,7 +20,7 @@ export const usePromotion = defineStore('promotion', {
           this.promotionList = res.data;
         })
         .catch((err) => {
-          console.log(err);
+          alert('조회에 실패하였습니다.');
         });
     },
     /**
@@ -37,7 +37,7 @@ export const usePromotion = defineStore('promotion', {
           if (err.response.data.code === 'N999') {
             this.promotionList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
@@ -55,7 +55,7 @@ export const usePromotion = defineStore('promotion', {
           const popupStore = usePopupStore();
           popupStore.promotionOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailPromotion 값 초기화 액션

@@ -100,6 +100,8 @@ const listPage = ref(showNum.value);
 const sortData = ref();
 const searchVal = ref('content_kr');
 const searchInputRef = ref();
+const rowCnt = ref(0);
+const lastPage = ref(0);
 let searchData;
 
 // 소식 등록하기로 이동
@@ -109,8 +111,10 @@ function onUpload() {
 
 // 소식 리스트 불러오기
 await newsStore.newsListAct(1, 10, 'desc');
-const rowCnt = ref(newsList.value[0].rowcnt);
-const lastPage = ref(newsList.value[0].lastpage);
+if (newsList.value) {
+  rowCnt.value = newsList.value[0].rowcnt;
+  lastPage.value = newsList.value[0].lastpage;
+}
 
 // 게시물 갯수가 바뀔 때 사용될 페이지네이션 변경 상수들
 const paginationConstant = () => {
@@ -213,7 +217,7 @@ function deleteNews(pk) {
     newsApi
       .fetchDeleteNews(pk)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           window.location.href = '/news';
         }

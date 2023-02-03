@@ -19,7 +19,7 @@ export const useHistory = defineStore('history', {
         .then((res) => {
           this.historyList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 연혁 검색결과 조회
@@ -35,7 +35,7 @@ export const useHistory = defineStore('history', {
           if (err.response.data.code === 'N999') {
             this.historyList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
@@ -53,7 +53,7 @@ export const useHistory = defineStore('history', {
           const popupStore = usePopupStore();
           popupStore.historyOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailHistory 값 초기화 액션

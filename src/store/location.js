@@ -19,7 +19,7 @@ export const useLocation = defineStore('location', {
         .then((res) => {
           this.locationList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * 위치 검색결과 조회
@@ -35,7 +35,7 @@ export const useLocation = defineStore('location', {
           if (err.response.data.code === 'N999') {
             this.locationList = null;
           } else {
-            console.log(err);
+            alert('조회에 실패하였습니다.');
           }
         });
     },
@@ -54,7 +54,7 @@ export const useLocation = defineStore('location', {
           this.detailLocation = res.data;
           popupStore.locationOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailLocation 값 초기화 액션

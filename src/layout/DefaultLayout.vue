@@ -19,6 +19,7 @@
   <QuestionTypePopup v-if="questionTypePopupState" />
   <PromotionPopup v-if="promotionPopupState" />
   <ContentsPopup v-if="contentPopupState" />
+  <WorkSpacePopup v-if="workSpacePopupState" />
 </template>
 <script setup>
 import Header from '@/components/common/Header.vue';
@@ -28,6 +29,7 @@ import PartnersPopup from '@/components/popup/PartnersPopup.vue';
 import LocationPopup from '@/components/popup/LocationPopup.vue';
 import QuestionTypePopup from '@/components/popup/QuestionTypePopup.vue';
 import PromotionPopup from '@/components/popup/PromotionPopup.vue';
+import WorkSpacePopup from '@/components/popup/WorkSpacePopup.vue';
 import Loading from '@/components/utils/Loading.vue';
 import ContentsPopup from '@/components/popup/ContentsPopup.vue';
 
@@ -44,7 +46,8 @@ const {
   locationPopupState,
   questionTypePopupState,
   promotionPopupState,
-  contentPopupState
+  contentPopupState,
+  workSpacePopupState
 } = storeToRefs(popupStore);
 
 const movePadding = () => {

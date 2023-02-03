@@ -108,15 +108,18 @@ const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
 const searchVal = ref('name_kr');
 const searchInputRef = ref();
+const rowCnt = ref(0);
+const lastPage = ref(0);
 
 const sortData = ref();
 let searchData;
 
 //문의 유형 리스트 조회
 await questionTypeStore.questionTypeListAct(1, 10, 'desc');
-
-const rowCnt = ref(questionTypeList.value[0].rowcnt);
-const lastPage = ref(questionTypeList.value[0].lastpage);
+if (questionTypeList.value) {
+  rowCnt.value = questionTypeList.value[0].rowcnt;
+  lastPage.value = questionTypeList.value[0].lastpage;
+}
 
 //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
 const paginationConstant = () => {

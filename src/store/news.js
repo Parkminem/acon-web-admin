@@ -18,7 +18,7 @@ export const useNewsStore = defineStore('news', {
         .then((res) => {
           this.newsList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
 
     /**
@@ -30,7 +30,7 @@ export const useNewsStore = defineStore('news', {
         .then((res) => {
           this.newsList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
 
     /**
@@ -43,9 +43,9 @@ export const useNewsStore = defineStore('news', {
         .then((res) => {
           this.detailNews = res.data;
           router.push('/news/upload');
-          console.log(this.detailNews);
+          // console.log(this.detailNews);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     }
   }
 });

@@ -107,15 +107,19 @@ const nowPageNum = ref(1);
 const sortData = ref();
 const searchVal = ref('name_kr');
 const searchInputRef = ref();
+const listPage = ref(10);
+const rowCnt = ref(0);
+const lastPage = ref(0);
 
 let searchData;
 
 //자사 위치 리스트 조회
 await locationStore.locationListAct(1, showNum.value, 'desc');
-
-const listPage = ref(showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt);
-const rowCnt = ref(locationList.value[0].rowcnt);
-const lastPage = ref(locationList.value[0].lastpage);
+if (locationList.value) {
+  listPage.value = showNum.value < locationList.value[0].rowcnt ? showNum.value : locationList.value[0].rowcnt;
+  rowCnt.value = locationList.value[0].rowcnt;
+  lastPage.value = locationList.value[0].lastpage;
+}
 
 //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
 const paginationConstant = () => {
