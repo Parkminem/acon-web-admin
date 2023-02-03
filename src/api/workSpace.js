@@ -31,12 +31,32 @@ function fetchUploadWorkSpace(formData) {
   return instance.post('/careers', formData);
 }
 /**
- * 업무공간 상세 정보 조회
+ * 업무공간 위치 상세 정보 조회
  * @param {고유번호} pk
  */
 function fetchDetailWorkSpace(pk) {
   return instance.get(`careers/${pk}`);
 }
-const workSpaceApi = { fetchWorkSpaceList, fetchUploadWorkSpace, fetchDetailWorkSpace };
+/**
+ * 업무공간 상세 이미지 조회
+ * @param {고유번호} pk
+ */
+function fetchDetailWorkSpaceImages(pk) {
+  return instance.get(`/careers/imgs/${pk}`);
+}
+/**
+ * 업무공간 삭제
+ * @param {고유번호} pk
+ */
+function fetchDeleteWorkSpace(pk) {
+  return instance.delete(`/careers/${pk}`);
+}
+const workSpaceApi = {
+  fetchWorkSpaceList,
+  fetchUploadWorkSpace,
+  fetchDetailWorkSpace,
+  fetchDetailWorkSpaceImages,
+  fetchDeleteWorkSpace
+};
 
 export default workSpaceApi;

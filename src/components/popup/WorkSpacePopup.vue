@@ -13,7 +13,7 @@
         <Input name="name_pt" title="지역명(포르투갈어)" placeholder="Pangyo" v-model="ptSpace" />
         <Input name="name_us" title="지역명(영어)" placeholder="Pangyo" v-model="enSpace" />
         <div class="input-box">
-          <label>업무 공간 사진</label>
+          <label>업무 공간 사진(복수 선택 가능)</label>
           <div class="file-box">
             <input type="file" id="file" @change="fileUpload" ref="file" multiple />
             <label for="file"
@@ -24,6 +24,9 @@
         </div>
         <div class="input-box">
           <div class="preview-box" v-for="(src, idx) in srcs" :key="idx">
+            <button class="preview-box__close" @click.prevent="deleteFileHandler(idx)">
+              <span class="material-icons"> cancel </span>
+            </button>
             <img :src="src" alt="" />
           </div>
         </div>
@@ -48,8 +51,9 @@ import { storeToRefs } from 'pinia';
 const popupStore = usePopupStore();
 const workSpaceStore = useWorkSpace();
 
-const { detailWorkSpace } = storeToRefs(workSpaceStore);
+const { detailWorkSpace, detailImages } = storeToRefs(workSpaceStore);
 
+const url = 'http://data.ideaconcert.com';
 const krSpace = ref('');
 const idSpace = ref('');
 const ptSpace = ref('');
@@ -59,14 +63,17 @@ const file = ref();
 const fileArr = ref([]);
 let srcs = ref([]);
 // //수정 팝업 랜더링 시 데이터 삽입
-// if (detailPartner.value) {
-//   krPartner.value = detailPartner.value.name_kr;
-//   idPartner.value = detailPartner.value.name_id;
-//   ptPartner.value = detailPartner.value.name_pt;
-//   enPartner.value = detailPartner.value.name_us;
-//   homepage.value = detailPartner.value.url;
-//   fileName.value = detailPartner.value.logo_origin_name;
-// }
+if (detailWorkSpace.value || detailImages.value) {
+  krSpace.value = detailWorkSpace.value.name_kr;
+  idSpace.value = detailWorkSpace.value.name_id;
+  ptSpace.value = detailWorkSpace.value.name_pt;
+  enSpace.value = detailWorkSpace.value.name_us;
+  if (detailImages.value) {
+    detailImages.value.forEach((i) => {
+      srcs.value.push(url + i.img_url);
+    });
+  }
+}
 
 //사진 미리보기 띄우기
 function fileUpload() {
@@ -75,13 +82,17 @@ function fileUpload() {
     alert('이미지 파일만 선택할 수 있습니다.');
   } else {
     fileName.value = file.value.files[0].name;
-    fileArr.value.push(file.value.files[0]);
-    let reader = new FileReader();
-    reader.onload = (e) => {
-      srcs.value.push(e.target.result);
-      console.log(srcs.value);
-    };
-    reader.readAsDataURL(file.value.files[0]);
+    for (let i = 0; file.value.files.length > i; i++) {
+      fileArr.value.push(file.value.files[i]);
+    }
+    Object.keys(file.value.files).forEach((i) => {
+      const fileData = file.value.files[i];
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        srcs.value.push(e.target.result);
+      };
+      reader.readAsDataURL(fileData);
+    });
   }
 }
 
@@ -89,7 +100,9 @@ function fileUpload() {
 function uploadWorkSpace() {
   const form = document.getElementById('form');
   const formData = new FormData(form);
-  formData.append('file', fileArr.value);
+  for (let i = 0; fileArr.value.length > i; i++) {
+    formData.append('file', fileArr.value[i]);
+  }
   if (
     krSpace.value.length == 0 ||
     idSpace.value.length == 0 ||
@@ -112,7 +125,20 @@ function uploadWorkSpace() {
       });
   }
 }
-// //파트너사 수정
+
+//파일 삭제
+function deleteFileHandler(idx) {
+  srcs.value.splice(idx, 1);
+  fileArr.value.splice(idx, 1);
+  console.log(fileArr.value);
+  if (fileArr.value.length === 0) {
+    fileName.value = '';
+  } else {
+    fileName.value = fileArr.value[0].name;
+  }
+}
+
+// // 수정
 function editPartner() {
   if (
     krPartner.value.length == 0 ||
@@ -191,10 +217,16 @@ function editPartner() {
   }
 }
 .preview-box {
+  position: relative;
   img {
     width: 100%;
     padding: 10px;
     max-height: 300px;
+  }
+  &__close {
+    position: absolute;
+    right: 0;
+    z-index: 1;
   }
 }
 </style>

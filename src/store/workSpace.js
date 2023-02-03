@@ -5,7 +5,8 @@ import { usePopupStore } from '@/store/popup';
 export const useWorkSpace = defineStore('workSpace', {
   state: () => ({
     workSpaceList: null,
-    detailWorkSpace: null
+    detailWorkSpace: null,
+    detailImages: null
   }),
   actions: {
     /**
@@ -31,6 +32,32 @@ export const useWorkSpace = defineStore('workSpace', {
         });
     },
     /**
+     * 업무 공간 상세 위치 조회 액션
+     * @param {*} pk
+     */
+    async detailWorkSpaceAct(pk) {
+      await workSpaceApi
+        .fetchDetailWorkSpace(pk)
+        .then((res) => {
+          this.detailWorkSpace = res.data[0];
+          console.log(this.detailWorkSpace);
+        })
+        .catch((err) => console.log(err));
+    },
+    /**
+     * 업무 공간 상세 이미지 조회 액션
+     * @param {고유번호} pk
+     */
+    async detailWorkSpaceImagesAct(pk) {
+      await workSpaceApi
+        .fetchDetailWorkSpaceImages(pk)
+        .then((res) => {
+          this.detailImages = res.data;
+          console.log(this.detailImages);
+        })
+        .catch((err) => console.log(err));
+    },
+    /**
      * detailWorkSpace 값 초기화
      */
     resetDetailWorkSpaceAct() {
@@ -38,18 +65,7 @@ export const useWorkSpace = defineStore('workSpace', {
         return false;
       }
       this.detailWorkSpace = null;
-    },
-    /**
-     * 업무 공간 상세 정보 조회 액션
-     * @param {고유번호} pk
-     */
-    async detailWorkSpaceAct(pk) {
-      await workSpaceApi
-        .fetchDetailWorkSpace(pk)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => console.log(err));
+      this.detailImages = null;
     }
   }
 });
