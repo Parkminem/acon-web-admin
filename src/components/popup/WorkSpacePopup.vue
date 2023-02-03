@@ -24,10 +24,22 @@
         </div>
         <div class="input-box">
           <div class="preview-box" v-for="(src, idx) in srcs" :key="idx">
-            <button class="preview-box__close" @click.prevent="deleteFileHandler(idx)">
-              <span class="material-icons"> cancel </span>
-            </button>
-            <img :src="src" alt="" />
+            <!-- 등록 시 업로드 할 사진 삭제 버튼 -->
+            <div v-if="!src.isDbUrl">
+              <button class="preview-box__close" @click.prevent="deleteFileHandler(idx)">
+                <span class="material-icons"> cancel </span>
+              </button>
+            </div>
+            <!-- 수정 팝업의 받아온 사진 데이터 삭제 버튼  -->
+            <div v-else>
+              <button v-if="!src.deleteFlag" class="preview-box__close" @click.prevent="deleteImageHandler(idx)">
+                <span class="material-icons"> cancel </span>
+              </button>
+              <button v-else class="preview-box__undo" @click.prevent="undoImageHandle(src.seq, idx)">
+                <span class="material-icons"> undo </span>
+              </button>
+            </div>
+            <img :src="src.url" alt="" :style="{ opacity: transparent(src.deleteFlag) + '%' }" />
           </div>
         </div>
       </div>
@@ -35,7 +47,7 @@
         <button v-if="!detailWorkSpace" @click.prevent="uploadWorkSpace" class="popup__footer__btn">
           <span>등록</span>
         </button>
-        <button v-else @click.prevent="" class="popup__footer__btn"><span>수정</span></button>
+        <button v-else @click.prevent="editWorkSpace" class="popup__footer__btn"><span>수정</span></button>
       </div>
     </form>
   </div>
@@ -62,6 +74,13 @@ const fileName = ref();
 const file = ref();
 const fileArr = ref([]);
 let srcs = ref([]);
+
+//사진 삭제 취소 스타일(반투명)
+function transparent(del) {
+  if (del) return 40;
+  else return 100;
+}
+
 // //수정 팝업 랜더링 시 데이터 삽입
 if (detailWorkSpace.value || detailImages.value) {
   krSpace.value = detailWorkSpace.value.name_kr;
@@ -70,7 +89,7 @@ if (detailWorkSpace.value || detailImages.value) {
   enSpace.value = detailWorkSpace.value.name_us;
   if (detailImages.value) {
     detailImages.value.forEach((i) => {
-      srcs.value.push(url + i.img_url);
+      srcs.value.push({ url: url + i.img_url, isDbUrl: true, deleteFlag: false, seq: i.seq });
     });
   }
 }
@@ -89,7 +108,7 @@ function fileUpload() {
       const fileData = file.value.files[i];
       let reader = new FileReader();
       reader.onload = (e) => {
-        srcs.value.push(e.target.result);
+        srcs.value.push({ url: e.target.result, isDbUrl: false, deleteFlag: false, seq: null });
       };
       reader.readAsDataURL(fileData);
     });
@@ -138,43 +157,50 @@ function deleteFileHandler(idx) {
   }
 }
 
-// // 수정
-function editPartner() {
+//수정 시 받아온 사진 데이터 삭제(반투명 상태로)
+function deleteImageHandler(idx) {
+  workSpaceStore.deletedWorkSpaceImageAct(idx);
+  srcs.value[idx].deleteFlag = true;
+}
+
+// 수정 시 삭제할 이미지 데이터 되돌리기
+function undoImageHandle(seq, idx) {
+  workSpaceStore.undoWorkSpaceImageAct(seq);
+  srcs.value[idx].deleteFlag = false;
+}
+
+// 수정
+async function editWorkSpace() {
   if (
-    krPartner.value.length == 0 ||
-    idPartner.value.length == 0 ||
-    ptPartner.value.length == 0 ||
-    enPartner.value.length == 0 ||
-    homepage.value.length == 0 ||
-    fileName.value !== detailPartner.value.logo_origin_name
+    krSpace.value.length == 0 ||
+    idSpace.value.length == 0 ||
+    ptSpace.value.length == 0 ||
+    enSpace.value.length == 0 ||
+    srcs.value.length == 0
   ) {
     alert('모든 내용을 입력해주세요');
   } else {
-    const edit = (data) => {
-      partnersApi
-        .fetchEditPartners(detailPartner.value.partner_pk, data)
-        .then((res) => {
-          if (res.data.status === 200) {
-            popupStore.partnerClose();
-            partnersStore.partnersListAct();
-          }
-        })
-        .catch((err) => {
-          alert('수정에 실패하였습니다.');
-        });
-    };
-    //파일 수정X
-    if (detailPartner.value.logo_origin_name === fileName.value) {
-      const form = document.getElementById('form');
-      const formData = new FormData(form);
-      formData.delete('file');
-      edit(formData);
-    }
-    //파일 수정
-    if (file.value) {
-      const form = document.getElementById('form');
-      const formData = new FormData(form);
-      edit(formData);
+    try {
+      //지역 이름 수정
+      const formData = document.getElementById('form');
+      const imgData = new FormData();
+      for (let i = 0; fileArr.value.length > i; i++) {
+        imgData.append('file', fileArr.value[i]);
+      }
+      const pk = detailWorkSpace.value.careers_pk;
+      await workSpaceApi.fetchEditWorkSpace(detailWorkSpace.value.careers_pk, formData);
+      //이미지 삭제
+      if (workSpaceStore.deletedImages.values) {
+        await workSpaceStore.deleteWorkSpaceImageAct();
+      }
+      //이미지 추가
+      if (fileArr.value.length > 0) {
+        await workSpaceStore.addWorkSpaceImageAct(pk, imgData);
+      }
+      await popupStore.workSpaceClose();
+      await workSpaceStore.workSpaceListAct(1, 10, 'desc');
+    } catch (err) {
+      console.log(err);
     }
   }
 }
@@ -223,7 +249,8 @@ function editPartner() {
     padding: 10px;
     max-height: 300px;
   }
-  &__close {
+  &__close,
+  &__undo {
     position: absolute;
     right: 0;
     z-index: 1;

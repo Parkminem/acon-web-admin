@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import workSpaceApi from '@/api/workSpace';
-import { usePopupStore } from '@/store/popup';
 
 export const useWorkSpace = defineStore('workSpace', {
   state: () => ({
     workSpaceList: null,
     detailWorkSpace: null,
-    detailImages: null
+    detailImages: null,
+    deletedImages: []
   }),
   actions: {
     /**
@@ -40,7 +40,6 @@ export const useWorkSpace = defineStore('workSpace', {
         .fetchDetailWorkSpace(pk)
         .then((res) => {
           this.detailWorkSpace = res.data[0];
-          console.log(this.detailWorkSpace);
         })
         .catch((err) => console.log(err));
     },
@@ -53,9 +52,56 @@ export const useWorkSpace = defineStore('workSpace', {
         .fetchDetailWorkSpaceImages(pk)
         .then((res) => {
           this.detailImages = res.data;
-          console.log(this.detailImages);
         })
         .catch((err) => console.log(err));
+    },
+    /**
+     * 업무공간 데이터에서 불러온 이미지를 삭제 할 경우, 그 이미지를 모음
+     * @param {index} idx
+     */
+    deletedWorkSpaceImageAct(idx) {
+      this.deletedImages.push(this.detailImages[idx]);
+    },
+    /**
+     * 업무공간 데이터에서 불러온 이미지를 삭제처리 했다가 다시 되돌릴 때, 삭제이미지 배열에서 지우기
+     * @param {이미지고유번호} seq
+     */
+    undoWorkSpaceImageAct(seq) {
+      const result = this.deletedImages.filter((i) => {
+        i.seq !== seq;
+      });
+      this.deletedImages = result;
+    },
+    /**
+     * 업무공간 이미지 삭제 액션
+     * @param {지역고유번호} pk
+     * @param {이미지번호} seq
+     */
+    async deleteWorkSpaceImageAct() {
+      if (this.deletedImages.length > 0) {
+        this.deletedImages.forEach(async (i) => {
+          try {
+            await workSpaceApi.fetchDeleteWorkSpaceImage(i.careers_pk, i.seq);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+        this.deletedImages = null;
+      }
+      this.deletedImages = [];
+    },
+    /**
+     * 업무공간 이미지 추가(복수 가능)
+     * @param {지역고유번호} pk
+     * @param {파일들} formData
+     */
+    async addWorkSpaceImageAct(pk, formData) {
+      try {
+        const result = await workSpaceApi.fetchAddWorkSpaceImage(pk, formData);
+        console.log(result);
+      } catch (err) {
+        console.log(err);
+      }
     },
     /**
      * detailWorkSpace 값 초기화
@@ -66,6 +112,7 @@ export const useWorkSpace = defineStore('workSpace', {
       }
       this.detailWorkSpace = null;
       this.detailImages = null;
+      this.deletedImages = [];
     }
   }
 });

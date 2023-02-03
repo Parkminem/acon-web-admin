@@ -45,6 +45,29 @@ function fetchDetailWorkSpaceImages(pk) {
   return instance.get(`/careers/imgs/${pk}`);
 }
 /**
+ * 업무공간 이미지 추가
+ * @param {지역고유번호} pk
+ */
+function fetchAddWorkSpaceImage(pk, formData) {
+  return instance.post(`/careers/imgs/${pk}`, formData);
+}
+/**
+ * 업무공간 이미지 삭제
+ * @param {지역고유번호} pk
+ * @param {이미지번호} seq
+ */
+function fetchDeleteWorkSpaceImage(pk, seq) {
+  return instance.delete(`/careers/imgs/${pk}/${seq}`);
+}
+/**
+ * 업무공간 위치 수정
+ * @param {고유번호} pk
+ * @param {파일(지역관련)} formData
+ */
+function fetchEditWorkSpace(pk, formData) {
+  return instance.put(`/careers/${pk}`, formData);
+}
+/**
  * 업무공간 삭제
  * @param {고유번호} pk
  */
@@ -56,7 +79,10 @@ const workSpaceApi = {
   fetchUploadWorkSpace,
   fetchDetailWorkSpace,
   fetchDetailWorkSpaceImages,
-  fetchDeleteWorkSpace
+  fetchDeleteWorkSpace,
+  fetchEditWorkSpace,
+  fetchDeleteWorkSpaceImage,
+  fetchAddWorkSpaceImage
 };
 
 export default workSpaceApi;
