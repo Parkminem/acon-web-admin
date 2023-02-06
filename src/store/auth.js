@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', {
           // console.log(res);
           localStorage.setItem('token', res.data.accessToken);
           // console.log(localStorage);
-          router.push('/main');
+          router.push('/manager/main');
         })
         .catch((error) => {
           console.log(error);

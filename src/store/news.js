@@ -42,7 +42,7 @@ export const useNewsStore = defineStore('news', {
         .fetchDetailNews(pk)
         .then((res) => {
           this.detailNews = res.data;
-          router.push('/news/upload');
+          router.push('/manager/news/upload');
           // console.log(this.detailNews);
         })
         .catch((err) => alert('조회에 실패하였습니다.'));

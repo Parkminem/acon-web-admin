@@ -176,7 +176,7 @@ function sorting(e) {
 
 //답변 등록 페이지로 이동
 function goAnswerPage(pk) {
-  router.push(`/question/answer?pk=${pk}`);
+  router.push(`/manager/question/answer?pk=${pk}`);
 }
 
 //검색 조건 변경

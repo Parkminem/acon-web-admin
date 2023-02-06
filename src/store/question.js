@@ -59,7 +59,7 @@ export const useQuestion = defineStore('question', {
         .fetchAnswer(object)
         .then((res) => {
           if (res.data.status === 200) {
-            router.push('/question');
+            router.push('/manager/question');
           }
         })
         .catch((err) => alert('등록에 실패하였습니다.'));

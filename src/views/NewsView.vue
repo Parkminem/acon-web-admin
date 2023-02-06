@@ -100,7 +100,7 @@ let searchData;
 
 // 소식 등록하기로 이동
 function onUpload() {
-  window.location.href = '/news/upload';
+  window.location.href = '/manager/news/upload';
 }
 
 // 소식 리스트 불러오기
@@ -213,7 +213,7 @@ function deleteNews(pk) {
       .then((res) => {
         // console.log(res);
         if (res.status === 200) {
-          window.location.href = '/news';
+          window.location.href = '/manager/news';
         }
       })
       .catch((err) => alert(err));

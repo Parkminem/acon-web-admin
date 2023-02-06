@@ -115,7 +115,7 @@ function onUpload() {
     newsApi
       .fetchUploadNews(formData)
       .then((res) => {
-        window.location.href = '/news';
+        window.location.href = '/manager/news';
       })
       .catch((err) => {
         alert('등록에 실패하였습니다.');
@@ -138,7 +138,7 @@ function editNews() {
     .then((res) => {
       if (res.data.status === 200) {
         alert('수정이 완료되었습니다');
-        window.location.href = '/news';
+        window.location.href = '/manager/news';
       }
     })
     .catch((err) => {

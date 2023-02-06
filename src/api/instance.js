@@ -39,7 +39,7 @@ instance.interceptors.response.use(
     } else if (error.response.data.code === 'C006') {
       alert('토큰이 만료되었습니다');
       localStorage.removeItem('token');
-      router.push('/');
+      router.push('/manager');
     } else {
       return Promise.reject(error);
     }
