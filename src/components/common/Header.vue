@@ -3,7 +3,7 @@
     <div class="header__inner">
       <div class="header__logo">
         <div class="logo">
-          <router-link to="/manager/manager/main" class="logo__link"><h1>IDEACONCERT</h1></router-link>
+          <router-link to="/manager/main" class="logo__link"><h1>IDEACONCERT</h1></router-link>
         </div>
       </div>
       <div class="header__navi">

@@ -43,7 +43,7 @@
           <p>안녕하세요 <strong>ideaconcert</strong> 님</p>
         </div>
         <div class="login-box__btns">
-          <router-link to="/main"><span>Back To Main</span></router-link>
+          <router-link to="/manager/main"><span>Back To Main</span></router-link>
           <button @click.prevent="onLogout"><span>LOGOUT</span></button>
         </div>
       </div>

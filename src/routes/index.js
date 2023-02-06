@@ -129,7 +129,7 @@ const routes = [
       }
     ]
   },
-  { path: '/:pathMatch(.*)*', redirect: '/manager/main' }
+  { path: '/:pathMatch(.*)*', redirect: '/manager' }
 ];
 
 const router = createRouter({
