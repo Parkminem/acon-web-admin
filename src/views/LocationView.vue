@@ -5,23 +5,23 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
-          <div class="sort-box">
+          <!-- <div class="sort-box">
             <span class="">sort</span>
             <select
               name=""
               id=""
-              @change="sorting($event, locationStore.locationListAct, locationStore.searchLocationListAct)"
+              @change="sorting"
               class="sort-box__select"
             >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
             </select>
-          </div>
+          </div> -->
         </div>
-        <div class="search-box">
+        <!-- <div class="search-box">
           <select name="" id="" @change="handleSearchValue" class="search-box__select">
             <option value="name_kr" selected>위치명</option>
             <option value="road_address_kr">주소</option>
@@ -39,13 +39,13 @@
           <div class="search-box__btn-box">
             <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
           </div>
-        </div>
+        </div> -->
       </div>
       <Table :theadData="theadData.location">
         <!-- t-body -->
         <Empty v-if="!locationList" />
-        <ul v-else class="td" v-for="area in locationList" :key="area.location_pk">
-          <li class="w10">{{ area.location_pk }}</li>
+        <ul v-else class="td" v-for="(area, idx) in locationList" :key="area.location_pk">
+          <li class="w10">{{ area.nowpage > 1 ? (area.nowpage - 1) * 10 + (idx + 1) : idx + 1 }}</li>
           <li class="w10" v-if="locale === 'kr'">{{ area.name_kr }}</li>
           <li class="w10" v-if="locale === 'id'">{{ area.name_id }}</li>
           <li class="w10" v-if="locale === 'pt'">{{ area.name_pt }}</li>
@@ -95,7 +95,6 @@ import { useLocation } from '@/store/location';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import locationApi from '@/api/location';
-import { handleSearchValue, sorting, changePage } from '@/utils/module';
 
 const selectStore = useSelect();
 const locationStore = useLocation();
@@ -163,10 +162,44 @@ watch(showNum, (newShowNum) => {
   }
 });
 
+//페이지 변경
+function changePage(page) {
+  if (!sortData.value && !searchInputRef.value) {
+    locationStore.locationListAct(page, showNum.value, 'desc');
+  } else if (sortData.value && !searchInputRef.value) {
+    locationStore.locationListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    locationStore.searchLocationListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    locationStore.searchLocationListAct(page, showNum.value, sortData.value, searchData);
+  }
+  nowPageNum.value = page;
+}
+
+//등록일 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  if (!searchInputRef.value) {
+    locationStore.locationListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    locationStore.searchLocationListAct(1, listPage.value, sortData.value, searchData);
+  }
+}
+
 //등록하기 버튼 클릭
 function clickRegisterBtn() {
   popupStore.locationOpen();
   locationStore.currentLocationPageAct(nowPageNum.value);
+}
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
 }
 
 //검색 버튼 클릭

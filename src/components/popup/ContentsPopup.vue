@@ -26,7 +26,7 @@
           <textarea class="textarea" name="content_pt" cols="50" rows="10" v-model="ptContents"></textarea>
         </div>
         <div class="input-box">
-          <label>내용(영어))</label>
+          <label>내용(영어)</label>
           <textarea class="textarea" name="content_us" cols="50" rows="10" v-model="enContents"></textarea>
         </div>
 

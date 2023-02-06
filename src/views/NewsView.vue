@@ -9,12 +9,7 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select
-              name=""
-              id=""
-              @change="sorting($event, newsStore.newsListAct, newsStore.searchNewsListAct)"
-              class="sort-box__select"
-            >
+            <select name="" id="" @change="sorting" class="sort-box__select">
               <option value="desc">최신순</option>
               <option value="asc">등록일순</option>
             </select>
@@ -22,7 +17,7 @@
         </div>
         <div class="search-box">
           <select name="" id="" @change="handleSearchValue" class="search-box__select">
-            <option value="content_kr" selected>내용</option>
+            <option value="title_kr" selected>제목</option>
           </select>
           <div class="search-box__input-box">
             <input
@@ -88,7 +83,6 @@ import { storeToRefs } from 'pinia';
 import { useNewsStore } from '@/store/news';
 import { ref, watch } from 'vue';
 import newsApi from '@/api/news';
-import { sorting, changePage, handleSearchValue } from '@/utils/module';
 
 const selectStore = useSelect();
 const newsStore = useNewsStore();
@@ -98,7 +92,7 @@ const { newsList } = storeToRefs(newsStore);
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
 const sortData = ref();
-const searchVal = ref('content_kr');
+const searchVal = ref('title_kr');
 const searchInputRef = ref();
 const rowCnt = ref(0);
 const lastPage = ref(0);
@@ -159,45 +153,45 @@ watch(showNum, (newShowNum) => {
   }
 });
 
-// // sort
-// function sorting(e) {
-//   sortData.value = e.target.value;
-//   if (!searchInputRef.value) {
-//     newsStore.newsListAct(nowPageNum.value, listPage.value, sortData.value);
-//   } else {
-//     searchData = { [searchVal.value]: searchInputRef.value };
-//     newsStore.searchNewsListAct(1, listPage.value, sortData.value, searchData);
-//   }
-// }
+// sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  if (!searchInputRef.value) {
+    newsStore.newsListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    newsStore.searchNewsListAct(1, listPage.value, sortData.value, searchData);
+  }
+}
 
-// // 검색 조건 변경
-// function handleSearchValue(e) {
-//   searchVal.value = e.target.value;
-// }
+// 검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
+}
 
-// // 페이지 변경
-// function changePage(page) {
-//   if (!sortData.value && !searchInputRef.value) {
-//     newsStore.newsListAct(page, showNum.value, 'desc');
-//   } else if (sortData.value && !searchInputRef.value) {
-//     newsStore.newsListAct(page, showNum.value, sortData.value);
-//   } else if (!sortData.value && searchInputRef.value) {
-//     searchData = {
-//       [searchVal.value]: searchInputRef.value
-//     };
-//     newsStore.searchNewsListAct(page, showNum.value, 'desc', searchData);
-//   } else {
-//     searchData = {
-//       [searchVal.value]: searchInputRef.value
-//     };
-//     newsStore.searchNewsListAct(page, showNum.value, sortData.value, searchData);
-//   }
-//   nowPageNum.value = page;
-// }
+// 페이지 변경
+function changePage(page) {
+  if (!sortData.value && !searchInputRef.value) {
+    newsStore.newsListAct(page, showNum.value, 'desc');
+  } else if (sortData.value && !searchInputRef.value) {
+    newsStore.newsListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    newsStore.searchNewsListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    newsStore.searchNewsListAct(page, showNum.value, sortData.value, searchData);
+  }
+  nowPageNum.value = page;
+}
 
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
-
+  console.log(searchData);
   await newsStore
     .searchNewsListAct(1, showNum.value, 'desc', searchData)
     .then(() => {

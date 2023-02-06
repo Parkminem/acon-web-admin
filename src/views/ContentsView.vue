@@ -131,8 +131,8 @@ function deleteContent(pk) {
       .fetchDeleteContent(pk)
       .then((res) => {
         if (res.data.status === 200) {
-          contentStore.contentsListAct();
-          location.reload();
+          contentStore.contentsListAct(nowPageNum.value, listPage.value);
+          // location.reload();
         }
       })
       .catch((err) => alert('삭제에 실패하였습니다.'));

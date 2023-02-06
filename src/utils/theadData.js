@@ -19,7 +19,7 @@ export const theadData = {
   ],
   news: [
     { width: 'w10', name: '번호' },
-    { width: '', name: '내용' },
+    { width: '', name: '제목' },
     { width: 'w10', name: '작성자' },
     { width: 'w10', name: '활성화 여부' },
     { width: 'w10', name: '등록일' },
