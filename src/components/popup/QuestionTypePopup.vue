@@ -90,5 +90,5 @@ function editQuestionType() {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/assets/style/popup.scss';
+@import '@/assets/manager/style/popup.scss';
 </style>

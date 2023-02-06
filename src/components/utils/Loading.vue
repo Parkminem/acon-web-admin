@@ -1,7 +1,7 @@
 <template>
   <div class="loading-box">
     <div class="imgBox">
-      <img src="@/assets/images/common/loading.gif" alt="loading" />
+      <img src="@/assets/manager/images/common/loading.gif" alt="loading" />
     </div>
   </div>
 </template>

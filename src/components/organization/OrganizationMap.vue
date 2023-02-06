@@ -2,7 +2,7 @@
   <div class="map">
     <div class="head">
       <div class="box">
-        <img src="@/assets/images/test_user.png" alt="" />
+        <img src="@/assets/manager/images/test_user.png" alt="" />
         <div class="textBox">
           <span class="team">경영지원팀</span>
           <strong class="position">사장</strong>
@@ -18,7 +18,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">대외협력팀</span>
                     <strong class="position">부장</strong>
@@ -35,7 +35,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">경영지원팀</span>
                     <strong class="position">차장</strong>
@@ -52,7 +52,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">기획/마케팅</span>
                     <strong class="position">사원</strong>
@@ -69,7 +69,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">디자인팀</span>
                     <strong class="position">대리</strong>
@@ -86,7 +86,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">웹툰작화팀</span>
                     <strong class="position">사원</strong>
@@ -103,7 +103,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">만화영상</span>
                     <strong class="position">사원</strong>
@@ -120,7 +120,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">웹툰영상</span>
                     <strong class="position">사원</strong>
@@ -137,7 +137,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">개발팀</span>
                     <strong class="position">사원</strong>
@@ -154,7 +154,7 @@
             <ul>
               <li>
                 <div class="box">
-                  <img src="@/assets/images/test_user.png" alt="" />
+                  <img src="@/assets/manager/images/test_user.png" alt="" />
                   <div class="textBox">
                     <span class="team">자문단</span>
                     <strong class="position">부장</strong>

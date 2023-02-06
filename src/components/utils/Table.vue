@@ -16,5 +16,5 @@ defineProps({
 });
 </script>
 <style lang="scss">
-@import '@/assets/style/table.scss';
+@import '@/assets/manager/style/table.scss';
 </style>

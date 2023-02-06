@@ -122,5 +122,5 @@ yearArr.reverse();
 const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 </script>
 <style lang="scss">
-@import '@/assets/style/popup.scss';
+@import '@/assets/manager/style/popup.scss';
 </style>
