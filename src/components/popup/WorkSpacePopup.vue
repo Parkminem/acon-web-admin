@@ -65,7 +65,7 @@ const workSpaceStore = useWorkSpace();
 
 const { detailWorkSpace, detailImages } = storeToRefs(workSpaceStore);
 
-const url = 'http://data.ideaconcert.com';
+const url = 'https://data.ideaconcert.com';
 const krSpace = ref('');
 const idSpace = ref('');
 const ptSpace = ref('');

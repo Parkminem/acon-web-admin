@@ -48,7 +48,7 @@ const selectStore = useSelect();
 const { partnersList } = storeToRefs(partnersStore);
 const { locale } = storeToRefs(selectStore);
 
-const url = 'http://data.ideaconcert.com';
+const url = 'https://data.ideaconcert.com';
 
 //파트너사 리스트 조회
 await partnersStore.partnersListAct();

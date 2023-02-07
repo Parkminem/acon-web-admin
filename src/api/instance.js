@@ -2,8 +2,7 @@ import axios from 'axios';
 import router from '@/routes';
 
 const instance = axios.create({
-  baseURL: 'http://222.239.218.187:9100/admin',
-  // baseURL: 'http://146.56.157.190:9100/admin', // 형민님 주소
+  baseURL: 'https://222.239.218.187:9100/admin',
   'Content-Type': `application/json`
 });
 

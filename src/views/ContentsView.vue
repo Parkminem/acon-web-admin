@@ -94,7 +94,7 @@ import { storeToRefs } from 'pinia';
 import { usePopupStore } from '@/store/popup';
 import contentsApi from '@/api/contents';
 
-const url = 'http://data.ideaconcert.com';
+const url = 'https://data.ideaconcert.com';
 
 const selectStore = useSelect();
 const { locale, showNum } = storeToRefs(selectStore);
