@@ -1,34 +1,20 @@
 <template>
-  <div class="tableBox">
-    <ul class="tHead">
-      <li v-for="th in theadData" :class="[th.width]" @click="upDownSort">
+  <div class="table-box">
+    <ul class="table-box__head">
+      <li v-for="th in theadData" :class="[th.width]">
         {{ th.name }}
       </li>
     </ul>
-    <div class="tbody">
+    <div class="table-box__body">
       <slot></slot>
     </div>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
-
 defineProps({
   theadData: Array
 });
-
-function upDownSort(event) {
-  let item = event.target;
-  if (!item.classList.contains('up') && !item.classList.contains('down')) {
-    // sort 작업
-    item.classList.add('up');
-  } else if (item.classList.replace('up', 'down')) {
-    // sort 작업
-  } else if (item.classList.replace('down', 'up')) {
-    //sort 작업
-  }
-}
 </script>
 <style lang="scss">
-@import '../../style/table.scss';
+@import '@/assets/manager/style/table.scss';
 </style>

@@ -1,43 +1,78 @@
 import { defineStore } from 'pinia';
+import { usePartners } from '@/store/partners';
+import { useHistory } from '@/store/history';
+import { useLocation } from '@/store/location';
+import { useQuestionType } from '@/store/questionType';
+import { usePromotion } from '@/store/promotion';
+import { useContentsStore } from '@/store/contents';
+import { useWorkSpace } from '@/store/workSpace';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
-    historyState: false,
-    partnerState: false,
-    locationState: false,
-    questionTypeState: false,
-    promotionState: false
+    historyPopupState: false,
+    partnerPopupState: false,
+    locationPopupState: false,
+    questionTypePopupState: false,
+    promotionPopupState: false,
+    contentPopupState: false,
+    workSpacePopupState: false
   }),
   actions: {
     historyOpen() {
-      this.historyState = true;
+      this.historyPopupState = true;
     },
     historyClose() {
-      this.historyState = false;
+      const historyStore = useHistory();
+      historyStore.resetDetailHistoryAct();
+      this.historyPopupState = false;
     },
     partnerOpen() {
-      this.partnerState = true;
+      this.partnerPopupState = true;
     },
     partnerClose() {
-      this.partnerState = false;
+      const partnersStore = usePartners();
+      partnersStore.resetDetailPartnerAct();
+      this.partnerPopupState = false;
     },
     locationOpen() {
-      this.locationState = true;
+      this.locationPopupState = true;
     },
     locationClose() {
-      this.locationState = false;
+      const locationStore = useLocation();
+      locationStore.resetDetailLocationAct();
+      this.locationPopupState = false;
     },
     questionTypeOpen() {
-      this.questionTypeState = true;
+      this.questionTypePopupState = true;
     },
     questionTypeClose() {
-      this.questionTypeState = false;
+      const questionTypeStore = useQuestionType();
+      questionTypeStore.resetDetailQuestionTypeAct();
+      this.questionTypePopupState = false;
     },
     promotionOpen() {
-      this.promotionState = true;
+      this.promotionPopupState = true;
     },
     promotionClose() {
-      this.promotionState = false;
+      const promotionStore = usePromotion();
+      promotionStore.resetDetailPromotionAct();
+      this.promotionPopupState = false;
+    },
+    contentOpen() {
+      this.contentPopupState = true;
+    },
+    contentClose() {
+      const contentsStore = useContentsStore();
+      contentsStore.resetDetailContentsAct();
+      this.contentPopupState = false;
+    },
+    workSpaceOpen() {
+      this.workSpacePopupState = true;
+    },
+    workSpaceClose() {
+      const workSpaceStore = useWorkSpace();
+      workSpaceStore.resetDetailWorkSpaceAct();
+      this.workSpacePopupState = false;
     }
   }
 });

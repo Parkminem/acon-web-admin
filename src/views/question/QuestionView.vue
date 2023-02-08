@@ -1,49 +1,203 @@
 <template>
   <SubTitle>문의내역</SubTitle>
   <div class="container">
-    <div class="section">
-      <div class="tableTop">
-        <ShowList />
-        <SearchBox />
+    <section class="section">
+      <div class="section__top">
+        <div class="section__left">
+          <ShowList />
+          <div class="sort-box">
+            <span class="">sort</span>
+            <select name="" id="" @change="sorting" class="sort-box__select">
+              <option value="" disabled selected><span>등록일</span></option>
+              <option value="asc">오름차순</option>
+              <option value="desc">내림차순</option>
+            </select>
+          </div>
+        </div>
+        <div class="search-box">
+          <select name="" id="" @change="handleSearchValue" class="search-box__select">
+            <option value="question_type_kr">문의유형</option>
+            <option value="name" selected>이름</option>
+            <option value="company">회사명</option>
+            <option value="phone">연락처</option>
+            <option value="email">이메일</option>
+            <option value="question_date">등록일</option>
+          </select>
+          <div class="search-box__input-box">
+            <input
+              type="text"
+              v-model="searchInputRef"
+              @keydown.enter="searchBtnClick"
+              class="search-box__input-box__input"
+            />
+          </div>
+          <div class="search-box__btn-box">
+            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
+          </div>
+        </div>
       </div>
-      <Table :theadData="theadData">
-        <ul class="td">
-          <li class="w10">1</li>
-          <li class="w10">데이터 가공</li>
-          <li class="w10">홍길동</li>
-          <li class="w10">아이디어콘서트 부천 스튜디오에 문의</li>
-          <li class="w10">000-0000-0000</li>
-          <li>idea@ideaconcert.kr</li>
-          <li class="w10">2022.03.03</li>
+      <Table :theadData="theadData.question">
+        <Empty v-if="!questionList" />
+        <ul class="td" v-else v-for="(qna, idx) in questionList" :key="qna.question_pk">
+          <li class="w10">{{ qna.nowpage > 1 ? (qna.nowpage - 1) * 10 + (idx + 1) : idx + 1 }}</li>
+          <li class="w10">{{ qna.question_type_kr }}</li>
+          <li class="w10">{{ qna.name }}</li>
+          <li class="w10">{{ qna.company }}</li>
+          <li class="w10">{{ qna.phone }}</li>
+          <li>{{ qna.email }}</li>
+          <li class="w10">{{ new Date(qna.question_date).toLocaleDateString() }}</li>
           <li class="w10">
-            <button><span>등록</span></button>
+            <button @click="goAnswerPage(qna.question_pk)">
+              <span v-if="!qna.answer_content">등록</span>
+              <span v-else>보기</span>
+            </button>
           </li>
         </ul>
       </Table>
-      <div class="tableBottom">
-        <AllEntries />
-        <Pagination />
+      <div class="section__bottom">
+        <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
+        <Pagination
+          :lastPage="Number(lastPage)"
+          :nowPage="nowPageNum"
+          @goPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+          @goNextPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+          @goPrePage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+        />
       </div>
-    </div>
+    </section>
   </div>
 </template>
 <script setup>
-import SubTitle from '../../components/common/SubTitle.vue';
-import ShowList from '../../components/utils/ShowList.vue';
-import SearchBox from '../../components/utils/SearchBox.vue';
-import Table from '../../components/utils/Table.vue';
-import AllEntries from '../../components/utils/AllEntries.vue';
-import Pagination from '../../components/utils/Pagination.vue';
+import { ref, watch } from 'vue';
+import SubTitle from '@/components/common/SubTitle.vue';
+import ShowList from '@/components/utils/ShowList.vue';
+import Empty from '@/components/utils/Empty.vue';
+import Table from '@/components/utils/Table.vue';
+import AllEntries from '@/components/utils/AllEntries.vue';
+import Pagination from '@/components/utils/Pagination.vue';
+import { theadData } from '@/utils/theadData';
+import { useSelect } from '@/store/utils';
+import { useQuestion } from '@/store/question';
+import { storeToRefs } from 'pinia';
+import router from '@/routes';
 
-const theadData = [
-  { width: 'w10', name: '번호' },
-  { width: 'w10', name: '문의유형' },
-  { width: 'w10', name: '이름' },
-  { width: 'w10', name: '회사명' },
-  { width: 'w10', name: '연락처' },
-  { width: '', name: '이메일' },
-  { width: 'w10', name: '등록일' },
-  { width: 'w10', name: '답변' }
-];
+const selectStore = useSelect();
+const { showNum } = storeToRefs(selectStore);
+const questionStore = useQuestion();
+const { questionList } = storeToRefs(questionStore);
+
+const nowPageNum = ref(1);
+const listPage = ref(showNum.value);
+const searchVal = ref('name');
+const searchInputRef = ref();
+const rowCnt = ref(0);
+const lastPage = ref(0);
+
+const sortData = ref();
+let searchData;
+
+//문의 내역 조회
+await questionStore.questionListAct(1, 10, 'desc');
+if (questionList.value) {
+  rowCnt.value = questionList.value[0].rowcnt;
+  lastPage.value = questionList.value[0].lastpage;
+}
+
+//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
+const paginationConstant = () => {
+  nowPageNum.value = 1;
+  rowCnt.value = questionList.value[0].rowcnt;
+  lastPage.value = questionList.value[0].lastpage;
+};
+
+//게시물 갯수 변경 함수
+function showList(num) {
+  const nowPage = questionList.value[0].nowpage;
+  listPage.value = Number(num);
+  if (!sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
+      paginationConstant();
+    });
+  } else if (sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
+      paginationConstant();
+    });
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+      paginationConstant();
+    });
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+      paginationConstant();
+    });
+  }
+}
+
+watch(showNum, (newShowNum) => {
+  if (newShowNum < questionList.value[0].rowcnt) {
+    showList(newShowNum);
+  } else {
+    showList(showNum.value);
+  }
+});
+
+//페이지 변경
+function changePage(page) {
+  if (!sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(page, showNum.value, 'desc');
+  } else if (sortData.value && !searchInputRef.value) {
+    questionStore.questionListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionStore.searchQuestionListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionStore.searchQuestionListAct(page, showNum.value, sortData.value, searchData);
+  }
+  nowPageNum.value = page;
+}
+
+//등록일 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  if (!searchInputRef.value) {
+    questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
+  }
+}
+
+//답변 등록 페이지로 이동
+function goAnswerPage(pk) {
+  router.push(`/manager/question/answer?pk=${pk}`);
+}
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
+}
+
+//검색 버튼 클릭
+async function searchBtnClick() {
+  searchData = { [searchVal.value]: searchInputRef.value };
+  await questionStore
+    .searchQuestionListAct(1, showNum.value, 'desc', searchData)
+    .then(() => {
+      paginationConstant();
+    })
+    .catch((err) => {
+      rowCnt.value = null;
+      lastPage.value = null;
+      nowPageNum.value = null;
+      listPage.value = null;
+    });
+}
 </script>
 <style lang="scss" scoped></style>

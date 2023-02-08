@@ -2,8 +2,7 @@
   <router-view></router-view>
 </template>
 <script setup></script>
-<style>
-@import 'reset-css';
+<style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 * {
   box-sizing: border-box;
@@ -37,13 +36,38 @@ select {
 .section {
   background-color: #fff;
   padding: 30px;
+  &__top,
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    color: #333;
+  }
+  &__left {
+    display: flex;
+    align-items: center;
+  }
 }
-/* 테이블 위의 셀렉트, search input을 묶어주는 div, 
-테이블 밑의 글 갯수, 페이지네이션을 묶어주는 div */
-.tableTop,
-.tableBottom {
+.sort-box {
+  &__select {
+    margin-left: 10px;
+    font-size: 15px;
+  }
+}
+.search-box {
   display: flex;
-  justify-content: space-between;
-  color: #333;
+  align-items: center;
+  &__select {
+    font-size: 15px;
+  }
+  &__input-box__input {
+    margin: 0 10px;
+    max-width: 130px;
+  }
+  &__btn-box__btn {
+    background-color: #333;
+    color: #fff;
+    padding: 3px;
+    font-size: 13px;
+  }
 }
 </style>

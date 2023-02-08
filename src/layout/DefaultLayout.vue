@@ -1,33 +1,54 @@
 <template>
-  <div class="main" :style="{ paddingLeft: movePadding() + 'px' }">
+  <main class="main" :style="{ paddingLeft: movePadding() + 'px' }">
     <Header />
     <div class="contents">
-      <router-view></router-view>
+      <Suspense>
+        <template #default>
+          <router-view></router-view>
+        </template>
+        <template #fallback>
+          <Loading />
+        </template>
+      </Suspense>
       <Footer />
     </div>
-  </div>
-  <HistoryPopup v-if="historyState" />
-  <PartnersPopup v-if="partnerState" />
-  <LocationPopup v-if="locationState" />
-  <QuestionTypePopup v-if="questionTypeState" />
-  <PromotionPopup v-if="promotionState" />
+  </main>
+  <HistoryPopup v-if="historyPopupState" />
+  <PartnersPopup v-if="partnerPopupState" />
+  <LocationPopup v-if="locationPopupState" />
+  <QuestionTypePopup v-if="questionTypePopupState" />
+  <PromotionPopup v-if="promotionPopupState" />
+  <ContentsPopup v-if="contentPopupState" />
+  <WorkSpacePopup v-if="workSpacePopupState" />
 </template>
 <script setup>
-import Header from '../components/common/Header.vue';
-import Footer from '../components/common/Footer.vue';
-import HistoryPopup from '../components/popup/HistoryPopup.vue';
-import PartnersPopup from '../components/popup/PartnersPopup.vue';
-import LocationPopup from '../components/popup/LocationPopup.vue';
-import QuestionTypePopup from '../components/popup/QuestionTypePopup.vue';
-import PromotionPopup from '../components/popup/PromotionPopup.vue';
+import Header from '@/components/common/Header.vue';
+import Footer from '@/components/common/Footer.vue';
+import HistoryPopup from '@/components/popup/HistoryPopup.vue';
+import PartnersPopup from '@/components/popup/PartnersPopup.vue';
+import LocationPopup from '@/components/popup/LocationPopup.vue';
+import QuestionTypePopup from '@/components/popup/QuestionTypePopup.vue';
+import PromotionPopup from '@/components/popup/PromotionPopup.vue';
+import WorkSpacePopup from '@/components/popup/WorkSpacePopup.vue';
+import Loading from '@/components/utils/Loading.vue';
+import ContentsPopup from '@/components/popup/ContentsPopup.vue';
 
-import { useHeaderStore } from '../store/header';
-import { usePopupStore } from '../store/popup';
+import { useHeaderStore } from '@/store/header';
+import { usePopupStore } from '@/store/popup';
 import { storeToRefs } from 'pinia';
+
 const headerStore = useHeaderStore();
 const popupStore = usePopupStore();
 const { slideState } = storeToRefs(headerStore);
-const { historyState, partnerState, locationState, questionTypeState, promotionState } = storeToRefs(popupStore);
+const {
+  historyPopupState,
+  partnerPopupState,
+  locationPopupState,
+  questionTypePopupState,
+  promotionPopupState,
+  contentPopupState,
+  workSpacePopupState
+} = storeToRefs(popupStore);
 
 const movePadding = () => {
   if (slideState.value) return 280;

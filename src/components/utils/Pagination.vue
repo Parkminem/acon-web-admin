@@ -1,32 +1,31 @@
 <template>
-  <!-- 함수 사용 v-for로 랜더링 -->
-  <div class="pagination">
+  <div class="pagination" v-if="lastPage > 1">
     <ul>
-      <li>
-        <button><span class="material-icons"> chevron_left </span></button>
+      <li v-if="pagination(nowPage, lastPage).preBtn">
+        <button @click="$emit('goPrePage', pagination(nowPage, lastPage).startPage - 1)">
+          <span class="material-icons"> chevron_left </span>
+        </button>
       </li>
-      <li>
-        <button><span>1</span></button>
+      <li v-for="page in pagination(nowPage, lastPage).pageArr" :key="page">
+        <button :class="{ active: nowPage == page }" @click="$emit('goPage', page)">
+          <span>{{ page }}</span>
+        </button>
       </li>
-      <li>
-        <button class="active"><span>2</span></button>
-      </li>
-      <li>
-        <button><span>3</span></button>
-      </li>
-      <li>
-        <button><span>4</span></button>
-      </li>
-      <li>
-        <button><span>5</span></button>
-      </li>
-      <li>
-        <button><span class="material-icons"> chevron_right </span></button>
+      <li v-if="pagination(nowPage, lastPage).nextBtn">
+        <button @click="$emit('goNextPage', pagination(nowPage, lastPage).endPage + 1)">
+          <span class="material-icons"> chevron_right </span>
+        </button>
       </li>
     </ul>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { pagination } from '@/utils/pagination';
+const props = defineProps({
+  lastPage: Number,
+  nowPage: Number
+});
+</script>
 <style lang="scss" scoped>
 .pagination {
   ul {

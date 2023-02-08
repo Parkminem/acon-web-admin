@@ -1,109 +1,123 @@
 <template>
-  <div class="sideMenu" :style="{ left: moveLeft() + 'px' }">
-    <div class="header">
-      <div class="top">
+  <header class="header" :style="{ left: moveLeft() + 'px' }">
+    <div class="header__inner">
+      <div class="header__logo">
         <div class="logo">
-          <router-link to="/main"><h1>IDEACONCERT</h1></router-link>
-        </div>
-        <div class="nav">
-          <ul class="list">
-            <li class="depth01">
-              <router-link to="/history"><span class="material-icons"> handyman </span><span>연혁</span></router-link>
-            </li>
-            <li class="depth01">
-              <router-link to="/news"><span class="material-icons"> handyman </span><span>소식</span></router-link>
-            </li>
-            <li class="depth01">
-              <router-link to="/partners"
-                ><span class="material-icons"> handyman </span><span>파트너사</span></router-link
-              >
-            </li>
-            <li class="depth01">
-              <router-link to="/location"><span class="material-icons"> handyman </span><span>위치</span></router-link>
-            </li>
-            <li class="depth01 arrow" @click="slideToggle(1)">
-              <div class="box">
-                <div class="left"><span class="material-icons"> handyman </span><span>문의</span></div>
-                <span class="material-icons arrowIcon"> expand_more </span>
-              </div>
-              <ul class="depth02" :style="{ height: height(slide[1], 96) + 'px' }">
-                <li>
-                  <router-link to="/questiontype"><span>문의유형</span></router-link>
-                </li>
-                <li>
-                  <router-link to="/question"><span>문의내역</span></router-link>
-                </li>
-              </ul>
-            </li>
-            <li class="depth01">
-              <router-link to="/promotion"
-                ><span class="material-icons"> handyman </span><span>홍보영상</span></router-link
-              >
-            </li>
-            <li class="depth01 arrow" @click="slideToggle(2)">
-              <div class="box">
-                <div class="left"><span class="material-icons"> handyman </span><span>재물관리</span></div>
-                <span class="material-icons arrowIcon"> expand_more </span>
-              </div>
-              <ul class="depth02" :style="{ height: height(slide[2], 276) + 'px' }">
-                <li>
-                  <router-link to="/employee"><span>직원 관리</span></router-link>
-                </li>
-                <li>
-                  <router-link to="/computer"><span>컴퓨터 관리</span></router-link>
-                </li>
-                <li>
-                  <router-link to="/monitor"><span>모니터 관리</span></router-link>
-                </li>
-                <li>
-                  <router-link to="/peripheral"><span>주변기기 관리</span></router-link>
-                </li>
-                <li>
-                  <router-link to="/book"><span>도서 관리</span></router-link>
-                </li>
-                <li>
-                  <router-link to="/program"><span>프로그램 관리</span></router-link>
-                </li>
-              </ul>
-            </li>
-            <li class="depth01">
-              <router-link to="/organization"
-                ><span class="material-icons"> handyman </span><span>조직도</span></router-link
-              >
-            </li>
-            <li class="depth01">
-              <router-link to="/cooperation"
-                ><span class="material-icons"> handyman </span><span>업무협업시스템</span></router-link
-              >
-            </li>
-            <li class="depth01">
-              <router-link to="/toonflix"
-                ><span class="material-icons"> handyman </span><span>툰플릭스 관리자</span></router-link
-              >
-            </li>
-          </ul>
+          <router-link to="/manager/main" class="logo__link"><h1>IDEACONCERT</h1></router-link>
         </div>
       </div>
-      <div class="langauge">
-        <ul class="list">
-          <li><button class="active">KR</button></li>
-          <li><button>EN</button></li>
-          <li><button>ID</button></li>
-          <li><button>PT</button></li>
+      <div class="header__navi">
+        <ul class="navi">
+          <li class="navi__depth01">
+            <router-link to="/manager/history" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>연혁</span></router-link
+            >
+          </li>
+          <li class="navi__depth01">
+            <router-link to="/manager/news" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>소식</span></router-link
+            >
+          </li>
+          <li class="navi__depth01">
+            <router-link to="/manager/partners" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>파트너사</span></router-link
+            >
+          </li>
+          <li class="navi__depth01">
+            <router-link to="/manager/location" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>위치</span></router-link
+            >
+          </li>
+          <li class="navi__depth01 arrow" @click="slideToggle(1)">
+            <div class="box">
+              <div class="left"><span class="material-icons"> handyman </span><span>문의</span></div>
+              <span class="material-icons arrowIcon"> expand_more </span>
+            </div>
+            <ul class="navi__depth02" :style="{ height: height(slide[1], 96) + 'px' }">
+              <li>
+                <router-link to="/manager/questiontype" class="navi__depth02__link"><span>문의유형</span></router-link>
+              </li>
+              <li>
+                <router-link to="/manager/question" class="navi__depth02__link"><span>문의내역</span></router-link>
+              </li>
+            </ul>
+          </li>
+          <li class="navi__depth01">
+            <router-link to="/manager/portfolio" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>포트폴리오</span></router-link
+            >
+          </li>
+          <li class="navi__depth01">
+            <router-link to="/manager/contents" class="navi__depth01__link"
+              ><span class="material-icons">handyman</span><span>콘텐츠</span></router-link
+            >
+          </li>
+          <li class="navi__depth01">
+            <router-link to="/manager/workspace" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>업무 공간</span></router-link
+            >
+          </li>
+
+          <!-- <li class="navi__depth01" >
+            <router-link to="/manager/promotion" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>홍보영상</span></router-link
+            >
+          </li>
+          <li class="navi__depth01 arrow" @click="slideToggle(2)" >
+            <div class="box">
+              <div class="left"><span class="material-icons"> handyman </span><span>재물관리</span></div>
+              <span class="material-icons arrowIcon"> expand_more </span>
+            </div>
+            <ul class="navi__depth02" :style="{ height: height(slide[2], 276) + 'px' }">
+              <li>
+                <router-link to="/manager/employee" class="navi__depth02__link"><span>직원 관리</span></router-link>
+              </li>
+              <li>
+                <router-link to="/manager/computer" class="navi__depth02__link"><span>컴퓨터 관리</span></router-link>
+              </li>
+              <li>
+                <router-link to="/manager/monitor" class="navi__depth02__link"><span>모니터 관리</span></router-link>
+              </li>
+              <li>
+                <router-link to="/manager/peripheral" class="navi__depth02__link"><span>주변기기 관리</span></router-link>
+              </li>
+              <li>
+                <router-link to="/manager/book" class="navi__depth02__link"><span>도서 관리</span></router-link>
+              </li>
+              <li>
+                <router-link to="/manager/program" class="navi__depth02__link"><span>프로그램 관리</span></router-link>
+              </li>
+            </ul>
+          </li>
+          <li class="navi__depth01" >
+            <router-link to="/manager/organization" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>조직도</span></router-link
+            >
+          </li>
+          <li class="navi__depth01" >
+            <router-link to="/manager/cooperation" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>업무협업시스템</span></router-link
+            >
+          </li>
+          <li class="navi__depth01" >
+            <router-link to="/manager/toonflix" class="navi__depth01__link"
+              ><span class="material-icons"> handyman </span><span>툰플릭스 관리자</span></router-link
+            >
+          </li> -->
         </ul>
       </div>
     </div>
-    <div class="hamberger" @click="headerStore.sideToggleAct" :class="{ close: slideState }">
+    <div class="hamberger" @click="headerStore.sideToggleAct" :class="{ 'hamberger--close': slideState }">
       <span></span>
       <span></span>
       <span></span>
     </div>
-  </div>
+  </header>
 </template>
 <script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useHeaderStore } from '../../store/header';
+import { useHeaderStore } from '@/store/header';
 const headerStore = useHeaderStore();
 const { slideState } = storeToRefs(headerStore);
 
@@ -127,122 +141,89 @@ const height = (item, num) => {
 };
 </script>
 <style lang="scss" scoped>
-.sideMenu {
+.header {
   position: fixed;
   z-index: 99;
   width: 280px;
   background-color: #303641;
   height: 100vh;
   transition: all 0.3s ease-in-out;
-}
-.router-link-exact-active {
-  background-color: #343942;
-  color: #fff;
-  .material-icons {
-    color: #fff;
+  &__inner {
+    height: 100%;
   }
-
-  &.arrow .box .material-icons {
-    color: #fff;
-  }
-}
-.header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  .logo {
-    color: #fff;
-    font-size: 26px;
-    font-weight: 700;
+  &__logo {
     text-align: center;
     padding: 19px 32px 20px;
-    border-bottom: 1px solid #343e50;
   }
-  .nav {
-    color: #8d97ad;
+  &__navi {
     padding: 30px 0;
-    .list {
-      .depth01 {
-        > a {
-          display: block;
-          padding: 20px 30px;
-          font-weight: 300;
-          transition: all 0.2s ease-out;
-          &:hover {
-            background-color: #343942;
-            color: #fff;
-            .material-icons {
-              color: #fff;
-            }
-          }
-          .box {
-            display: flex;
-            justify-content: space-between;
-          }
-        }
-        &.arrow {
-          .box {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            cursor: pointer;
-            &:hover {
-              background-color: #343942;
-              color: #fff;
-              .material-icons {
-                color: #fff;
-              }
-            }
-          }
-        }
+  }
+}
+.logo {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  border-bottom: 1px solid #343e50;
+}
+.navi {
+  color: #8d97ad;
+  &__depth01 {
+    &__link {
+      display: block;
+      padding: 20px 30px;
+      font-weight: 300;
+      transition: all 0.2s ease-out;
+      &:hover {
+        background-color: #343942;
+        color: #fff;
         .material-icons {
-          font-size: 14px;
-          color: #6a56a5;
-          margin-right: 10px;
-          transition: all 0.2s ease-out;
-          &.arrowIcon {
-            color: #8d97ad;
-            font-size: 18px;
-            font-weight: 700;
-          }
+          color: #fff;
         }
-        .depth02 {
-          overflow-y: hidden;
-          transition: all 0.4s ease-in-out;
-          li a {
-            padding: 15px 60px;
-            display: block;
-            transition: all 0.2s ease-out;
-            &:hover {
-              color: #fff;
-            }
-            &.active {
-              color: #fff;
-            }
+      }
+      .box {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    &.arrow {
+      .box {
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        &:hover {
+          background-color: #343942;
+          color: #fff;
+          .material-icons {
+            color: #fff;
           }
         }
       }
     }
+    .material-icons {
+      font-size: 14px;
+      color: #6a56a5;
+      margin-right: 10px;
+      transition: all 0.2s ease-out;
+      &.arrowIcon {
+        color: #8d97ad;
+        font-size: 18px;
+        font-weight: 700;
+      }
+    }
   }
-  .langauge {
-    padding-bottom: 20px;
-    .list {
-      display: flex;
-      justify-content: center;
-      li {
-        button {
-          color: #5a5a5a;
-          font-size: $fontM;
-          background-color: transparent;
-          font-weight: 700;
-          &.active {
-            color: #fff;
-          }
-        }
-        &:not(:last-child) {
-          margin-right: 14px;
-        }
+  &__depth02 {
+    overflow-y: hidden;
+    transition: all 0.4s ease-in-out;
+    &__link {
+      padding: 15px 60px;
+      display: block;
+      transition: all 0.2s ease-out;
+      &:hover {
+        color: #fff;
+      }
+      &.active {
+        color: #fff;
       }
     }
   }
@@ -258,7 +239,7 @@ const height = (item, num) => {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 
-  &.close {
+  &--close {
     left: 280px;
     background: #303641;
     span {
@@ -283,6 +264,16 @@ const height = (item, num) => {
     border-radius: 15px;
     transition: all 0.3s ease 0s;
     box-shadow: 0 0 0 4px rgb(99 96 96 / 3%);
+  }
+}
+.router-link-exact-active {
+  background-color: #343942;
+  color: #fff;
+  .material-icons {
+    color: #fff;
+  }
+  &.arrow .box .material-icons {
+    color: #fff;
   }
 }
 </style>

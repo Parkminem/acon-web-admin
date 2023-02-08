@@ -1,5 +1,5 @@
 <template>
-  <div class="inputBox">
+  <div class="input-box">
     <label>주소(한국어)</label>
     <input type="text" class="address" v-model="post" placeholder="우편번호" readonly />
     <input type="text" class="address" v-model="address01" placeholder="도로명주소(한국어)" readonly />
@@ -16,13 +16,19 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import { usePopupStore } from '../../store/popup';
+import { usePopupStore } from '@/store/popup';
 const popupStore = usePopupStore();
-const { locationState } = storeToRefs(popupStore);
+const { locationPopupState } = storeToRefs(popupStore);
 
-const post = ref('');
-const address01 = ref('');
-const address02 = ref('');
+const props = defineProps({
+  post: Number,
+  address01: String,
+  address02: String
+});
+
+const post = ref(props.post);
+const address01 = ref(props.address01);
+const address02 = ref(props.address02);
 
 const emit = defineEmits();
 function search() {
@@ -61,10 +67,22 @@ function closePost() {
   new window.daum.Postcode({}).close();
 }
 
-if (!locationState.value) {
+if (!locationPopupState.value) {
   closePost();
 }
 </script>
 <style lang="scss" scoped>
-@import '../../style/popup.scss';
+.address {
+  margin-bottom: 10px;
+  background-color: #e9ecef;
+}
+.addressBtn {
+  width: 100%;
+  border: 1px solid #222;
+  padding: 7px 0;
+  font-size: $fontM - 1;
+  &:active {
+    border: none;
+  }
+}
 </style>
