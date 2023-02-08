@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from '@/routes';
 
 const instance = axios.create({
-  baseURL: 'https://ideaconcertcom/admin',
+  baseURL: 'https://ideaconcert.com/admin',
   // baseURL: 'https://222.239.218.187:9100/admin',
   'Content-Type': `application/json`
 });
