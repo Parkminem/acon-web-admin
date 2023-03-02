@@ -22,8 +22,29 @@ export const useLocation = defineStore('location', {
         .then((res) => {
           this.locationList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
+<<<<<<< HEAD
+=======
+    /**
+     * 위치 검색결과 조회
+     * @param (현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건:키워드}))
+     */
+    async searchLocationListAct(page, count, sortData, keyword) {
+      await locationApi
+        .fetchSearchLocationList(page, count, sortData, keyword)
+        .then((res) => {
+          this.locationList = res.data;
+        })
+        .catch((err) => {
+          if (err.response.data.code === 'N999') {
+            this.locationList = null;
+          } else {
+            alert('조회에 실패하였습니다.');
+          }
+        });
+    },
+>>>>>>> dev
 
     /**
      * 자사 위치 상세 조회
@@ -39,7 +60,7 @@ export const useLocation = defineStore('location', {
           this.detailLocation = res.data;
           popupStore.locationOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailLocation 값 초기화 액션

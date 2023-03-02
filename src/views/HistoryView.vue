@@ -9,12 +9,7 @@
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select
-              name=""
-              id=""
-              @change="sorting($event, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
-              class="sort-box__select"
-            >
+            <select name="" id="" @change="sorting" class="sort-box__select">
               <option value="" disabled selected><span>년도</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -89,7 +84,6 @@ import { useHistory } from '@/store/history';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { storeToRefs } from 'pinia';
-import { handleSearchValue, sorting, changePage } from '@/utils/module';
 
 const historyStore = useHistory();
 const selectStore = useSelect();
@@ -102,13 +96,16 @@ const listPage = ref(showNum.value);
 const sortData = ref();
 const searchVal = ref('content_kr');
 const searchInputRef = ref();
+const rowCnt = ref(0);
+const lastPage = ref(0);
 let searchData;
 
 //연혁 리스트 조회
 await historyStore.historyListAct(1, 10, 'desc');
-
-const rowCnt = ref(historyList.value[0].rowcnt);
-const lastPage = ref(historyList.value[0].lastpage);
+if (historyList.value) {
+  rowCnt.value = historyList.value[0].rowcnt;
+  lastPage.value = historyList.value[0].lastpage;
+}
 
 //게시물 갯수가 바뀔 때 사용될 페이지네이션 변경 상수들
 const paginationConstant = () => {
@@ -152,7 +149,11 @@ watch(showNum, (newShowNum) => {
   }
 });
 
+<<<<<<< HEAD
 //검색 기능
+=======
+//검색
+>>>>>>> dev
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await historyStore
@@ -166,6 +167,40 @@ async function searchBtnClick() {
       nowPageNum.value = null;
       listPage.value = null;
     });
+}
+
+//페이지 변경
+function changePage(page) {
+  if (!sortData.value && !searchInputRef.value) {
+    historyStore.historyListAct(page, showNum.value, 'desc');
+  } else if (sortData.value && !searchInputRef.value) {
+    historyStore.historyListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    historyStore.seartchHistoryListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    historyStore.seartchHistoryListAct(page, showNum.value, sortData.value, searchData);
+  }
+  nowPageNum.value = page;
+}
+
+//sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  if (!searchInputRef.value) {
+    historyStore.historyListAct(nowPageNum.value, listPage.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    historyStore.seartchHistoryListAct(1, listPage.value, sortData.value, searchData);
+  }
+}
+
+//게시판 검색어 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
 }
 
 //등록하기 버튼 클릭 함수

@@ -3,28 +3,28 @@
     <div class="header__inner">
       <div class="header__logo">
         <div class="logo">
-          <router-link to="/main" class="logo__link"><h1>IDEACONCERT</h1></router-link>
+          <router-link to="/manager/main" class="logo__link"><h1>IDEACONCERT</h1></router-link>
         </div>
       </div>
       <div class="header__navi">
         <ul class="navi">
           <li class="navi__depth01">
-            <router-link to="/history" class="navi__depth01__link"
+            <router-link to="/manager/history" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>연혁</span></router-link
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/news" class="navi__depth01__link"
+            <router-link to="/manager/news" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>소식</span></router-link
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/partners" class="navi__depth01__link"
+            <router-link to="/manager/partners" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>파트너사</span></router-link
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/location" class="navi__depth01__link"
+            <router-link to="/manager/location" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>위치</span></router-link
             >
           </li>
@@ -35,11 +35,11 @@
             </div>
             <ul class="navi__depth02" :style="{ height: height(slide[1], 96) + 'px' }">
               <li>
-                <router-link to="/questiontype" class="navi__depth02__link"><span>문의유형</span></router-link>
+                <router-link to="/manager/questiontype" class="navi__depth02__link"><span>문의유형</span></router-link>
               </li>
               <li>
                 <router-link
-                  :to="{ path: '/question', query: { page: '1', sort: 'desc', list: showNum } }"
+                  :to="{ path: '/manager/question', query: { page: '1', sort: 'desc', list: showNum } }"
                   class="navi__depth02__link"
                   ><span>문의내역</span></router-link
                 >
@@ -47,23 +47,23 @@
             </ul>
           </li>
           <li class="navi__depth01">
-            <router-link to="/portfolio" class="navi__depth01__link"
+            <router-link to="/manager/portfolio" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>포트폴리오</span></router-link
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/contents" class="navi__depth01__link"
+            <router-link to="/manager/contents" class="navi__depth01__link"
               ><span class="material-icons">handyman</span><span>콘텐츠</span></router-link
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/workspace" class="navi__depth01__link"
+            <router-link to="/manager/workspace" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>업무 공간</span></router-link
             >
           </li>
 
           <!-- <li class="navi__depth01" >
-            <router-link to="/promotion" class="navi__depth01__link"
+            <router-link to="/manager/promotion" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>홍보영상</span></router-link
             >
           </li>
@@ -74,37 +74,37 @@
             </div>
             <ul class="navi__depth02" :style="{ height: height(slide[2], 276) + 'px' }">
               <li>
-                <router-link to="/employee" class="navi__depth02__link"><span>직원 관리</span></router-link>
+                <router-link to="/manager/employee" class="navi__depth02__link"><span>직원 관리</span></router-link>
               </li>
               <li>
-                <router-link to="/computer" class="navi__depth02__link"><span>컴퓨터 관리</span></router-link>
+                <router-link to="/manager/computer" class="navi__depth02__link"><span>컴퓨터 관리</span></router-link>
               </li>
               <li>
-                <router-link to="/monitor" class="navi__depth02__link"><span>모니터 관리</span></router-link>
+                <router-link to="/manager/monitor" class="navi__depth02__link"><span>모니터 관리</span></router-link>
               </li>
               <li>
-                <router-link to="/peripheral" class="navi__depth02__link"><span>주변기기 관리</span></router-link>
+                <router-link to="/manager/peripheral" class="navi__depth02__link"><span>주변기기 관리</span></router-link>
               </li>
               <li>
-                <router-link to="/book" class="navi__depth02__link"><span>도서 관리</span></router-link>
+                <router-link to="/manager/book" class="navi__depth02__link"><span>도서 관리</span></router-link>
               </li>
               <li>
-                <router-link to="/program" class="navi__depth02__link"><span>프로그램 관리</span></router-link>
+                <router-link to="/manager/program" class="navi__depth02__link"><span>프로그램 관리</span></router-link>
               </li>
             </ul>
           </li>
           <li class="navi__depth01" >
-            <router-link to="/organization" class="navi__depth01__link"
+            <router-link to="/manager/organization" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>조직도</span></router-link
             >
           </li>
           <li class="navi__depth01" >
-            <router-link to="/cooperation" class="navi__depth01__link"
+            <router-link to="/manager/cooperation" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>업무협업시스템</span></router-link
             >
           </li>
           <li class="navi__depth01" >
-            <router-link to="/toonflix" class="navi__depth01__link"
+            <router-link to="/manager/toonflix" class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>툰플릭스 관리자</span></router-link
             >
           </li> -->

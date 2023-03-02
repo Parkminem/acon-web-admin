@@ -17,11 +17,27 @@ export const useNewsStore = defineStore('news', {
      */
     async newsListAct(page, count, sortData, keyword) {
       await newsApi
+<<<<<<< HEAD
         .fetchNewsList(page, count, sortData, keyword)
+=======
+        .fetchNewsList(page, count, sortData)
         .then((res) => {
           this.newsList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
+    },
+
+    /**
+     * @param
+     */
+    async searchNewsListAct(page, count, sortData, keyword) {
+      await newsApi
+        .fetchSearchNewsList(page, count, sortData, keyword)
+>>>>>>> dev
+        .then((res) => {
+          this.newsList = res.data;
+        })
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
 
     /**
@@ -33,10 +49,10 @@ export const useNewsStore = defineStore('news', {
         .fetchDetailNews(pk)
         .then((res) => {
           this.detailNews = res.data;
-          router.push('/news/upload');
-          console.log(this.detailNews);
+          router.push('/manager/news/upload');
+          // console.log(this.detailNews);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     }
   }
 });

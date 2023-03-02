@@ -12,7 +12,7 @@
         <Input name="name_id" title="파트너사명(인도네시아어)" placeholder="IDEACONCERT" v-model="idPartner" />
         <Input name="name_pt" title="파트너사명(포르투갈어)" placeholder="IDEACONCERT" v-model="ptPartner" />
         <Input name="name_us" title="파트너사명(영어)" placeholder="IDEACONCERT" v-model="enPartner" />
-        <Input name="url" title="파트너사 홈페이지" placeholder="http://ideaconcert.com" v-model="homepage" />
+        <Input name="url" title="파트너사 홈페이지" placeholder="https://ideaconcert.com" v-model="homepage" />
         <File title="로고" @fileValue="emitFile" :name="fileName" dataName="file" />
       </div>
       <div class="popup__footer">
@@ -82,7 +82,7 @@ function uploadPartner() {
           partnersStore.partnersListAct();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('등록에 실패하였습니다.'));
   }
 }
 //파트너사 수정
@@ -127,5 +127,5 @@ function editPartner() {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/assets/style/popup.scss';
+@import '@/assets/manager/style/popup.scss';
 </style>

@@ -2,8 +2,8 @@ import axios from 'axios';
 import router from '@/routes';
 
 const instance = axios.create({
-  baseURL: 'http://222.239.218.187:9100/admin',
-  // baseURL: 'http://146.56.157.190:9100/admin', // dump
+  baseURL: 'https://ideaconcert.com/admin',
+  // baseURL: 'https://222.239.218.187:9100/admin',
   'Content-Type': `application/json`
 });
 
@@ -39,7 +39,7 @@ instance.interceptors.response.use(
     } else if (error.response.data.code === 'C006') {
       alert('토큰이 만료되었습니다');
       localStorage.removeItem('token');
-      router.push('/');
+      router.push('/manager');
     } else {
       return Promise.reject(error);
     }

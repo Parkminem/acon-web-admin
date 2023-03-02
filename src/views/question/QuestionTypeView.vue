@@ -5,15 +5,15 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <!-- <ShowList /> -->
           <LocaleList />
-          <div class="sort-box">
+          <!-- <div class="sort-box">
             <span class="">sort</span>
             <select
               name=""
               id=""
               @change="
-                sorting($event, questionTypeStore.questionTypeListAct, questionTypeStore.searchQuestionTypeListAct)
+                sorting
               "
               class="sort-box__select"
             >
@@ -21,9 +21,9 @@
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
             </select>
-          </div>
+          </div> -->
         </div>
-        <div class="search-box">
+        <!-- <div class="search-box">
           <select name="" id="" @change="handleSearchValue" class="search-box__select">
             <option value="name_kr" selected>문의유형</option>
           </select>
@@ -38,7 +38,7 @@
           <div class="search-box__btn-box">
             <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
           </div>
-        </div>
+        </div> -->
       </div>
       <Table :theadData="theadData.questionType">
         <Empty v-if="!questionTypeList" />
@@ -96,7 +96,6 @@ import { useQuestionType } from '@/store/questionType';
 import { theadData } from '@/utils/theadData';
 import { useSelect } from '@/store/utils';
 import { storeToRefs } from 'pinia';
-import { changePage, handleSearchValue, sorting } from '@/utils/module';
 
 const questionTypeStore = useQuestionType();
 const selectStore = useSelect();
@@ -108,15 +107,18 @@ const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
 const searchVal = ref('name_kr');
 const searchInputRef = ref();
+const rowCnt = ref(0);
+const lastPage = ref(0);
 
 const sortData = ref();
 let searchData;
 
 //문의 유형 리스트 조회
 await questionTypeStore.questionTypeListAct(1, 10, 'desc');
-
-const rowCnt = ref(questionTypeList.value[0].rowcnt);
-const lastPage = ref(questionTypeList.value[0].lastpage);
+if (questionTypeList.value) {
+  rowCnt.value = questionTypeList.value[0].rowcnt;
+  lastPage.value = questionTypeList.value[0].lastpage;
+}
 
 //게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
 const paginationConstant = () => {
@@ -160,10 +162,44 @@ watch(showNum, (newShowNum) => {
   }
 });
 
+//페이지 변경
+function changePage(page) {
+  if (!sortData.value && !searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(page, showNum.value, 'desc');
+  } else if (sortData.value && !searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(page, showNum.value, sortData.value);
+  } else if (!sortData.value && searchInputRef.value) {
+    searchData = {
+      [searchVal.value]: searchInputRef.value
+    };
+    questionTypeStore.searchQuestionTypeListAct(page, showNum.value, 'desc', searchData);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionTypeStore.searchQuestionTypeListAct(page, showNum.value, sortData.value, searchData);
+  }
+  nowPageNum.value = page;
+}
+
 //등록하기 버튼 클릭
 function clickRegisterBtn() {
   popupStore.questionTypeOpen();
   questionTypeStore.currentQuestionTypeAct(nowPageNum.value);
+}
+
+//등록 순서 sort
+function sorting(e) {
+  sortData.value = e.target.value;
+  if (!searchInputRef.value) {
+    questionTypeStore.questionTypeListAct(nowPageNum.value, showNum.value, sortData.value);
+  } else {
+    searchData = { [searchVal.value]: searchInputRef.value };
+    questionTypeStore.searchQuestionTypeListAct(1, listPage.value, sortData.value, searchData);
+  }
+}
+
+//검색 조건 변경
+function handleSearchValue(e) {
+  searchVal.value = e.target.value;
 }
 
 //검색 버튼 클릭

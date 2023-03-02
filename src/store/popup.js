@@ -5,6 +5,7 @@ import { useLocation } from '@/store/location';
 import { useQuestionType } from '@/store/questionType';
 import { usePromotion } from '@/store/promotion';
 import { useContentsStore } from '@/store/contents';
+import { useWorkSpace } from '@/store/workSpace';
 
 export const usePopupStore = defineStore('popup', {
   state: () => ({
@@ -13,7 +14,8 @@ export const usePopupStore = defineStore('popup', {
     locationPopupState: false,
     questionTypePopupState: false,
     promotionPopupState: false,
-    contentPopupState: false
+    contentPopupState: false,
+    workSpacePopupState: false
   }),
   actions: {
     historyOpen() {
@@ -63,6 +65,14 @@ export const usePopupStore = defineStore('popup', {
       const contentsStore = useContentsStore();
       contentsStore.resetDetailContentsAct();
       this.contentPopupState = false;
+    },
+    workSpaceOpen() {
+      this.workSpacePopupState = true;
+    },
+    workSpaceClose() {
+      const workSpaceStore = useWorkSpace();
+      workSpaceStore.resetDetailWorkSpaceAct();
+      this.workSpacePopupState = false;
     }
   }
 });

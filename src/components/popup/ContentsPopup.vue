@@ -13,10 +13,22 @@
         <Input name="title_pt" title="제목(포르투갈어)" v-model="ptTitle" />
         <Input name="title_us" title="제목(영어)" v-model="enTitle" />
 
-        <Input name="content_kr" title="내용(한국어)" v-model="krContents" />
-        <Input name="content_id" title="내용(인도네시아어)" v-model="idContents" />
-        <Input name="content_pt" title="내용(포르투갈어)" v-model="ptContents" />
-        <Input name="content_us" title="내용(영어)" v-model="enContents" />
+        <div class="input-box">
+          <label>내용(한국어)</label>
+          <textarea class="textarea" name="content_kr" cols="50" rows="10" v-model="krContents"></textarea>
+        </div>
+        <div class="input-box">
+          <label>내용(인도네시아어)</label>
+          <textarea class="textarea" name="content_id" cols="50" rows="10" v-model="idContents"></textarea>
+        </div>
+        <div class="input-box">
+          <label>내용(포르투갈어)</label>
+          <textarea class="textarea" name="content_pt" cols="50" rows="10" v-model="ptContents"></textarea>
+        </div>
+        <div class="input-box">
+          <label>내용(영어)</label>
+          <textarea class="textarea" name="content_us" cols="50" rows="10" v-model="enContents"></textarea>
+        </div>
 
         <File title="썸네일" @fileValue="emitFile" :name="file" dataName="file" />
         <File title="작품소개서(한국어)" @fileValue="emitDataKr" :name="data_kr" dataName="data_kr" />
@@ -91,20 +103,24 @@ if (detailContent.value) {
 // 컨텐츠 등록
 
 function uploadContent() {
-  const form = document.getElementById('form');
-  const formData = new FormData(form);
-  console.log(...formData);
+  if (file.value.length == 0 || data_kr.value.length == 0 || data_us.value.length == 0) {
+    alert('파일을 입력해주세요.');
+  } else {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    // console.log(...formData);
 
-  contentsApi
-    .fetchUploadContent(formData)
-    .then((res) => {
-      if (res.data.status === 200) {
-        popupStore.contentClose();
-        contentsStore.contentsListAct();
-      }
-      location.reload();
-    })
-    .catch((err) => console.log(err));
+    contentsApi
+      .fetchUploadContent(formData)
+      .then((res) => {
+        if (res.data.status === 200) {
+          popupStore.contentClose();
+          contentsStore.contentsListAct();
+        }
+        location.reload();
+      })
+      .catch((err) => alert('등록에 실패하였습니다.'));
+  }
 }
 
 // 컨텐츠 수정
@@ -116,45 +132,40 @@ function editContent() {
       .then((res) => {
         if (res.data.status === 200) {
           popupStore.contentClose();
-          contentsStore.contentsListAct();
+          contentsStore.contentsListAct(1, 10);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert('수정에 실패하였습니다.'));
   };
-  //파일 수정X
 
-  // if (
-  //   detailContent.value.thumbnail_origin_name === file.value &&
-  //   detailContent.value.data_kr === data_kr.value &&
-  //   detailContent.value.data_us === data_us.value
-  // ) {
-  //   const form = document.getElementById('form');
-  //   const formData = new FormData(form);
-  //   formData.delete('file');
-  //   console.log(...formData);
-  //   edit(formData);
-  // }
-  //파일 수정
-  // if (file.value) {
   const form = document.getElementById('form');
   const formData = new FormData(form);
-  if (detailContent.value.thumbnail_origin_name === file.value) {
+  if (detailContent.value.thumbnail_origin_name == file.value) {
     formData.delete('file');
-    edit(formData);
-  } else if (detailContent.value.data_kr === data_kr.value) {
-    formData.delete('data_kr');
-    edit(formData);
-  } else if (detailContent.value.data_us === data_us.value) {
-    formData.delete('data_us');
-  } else {
-    edit(formData);
   }
-  console.log(...formData);
+  if (detailContent.value.file_url_kr == data_kr.value) {
+    formData.delete('data_kr');
+  }
+  if (detailContent.value.file_url_us == data_us.value) {
+    formData.delete('data_us');
+  }
 
-  // }
+  edit(formData);
+
+  // console.log(...formData);
   // location.reload();
 }
 </script>
 <style lang="scss" scoped>
-@import '@/assets/style/popup.scss';
+@import '@/assets/manager/style/popup.scss';
+.textarea {
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid rgba(170, 170, 170, 0.3);
+  outline: none;
+  resize: none;
+  &:focus {
+    border-color: #80bdff;
+  }
+}
 </style>

@@ -22,9 +22,30 @@ export const useQuestionType = defineStore('questionType', {
         .then((res) => {
           this.questionTypeList = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
+<<<<<<< HEAD
 
+=======
+    /**
+     * 문의 유형 검색결과 조회
+     * @param (현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건 : 키워드}))
+     */
+    async searchQuestionTypeListAct(page, count, sortData, keyword) {
+      await questionTypeApi
+        .fetchSearchQnaTypeList(page, count, sortData, keyword)
+        .then((res) => {
+          this.questionTypeList = res.data;
+        })
+        .catch((err) => {
+          if (err.response.data.code === 'N999') {
+            this.questionTypeList = null;
+          } else {
+            alert('조회에 실패하였습니다.');
+          }
+        });
+    },
+>>>>>>> dev
     /**
      * 문의 유형 상세 정보 조회 액션
      * @param 고유번호
@@ -39,7 +60,7 @@ export const useQuestionType = defineStore('questionType', {
           this.questionTypePage = page;
           popupStore.questionTypeOpen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert('조회에 실패하였습니다.'));
     },
     /**
      * detailQuestionType 값 초기화 액션
