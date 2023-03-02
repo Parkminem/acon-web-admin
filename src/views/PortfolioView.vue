@@ -58,7 +58,7 @@
         <AllEntries :nowPage="Number(nowPage)" :listPage="Number(showNum)" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
-          :nowPage="nowPage"
+          :nowPage="Number(nowPage)"
           @goPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
           @goNextPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
           @goPrePage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
