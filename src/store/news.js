@@ -17,23 +17,7 @@ export const useNewsStore = defineStore('news', {
      */
     async newsListAct(page, count, sortData, keyword) {
       await newsApi
-<<<<<<< HEAD
         .fetchNewsList(page, count, sortData, keyword)
-=======
-        .fetchNewsList(page, count, sortData)
-        .then((res) => {
-          this.newsList = res.data;
-        })
-        .catch((err) => alert('조회에 실패하였습니다.'));
-    },
-
-    /**
-     * @param
-     */
-    async searchNewsListAct(page, count, sortData, keyword) {
-      await newsApi
-        .fetchSearchNewsList(page, count, sortData, keyword)
->>>>>>> dev
         .then((res) => {
           this.newsList = res.data;
         })

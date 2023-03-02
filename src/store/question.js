@@ -18,23 +18,7 @@ export const useQuestion = defineStore('question', {
      */
     async questionListAct(page, count, sortData, keyword) {
       await questionApi
-<<<<<<< HEAD
         .fetchQnaList(page, count, sortData, keyword)
-=======
-        .fetchQnaList(page, count, sortData)
-        .then((res) => {
-          this.questionList = res.data;
-        })
-        .catch((err) => alert('조회에 실패하였습니다.'));
-    },
-    /**
-     * 문의 내역 검색결과 조회
-     * @param  (현재페이지, 한 페이지 당 총 게시물 수, sort값, 키워드({조건:키워드}))
-     */
-    async searchQuestionListAct(page, count, sortData, keyword) {
-      await questionApi
-        .fetchSearchQnaList(page, count, sortData, keyword)
->>>>>>> dev
         .then((res) => {
           this.questionList = res.data;
         })

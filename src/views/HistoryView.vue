@@ -149,11 +149,7 @@ watch(showNum, (newShowNum) => {
   }
 });
 
-<<<<<<< HEAD
 //검색 기능
-=======
-//검색
->>>>>>> dev
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await historyStore
