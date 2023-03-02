@@ -115,7 +115,8 @@ watchEffect(() => {
       lastPage.value = questionList.value[0].lastpage;
     });
   } else {
-    questionStore.questionListAct(nowPage.value, showNum.value, sortData.value).then(() => {
+    questionStore.questionListAct(nowPage.value, showNum.value, sortData.value).then((data) => {
+      console.log(data);
       searchInputRef.value = '';
       rowCnt.value = questionList.value[0].rowcnt;
       lastPage.value = questionList.value[0].lastpage;
@@ -167,9 +168,7 @@ function goAnswerPage(pk) {
   router.push(`/manager/question/answer?pk=${pk}`);
 }
 
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
-}
+//검색 버튼 클릭
+function searchHandler() {}
 </script>
 <style lang="scss" scoped></style>

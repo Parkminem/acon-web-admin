@@ -101,7 +101,7 @@ const { locale, showNum } = storeToRefs(selectStore);
 
 const nowPageNum = ref(1);
 const listPage = ref(showNum.value);
-const sortData = ref();
+const sortData = ref('desc');
 const searchInputRef = ref();
 const searchVal = ref('title_kr');
 let searchData;
@@ -200,18 +200,6 @@ function changePage(page) {
     contentStore.searchContentsListAct(page, showNum.value, sortData.value, searchData);
   }
   nowPageNum.value = page;
-}
-
-//등록일 sort
-
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    contentStore.contentsListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    contentStore.searchContentsListAct(1, listPage.value, sortData.value, searchData);
-  }
 }
 
 //검색 버튼 클릭

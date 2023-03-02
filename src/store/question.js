@@ -21,6 +21,7 @@ export const useQuestion = defineStore('question', {
         .fetchQnaList(page, count, sortData, keyword)
         .then((res) => {
           this.questionList = res.data;
+          return res.data;
         })
         .catch((err) => {
           if (err.response.data.code === 'N999') {
