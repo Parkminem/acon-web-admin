@@ -4,13 +4,13 @@
     <section class="section">
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <ShowList @changeList="() => changeQueryHandler(1, sortData, searchInputRef)" />
           <div class="sort-box">
             <span class="">sort</span>
             <select
               name=""
               id=""
-              @change="changeQueryHandler($event.target.value, searchInputRef, nowPage)"
+              @change="changeQueryHandler(nowPage, $event.target.value, searchInputRef)"
               class="sort-box__select"
             >
               <option value="" disabled selected><span>등록일</span></option>
@@ -32,12 +32,12 @@
             <input
               type="text"
               v-model="searchInputRef"
-              @keydown.enter="changeQueryHandler(null, searchInputRef, 1)"
+              @keydown.enter="changeQueryHandler(1, null, searchInputRef)"
               class="search-box__input-box__input"
             />
           </div>
           <div class="search-box__btn-box">
-            <button @click="changeQueryHandler(null, searchInputRef, 1)" class="search-box__btn-box__btn">
+            <button @click="changeQueryHandler(1, null, searchInputRef)" class="search-box__btn-box__btn">
               <span>검색</span>
             </button>
           </div>
@@ -66,9 +66,9 @@
         <Pagination
           :lastPage="lastPage"
           :nowPage="Number(nowPage)"
-          @goPage="(page) => changeQueryHandler(sortData, searchInputRef, page)"
-          @goNextPage="(page) => changeQueryHandler(sortData, searchInputRef, page)"
-          @goPrePage="(page) => changeQueryHandler(sortData, searchInputRef, page)"
+          @goPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goNextPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goPrePage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
         />
       </div>
     </section>
@@ -130,23 +130,31 @@ lastPage.value = questionList.value[0].lastpage;
 
 /**
  * 쿼리 변경
+ * @param {변경할페이지} page
  * @param {sort값} sort
  * @param {검색어} keyword
- * @param {변경할페이지} page
  */
-function changeQueryHandler(sort, keyword, page, list) {
-  if (!page) page = nowPage.value;
-  if (!keyword) keyword = searchInputRef.value;
-  if (!sort) sort = sortData.value;
-  router.push({
-    path: '/question',
-    query: {
-      page,
-      sort,
-      list,
-      keyword
-    }
-  });
+function changeQueryHandler(page, sort, keyword) {
+  if (keyword == '') {
+    router.push({
+      path: '/manager/question',
+      query: {
+        page,
+        list: showNum.value,
+        sort
+      }
+    });
+  } else {
+    router.push({
+      path: '/manager/question',
+      query: {
+        page,
+        list: showNum.value,
+        sort,
+        keyword
+      }
+    });
+  }
 }
 
 //검색 조건 변경
