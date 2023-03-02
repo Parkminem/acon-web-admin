@@ -7,16 +7,12 @@
           <ShowList />
           <div class="sort-box">
             <span class="">sort</span>
-<<<<<<< HEAD
             <select
               name=""
               id=""
               @change="changeQueryHandler($event.target.value, searchInputRef, nowPage)"
               class="sort-box__select"
             >
-=======
-            <select name="" id="" @change="sorting" class="sort-box__select">
->>>>>>> dev
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -91,10 +87,7 @@ import { useSelect } from '@/store/utils';
 import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import router from '@/routes';
-<<<<<<< HEAD
 import { useRoute } from 'vue-router';
-=======
->>>>>>> dev
 
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
@@ -103,7 +96,6 @@ const { questionList } = storeToRefs(questionStore);
 const route = useRoute();
 
 const searchInputRef = ref();
-<<<<<<< HEAD
 const nowPage = ref(1);
 const rowCnt = ref();
 const lastPage = ref();
@@ -121,46 +113,6 @@ watchEffect(() => {
       searchInputRef.value = keyword;
       rowCnt.value = questionList.value[0].rowcnt;
       lastPage.value = questionList.value[0].lastpage;
-=======
-const rowCnt = ref(0);
-const lastPage = ref(0);
-
-const sortData = ref();
-let searchData;
-
-//문의 내역 조회
-await questionStore.questionListAct(1, 10, 'desc');
-if (questionList.value) {
-  rowCnt.value = questionList.value[0].rowcnt;
-  lastPage.value = questionList.value[0].lastpage;
-}
-
-//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-const paginationConstant = () => {
-  nowPageNum.value = 1;
-  rowCnt.value = questionList.value[0].rowcnt;
-  lastPage.value = questionList.value[0].lastpage;
-};
-
-//게시물 갯수 변경 함수
-function showList(num) {
-  const nowPage = questionList.value[0].nowpage;
-  listPage.value = Number(num);
-  if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
-      paginationConstant();
-    });
-  } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
-      paginationConstant();
-    });
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-      paginationConstant();
->>>>>>> dev
     });
   } else {
     questionStore.questionListAct(nowPage.value, showNum.value, sortData.value).then(() => {
@@ -171,7 +123,6 @@ function showList(num) {
   }
 });
 
-<<<<<<< HEAD
 //문의 내역 조회
 await questionStore.questionListAct(route.query.page, showNum.value, route.query.sort);
 rowCnt.value = questionList.value[0].rowcnt;
@@ -201,35 +152,6 @@ function changeQueryHandler(sort, keyword, page, list) {
 //검색 조건 변경
 function changeSearchValue(e) {
   searchVal.value = e.target.value;
-=======
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    questionStore.searchQuestionListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
-  }
->>>>>>> dev
 }
 
 //답변 등록 페이지로 이동
