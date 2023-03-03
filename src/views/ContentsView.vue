@@ -5,11 +5,16 @@
       <ResisterBtn @clickRegister="usePopupStore().contentOpen" />
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <ShowList @changeList="() => changeQueryHandler(1, sortData, searchInputRef)" />
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="(e) => changeQueryHandler(nowPageNum, e.target.value, searchInputRef)"
+              class="sort-box__select"
+            >
               <option value="desc">최신순</option>
               <option value="asc">등록일순</option>
             </select>
@@ -23,12 +28,14 @@
             <input
               type="text"
               v-model="searchInputRef"
-              @keydown.enter="searchBtnClick"
+              @keydown.enter="changeQueryHandler(1, null, searchInputRef)"
               class="search-box__input-box__input"
             />
           </div>
           <div class="search-box__btn-box">
-            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
+            <button @click="changeQueryHandler(1, null, searchInputRef)" class="search-box__btn-box__btn">
+              <span>검색</span>
+            </button>
           </div>
         </div>
       </div>
@@ -64,13 +71,13 @@
         </ul>
       </Table>
       <div class="section__bottom">
-        <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
+        <AllEntries :nowPage="Number(nowPageNum)" :listPage="listPage" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
-          :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page)"
-          @goNextPage="(page) => changePage(page)"
-          @goPrePage="(page) => changePage(page)"
+          :nowPage="Number(nowPageNum)"
+          @goPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goNextPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goPrePage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
         />
       </div>
     </section>
@@ -93,6 +100,7 @@ import { ref, watch, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePopupStore } from '@/store/popup';
 import contentsApi from '@/api/contents';
+import router from '@/routes';
 
 const url = 'https://ideaconcert.com';
 
@@ -104,22 +112,67 @@ const listPage = ref(showNum.value);
 const sortData = ref('desc');
 const searchInputRef = ref();
 const searchVal = ref('title_kr');
+let rowCnt = ref();
+let lastPage = ref();
 let searchData;
 
 const popupStore = usePopupStore();
-
-// 콘텐츠 리스트 조회
-
 const contentStore = useContentsStore();
-await contentStore.contentsListAct(1, 10, sortData.value);
 const { contentsList } = storeToRefs(contentStore);
 
-let rowCnt = ref(0);
-let lastPage = ref(0);
+//라우터 변경 감지
+watchEffect(() => {
+  const { page, sort, keyword } = router.currentRoute.value.query;
+  if (page) nowPageNum.value = page;
+  if (sort) sortData.value = sort;
+  if (keyword) {
+    let word = { [searchVal.value]: keyword };
+    contentStore.contentsListAct(nowPageNum.value, showNum.value, sortData.value, word).then(() => {
+      searchInputRef.value = keyword;
+      if (contentsList.value === null) {
+        rowCnt.value = null;
+        lastPage.value = null;
+      } else {
+        rowCnt.value = contentsList.value[0].rowcnt;
+        lastPage.value = contentsList.value[0].lastpage;
+      }
+    });
+  } else {
+    contentStore.contentsListAct(nowPageNum.value, showNum.value, sortData.value).then(() => {
+      searchInputRef.value = '';
+      rowCnt.value = contentsList.value[0].rowcnt;
+      lastPage.value = contentsList.value[0].lastpage;
+    });
+  }
+});
 
-if (contentsList) {
-  rowCnt = ref(contentsList.value[0].rowcnt);
-  lastPage = ref(contentsList.value[0].lastpage);
+/**
+ * 쿼리 변경
+ * @param {변경할페이지} page
+ * @param {sort값} sort
+ * @param {검색어} keyword
+ */
+function changeQueryHandler(page, sort, keyword) {
+  if (keyword == '') {
+    router.push({
+      path: '/manager/contents',
+      query: {
+        page,
+        list: showNum.value,
+        sort
+      }
+    });
+  } else {
+    router.push({
+      path: '/manager/contents',
+      query: {
+        page,
+        list: showNum.value,
+        sort,
+        keyword
+      }
+    });
+  }
 }
 
 //컨텐츠 삭제
@@ -135,69 +188,6 @@ function deleteContent(pk) {
       })
       .catch((err) => alert('삭제에 실패하였습니다.'));
   }
-}
-
-//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-
-const paginationConstant = () => {
-  nowPageNum.value = 1;
-  rowCnt.value = contentsList.value[0].rowcnt;
-  lastPage.value = contentsList.value[0].lastpage;
-};
-
-//게시물 갯수 변경 함수
-
-function showList(num) {
-  const nowPage = contentsList.value[0].nowpage;
-  listPage.value = Number(num);
-  if (!sortData.value && !searchInputRef.value) {
-    contentStore.contentsListAct(nowPage, showNum.value, 'desc').then(() => {
-      paginationConstant();
-    });
-  } else if (sortData.value && !searchInputRef.value) {
-    contentStore.contentsListAct(nowPage, showNum.value, sortData.value).then(() => {
-      paginationConstant();
-    });
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    contentStore.searchContentsListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-      paginationConstant();
-    });
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    contentStore.searchContentsListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-      paginationConstant();
-    });
-  }
-}
-
-watch(showNum, (newShowNum) => {
-  if (newShowNum < contentsList.value[0].rowCnt) {
-    showList(newShowNum);
-  } else {
-    showList(showNum.value);
-  }
-});
-
-// 페이지 변경
-
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    contentStore.contentsListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    contentStore.contentsListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    contentStore.searchContentsListAct(page, showNum.value, 'desc', searchData);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    contentStore.searchContentsListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
 }
 
 //검색 버튼 클릭

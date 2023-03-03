@@ -61,7 +61,16 @@
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/manager/contents" class="navi__depth01__link"
+            <router-link
+              :to="{
+                path: '/manager/contents',
+                query: {
+                  page: '1',
+                  sort: 'desc',
+                  list: showNum
+                }
+              }"
+              class="navi__depth01__link"
               ><span class="material-icons">handyman</span><span>콘텐츠</span></router-link
             >
           </li>
