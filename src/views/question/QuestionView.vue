@@ -166,8 +166,5 @@ function changeSearchValue(e) {
 function goAnswerPage(pk) {
   router.push(`/manager/question/answer?pk=${pk}`);
 }
-
-//검색 버튼 클릭
-function searchHandler() {}
 </script>
 <style lang="scss" scoped></style>

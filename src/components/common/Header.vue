@@ -9,7 +9,16 @@
       <div class="header__navi">
         <ul class="navi">
           <li class="navi__depth01">
-            <router-link to="/manager/history" class="navi__depth01__link"
+            <router-link
+              :to="{
+                path: '/manager/history',
+                query: {
+                  page: 1,
+                  sort: 'desc',
+                  list: showNum
+                }
+              }"
+              class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>연혁</span></router-link
             >
           </li>
