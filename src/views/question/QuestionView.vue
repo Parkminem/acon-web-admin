@@ -111,12 +111,16 @@ watchEffect(() => {
     let word = { [searchVal.value]: keyword };
     questionStore.questionListAct(nowPage.value, showNum.value, sortData.value, word).then(() => {
       searchInputRef.value = keyword;
-      rowCnt.value = questionList.value[0].rowcnt;
-      lastPage.value = questionList.value[0].lastpage;
+      if (questionList.value === null) {
+        rowCnt.value = null;
+        lastPage.value = null;
+      } else {
+        rowCnt.value = questionList.value[0].rowcnt;
+        lastPage.value = questionList.value[0].lastpage;
+      }
     });
   } else {
-    questionStore.questionListAct(nowPage.value, showNum.value, sortData.value).then((data) => {
-      console.log(data);
+    questionStore.questionListAct(nowPage.value, showNum.value, sortData.value).then(() => {
       searchInputRef.value = '';
       rowCnt.value = questionList.value[0].rowcnt;
       lastPage.value = questionList.value[0].lastpage;

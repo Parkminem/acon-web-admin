@@ -104,8 +104,13 @@ watchEffect(() => {
     let word = { [searchVal.value]: keyword };
     portfolioStore.portfolioListAct(nowPage.value, showNum.value, sortData.value, word).then(() => {
       searchInputRef.value = keyword;
-      rowCnt.value = portfolioList.value[0].rowcnt;
-      lastPage.value = portfolioList.value[0].lastpage;
+      if (portfolioList.value === null) {
+        rowCnt.value = null;
+        lastPage.value = null;
+      } else {
+        rowCnt.value = portfolioList.value[0].rowcnt;
+        lastPage.value = portfolioList.value[0].lastpage;
+      }
     });
   } else {
     portfolioStore.portfolioListAct(nowPage.value, showNum.value, sortData.value).then(() => {
