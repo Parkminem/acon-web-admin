@@ -89,7 +89,7 @@ import Pagination from '@/components/utils/Pagination.vue';
 import Empty from '@/components/utils/Empty.vue';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
-import { ref, watch } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePopupStore } from '@/store/popup';
 import contentsApi from '@/api/contents';
@@ -111,7 +111,7 @@ const popupStore = usePopupStore();
 // 콘텐츠 리스트 조회
 
 const contentStore = useContentsStore();
-await contentStore.contentsListAct(1, 10);
+await contentStore.contentsListAct(1, 10, sortData.value);
 const { contentsList } = storeToRefs(contentStore);
 
 let rowCnt = ref(0);
@@ -122,9 +122,7 @@ if (contentsList) {
   lastPage = ref(contentsList.value[0].lastpage);
 }
 
-// console.log(`rowcnt: ${rowCnt.value}`);
-// console.log(`lastpage: ${lastPage.value}`);
-
+//컨텐츠 삭제
 function deleteContent(pk) {
   if (window.confirm('삭제하시겠습니까?')) {
     contentsApi
@@ -203,7 +201,6 @@ function changePage(page) {
 }
 
 //검색 버튼 클릭
-
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await contentStore

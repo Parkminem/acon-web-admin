@@ -128,11 +128,6 @@ watchEffect(() => {
   }
 });
 
-//문의 내역 조회
-await questionStore.questionListAct(route.query.page, showNum.value, route.query.sort);
-rowCnt.value = questionList.value[0].rowcnt;
-lastPage.value = questionList.value[0].lastpage;
-
 /**
  * 쿼리 변경
  * @param {변경할페이지} page

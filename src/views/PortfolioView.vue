@@ -121,11 +121,6 @@ watchEffect(() => {
   }
 });
 
-//포트폴리오 리스트 조회
-await portfolioStore.portfolioListAct(1, showNum.value, 'desc');
-rowCnt.value = portfolioList.value[0].rowcnt;
-lastPage.value = portfolioList.value[0].lastpage;
-
 /**
  * 쿼리 변경
  * @param {변경할페이지} page
