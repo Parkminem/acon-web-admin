@@ -33,6 +33,7 @@ export default defineConfig({
         chunkFileNames: 'static/admin/js/[name]-[hash].js',
         entryFileNames: 'static/admin/js/[name]-[hash].js'
       }
-    }
+    },
+    chunkSizeWarningLimit: 1600,
   }
 });
