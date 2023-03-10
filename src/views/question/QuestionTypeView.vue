@@ -143,12 +143,12 @@ function showList(num) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+    questionTypeStore.questionTypeListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
       paginationConstant();
     });
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    questionTypeStore.searchQuestionTypeListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    questionTypeStore.questionTypeListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   }
@@ -206,7 +206,7 @@ function handleSearchValue(e) {
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await questionTypeStore
-    .searchQuestionTypeListAct(1, showNum.value, 'desc', searchData)
+    .questionTypeListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })

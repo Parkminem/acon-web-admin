@@ -2,24 +2,24 @@ import instance from '@/api/instance';
 
 /**
  * 소식 리스트 조회
- * @param (페이지 넘버, 한 페이지 안의 게시물 수)
+ * @param {페이지} page
+ * @param {한페이지당컨텐츠수} count
+ * @param {sort값} sortData
+ * @param {키워드} keyword
+ * @returns 소식 리스트
  */
-function fetchNewsList(page, count, sortData) {
-  return instance.get(
-    `/news/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ regdate: sortData }))}`
-  );
-}
-
-/**
- * search 소식 리스트 조회
- * @param (페이지 넘버, 한 페이지 안의 게시물 수 , sort값)
- */
-function fetchSearchNewsList(page, count, sortData, keyword) {
-  return instance.get(
-    `/news/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ regdate: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
-  );
+function fetchNewsList(page, count, sortData, keyword) {
+  if (!keyword) {
+    return instance.get(
+      `/news/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ regdate: sortData }))}`
+    );
+  } else {
+    return instance.get(
+      `/news/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    );
+  }
 }
 
 /**
@@ -61,8 +61,7 @@ const newsApi = {
   fetchDeleteNews,
   fetchDetailNews,
   fetchUploadNews,
-  fetchEditNews,
-  fetchSearchNewsList
+  fetchEditNews
 };
 
 export default newsApi;

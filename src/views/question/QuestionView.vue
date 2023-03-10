@@ -4,10 +4,15 @@
     <section class="section">
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <ShowList @changeList="() => changeQueryHandler(1, sortData, searchInputRef)" />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="changeQueryHandler(nowPage, $event.target.value, searchInputRef)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -15,7 +20,7 @@
           </div>
         </div>
         <div class="search-box">
-          <select name="" id="" @change="handleSearchValue" class="search-box__select">
+          <select name="" id="" @change="changeSearchValue" class="search-box__select">
             <option value="question_type_kr">문의유형</option>
             <option value="name" selected>이름</option>
             <option value="company">회사명</option>
@@ -27,12 +32,14 @@
             <input
               type="text"
               v-model="searchInputRef"
-              @keydown.enter="searchBtnClick"
+              @keydown.enter="changeQueryHandler(1, null, searchInputRef)"
               class="search-box__input-box__input"
             />
           </div>
           <div class="search-box__btn-box">
-            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
+            <button @click="changeQueryHandler(1, null, searchInputRef)" class="search-box__btn-box__btn">
+              <span>검색</span>
+            </button>
           </div>
         </div>
       </div>
@@ -55,20 +62,20 @@
         </ul>
       </Table>
       <div class="section__bottom">
-        <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
+        <AllEntries :nowPage="Number(nowPage)" :listPage="Number(showNum)" :rowCnt="rowCnt" />
         <Pagination
-          :lastPage="Number(lastPage)"
-          :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
-          @goNextPage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
-          @goPrePage="(page) => changePage(page, questionStore.questionListAct, questionStore.searchQuestionListAct)"
+          :lastPage="lastPage"
+          :nowPage="Number(nowPage)"
+          @goPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goNextPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goPrePage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
         />
       </div>
     </section>
   </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watchEffect } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ShowList from '@/components/utils/ShowList.vue';
 import Empty from '@/components/utils/Empty.vue';
@@ -80,124 +87,84 @@ import { useSelect } from '@/store/utils';
 import { useQuestion } from '@/store/question';
 import { storeToRefs } from 'pinia';
 import router from '@/routes';
+import { useRoute } from 'vue-router';
 
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
 const questionStore = useQuestion();
 const { questionList } = storeToRefs(questionStore);
+const route = useRoute();
 
-const nowPageNum = ref(1);
-const listPage = ref(showNum.value);
-const searchVal = ref('name');
 const searchInputRef = ref();
-const rowCnt = ref(0);
-const lastPage = ref(0);
+const nowPage = ref(1);
+const rowCnt = ref();
+const lastPage = ref();
+const sortData = ref('desc');
+const searchVal = ref('name');
 
-const sortData = ref();
-let searchData;
-
-//문의 내역 조회
-await questionStore.questionListAct(1, 10, 'desc');
-if (questionList.value) {
-  rowCnt.value = questionList.value[0].rowcnt;
-  lastPage.value = questionList.value[0].lastpage;
-}
-
-//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-const paginationConstant = () => {
-  nowPageNum.value = 1;
-  rowCnt.value = questionList.value[0].rowcnt;
-  lastPage.value = questionList.value[0].lastpage;
-};
-
-//게시물 갯수 변경 함수
-function showList(num) {
-  const nowPage = questionList.value[0].nowpage;
-  listPage.value = Number(num);
-  if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(nowPage, showNum.value, 'desc').then(() => {
-      paginationConstant();
-    });
-  } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(nowPage, showNum.value, sortData.value).then(() => {
-      paginationConstant();
-    });
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    questionStore.searchQuestionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-      paginationConstant();
+//라우터 변경 감지
+watchEffect(() => {
+  const { page, sort, keyword } = router.currentRoute.value.query;
+  if (page) nowPage.value = page;
+  if (sort) sortData.value = sort;
+  if (keyword) {
+    let word = { [searchVal.value]: keyword };
+    questionStore.questionListAct(nowPage.value, showNum.value, sortData.value, word).then(() => {
+      searchInputRef.value = keyword;
+      if (questionList.value === null) {
+        rowCnt.value = null;
+        lastPage.value = null;
+      } else {
+        rowCnt.value = questionList.value[0].rowcnt;
+        lastPage.value = questionList.value[0].lastpage;
+      }
     });
   } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-      paginationConstant();
+    questionStore.questionListAct(nowPage.value, showNum.value, sortData.value).then(() => {
+      searchInputRef.value = '';
+      rowCnt.value = questionList.value[0].rowcnt;
+      lastPage.value = questionList.value[0].lastpage;
     });
-  }
-}
-
-watch(showNum, (newShowNum) => {
-  if (newShowNum < questionList.value[0].rowcnt) {
-    showList(newShowNum);
-  } else {
-    showList(showNum.value);
   }
 });
 
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    questionStore.questionListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    questionStore.searchQuestionListAct(page, showNum.value, 'desc', searchData);
+/**
+ * 쿼리 변경
+ * @param {변경할페이지} page
+ * @param {sort값} sort
+ * @param {검색어} keyword
+ */
+function changeQueryHandler(page, sort, keyword) {
+  if (keyword == '') {
+    router.push({
+      path: '/manager/question',
+      query: {
+        page,
+        list: showNum.value,
+        sort
+      }
+    });
   } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(page, showNum.value, sortData.value, searchData);
+    router.push({
+      path: '/manager/question',
+      query: {
+        page,
+        list: showNum.value,
+        sort,
+        keyword
+      }
+    });
   }
-  nowPageNum.value = page;
 }
 
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    questionStore.questionListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    questionStore.searchQuestionListAct(1, listPage.value, sortData.value, searchData);
-  }
+//검색 조건 변경
+function changeSearchValue(e) {
+  searchVal.value = e.target.value;
 }
 
 //답변 등록 페이지로 이동
 function goAnswerPage(pk) {
   router.push(`/manager/question/answer?pk=${pk}`);
-}
-
-//검색 조건 변경
-function handleSearchValue(e) {
-  searchVal.value = e.target.value;
-}
-
-//검색 버튼 클릭
-async function searchBtnClick() {
-  searchData = { [searchVal.value]: searchInputRef.value };
-  await questionStore
-    .searchQuestionListAct(1, showNum.value, 'desc', searchData)
-    .then(() => {
-      paginationConstant();
-    })
-    .catch((err) => {
-      rowCnt.value = null;
-      lastPage.value = null;
-      nowPageNum.value = null;
-      listPage.value = null;
-    });
 }
 </script>
 <style lang="scss" scoped></style>

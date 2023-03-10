@@ -2,26 +2,26 @@ import instance from '@/api/instance';
 
 /**
  * 프로모션 리스트 조회
- * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수, sort 값)
+ * @param {페이지} page
+ * @param {한페이지당컨텐츠수} count
+ * @param {sort값} sortData
+ * @param {키워드} keyword
+ * @returns 프로모션리스트
  */
-function fetchPromotionList(page, count, sortData) {
-  return instance.get(
-    `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ regdate: sortData })
-    )}`
-  );
-}
-
-/**
- * 프로모션 검색결과 조회
- * @param (현재페이지 넘버, 한 페이지 안의 게시물 수, sort값, 키워드({조건:키워드}))
- */
-function fetchSearchPromotionList(page, count, sortData, keyword) {
-  return instance.get(
-    `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ regdate: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
-  );
+function fetchPromotionList(page, count, sortData, keyword) {
+  if (!keyword) {
+    return instance.get(
+      `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}`
+    );
+  } else {
+    return instance.get(
+      `/promotion/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    );
+  }
 }
 
 /**
@@ -58,7 +58,6 @@ function fetchDeletePromotion(pk) {
 
 const promotionApi = {
   fetchPromotionList,
-  fetchSearchPromotionList,
   fetchDetailPromotion,
   fetchUploadPromotion,
   fetchEditPromotion,

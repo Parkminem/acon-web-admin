@@ -9,7 +9,16 @@
       <div class="header__navi">
         <ul class="navi">
           <li class="navi__depth01">
-            <router-link to="/manager/history" class="navi__depth01__link"
+            <router-link
+              :to="{
+                path: '/manager/history',
+                query: {
+                  page: 1,
+                  sort: 'desc',
+                  list: showNum
+                }
+              }"
+              class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>연혁</span></router-link
             >
           </li>
@@ -38,17 +47,39 @@
                 <router-link to="/manager/questiontype" class="navi__depth02__link"><span>문의유형</span></router-link>
               </li>
               <li>
-                <router-link to="/manager/question" class="navi__depth02__link"><span>문의내역</span></router-link>
+                <router-link
+                  :to="{ path: '/manager/question', query: { page: '1', sort: 'desc', list: showNum } }"
+                  class="navi__depth02__link"
+                  ><span>문의내역</span></router-link
+                >
               </li>
             </ul>
           </li>
           <li class="navi__depth01">
-            <router-link to="/manager/portfolio" class="navi__depth01__link"
+            <router-link
+              :to="{
+                path: '/manager/portfolio',
+                query: {
+                  page: '1',
+                  sort: 'desc',
+                  list: showNum
+                }
+              }"
+              class="navi__depth01__link"
               ><span class="material-icons"> handyman </span><span>포트폴리오</span></router-link
             >
           </li>
           <li class="navi__depth01">
-            <router-link to="/manager/contents" class="navi__depth01__link"
+            <router-link
+              :to="{
+                path: '/manager/contents',
+                query: {
+                  page: '1',
+                  sort: 'desc',
+                  list: showNum
+                }
+              }"
+              class="navi__depth01__link"
               ><span class="material-icons">handyman</span><span>콘텐츠</span></router-link
             >
           </li>
@@ -118,8 +149,11 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useHeaderStore } from '@/store/header';
+import { useSelect } from '@/store/utils';
 const headerStore = useHeaderStore();
+const selectStore = useSelect();
 const { slideState } = storeToRefs(headerStore);
+const { showNum } = storeToRefs(selectStore);
 
 const moveLeft = () => {
   if (slideState.value) return 0;

@@ -124,12 +124,12 @@ function showList(num) {
     searchData = {
       [searchVal.value]: searchInputRef.value
     };
-    promotionStore.searchPromotionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
+    promotionStore.promotionListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
       paginationConstant();
     });
   } else {
     searchData = { [searchVal.value]: searchInputRef.value };
-    promotionStore.searchPromotionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
+    promotionStore.promotionListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
       paginationConstant();
     });
   }
@@ -187,7 +187,7 @@ function handleSearchValue(e) {
 async function searchBtnClick() {
   searchData = { [searchVal.value]: searchInputRef.value };
   await promotionStore
-    .searchPromotionListAct(1, showNum.value, 'desc', searchData)
+    .promotionListAct(1, showNum.value, 'desc', searchData)
     .then(() => {
       paginationConstant();
     })

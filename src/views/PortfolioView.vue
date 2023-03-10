@@ -7,10 +7,15 @@
       </div>
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <ShowList @changeList="() => changeQueryHandler(1, sortData, searchInputRef)" />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="changeQueryHandler(nowPage, $event.target.value, searchInputRef)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>등록일</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -25,12 +30,14 @@
             <input
               type="text"
               v-model="searchInputRef"
-              @keydown.enter="searchBtnClick"
+              @keydown.enter="changeQueryHandler(1, null, searchInputRef)"
               class="search-box__input-box__input"
             />
           </div>
           <div class="search-box__btn-box">
-            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
+            <button @click="changeQueryHandler(1, null, searchInputRef)" class="search-box__btn-box__btn">
+              <span>검색</span>
+            </button>
           </div>
         </div>
       </div>
@@ -48,17 +55,13 @@
         </ul>
       </Table>
       <div class="section__bottom">
-        <AllEntries :nowPage="nowPageNum" :listPage="listPage" :rowCnt="rowCnt" />
+        <AllEntries :nowPage="Number(nowPage)" :listPage="Number(showNum)" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
-          :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)"
-          @goNextPage="
-            (page) => changePage(page, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)
-          "
-          @goPrePage="
-            (page) => changePage(page, portfolioStore.portfolioListAct, portfolioStore.searchPortfolioListAct)
-          "
+          :nowPage="Number(nowPage)"
+          @goPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goNextPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goPrePage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
         />
       </div>
     </section>
@@ -71,98 +74,79 @@ import Table from '@/components/utils/Table.vue';
 import AllEntries from '@/components/utils/AllEntries.vue';
 import Pagination from '@/components/utils/Pagination.vue';
 import Empty from '@/components/utils/Empty.vue';
+import router from '@/routes';
 import { usePortfolio } from '@/store/portfolio';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
-import { ref, watch } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 
 const portfolioStore = usePortfolio();
 const selectStore = useSelect();
 const { showNum } = storeToRefs(selectStore);
 const { portfolioList } = storeToRefs(portfolioStore);
+const route = useRoute();
 
-const nowPageNum = ref(1);
-const listPage = ref(showNum.value);
-const sortData = ref();
 const searchInputRef = ref();
+const nowPage = ref(1);
+const rowCnt = ref();
+const lastPage = ref();
+const sortData = ref('desc');
 const searchVal = ref('title');
-let searchData;
 
-//포트폴리오 리스트 조회
-await portfolioStore.portfolioListAct(1, 10, 'desc');
-
-const rowCnt = ref(portfolioList.value[0].rowcnt);
-const lastPage = ref(portfolioList.value[0].lastpage);
-
-//게시물 갯수가 바뀔 때 사용할 페이지네이션 변경 상수들
-const paginationConstant = () => {
-  nowPageNum.value = 1;
-  rowCnt.value = portfolioList.value[0].rowcnt;
-  lastPage.value = portfolioList.value[0].lastpage;
-};
-
-//게시물 갯수 변경 함수
-function showList(num) {
-  const nowPage = portfolioList.value[0].nowpage;
-  listPage.value = Number(num);
-  if (!sortData.value && !searchInputRef.value) {
-    portfolioStore.portfolioListAct(nowPage, showNum.value, 'desc').then(() => {
-      paginationConstant();
-    });
-  } else if (sortData.value && !searchInputRef.value) {
-    portfolioStore.portfolioListAct(nowPage, showNum.value, sortData.value).then(() => {
-      paginationConstant();
-    });
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    portfolioStore.searchPortfolioListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-      paginationConstant();
+//라우터 변경 감지
+watchEffect(() => {
+  const { page, sort, keyword } = router.currentRoute.value.query;
+  if (page) nowPage.value = page;
+  if (sort) sortData.value = sort;
+  if (keyword) {
+    let word = { [searchVal.value]: keyword };
+    portfolioStore.portfolioListAct(nowPage.value, showNum.value, sortData.value, word).then(() => {
+      searchInputRef.value = keyword;
+      if (portfolioList.value === null) {
+        rowCnt.value = null;
+        lastPage.value = null;
+      } else {
+        rowCnt.value = portfolioList.value[0].rowcnt;
+        lastPage.value = portfolioList.value[0].lastpage;
+      }
     });
   } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    portfolioStore.searchPortfolioListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-      paginationConstant();
+    portfolioStore.portfolioListAct(nowPage.value, showNum.value, sortData.value).then(() => {
+      searchInputRef.value = '';
+      rowCnt.value = portfolioList.value[0].rowcnt;
+      lastPage.value = portfolioList.value[0].lastpage;
     });
-  }
-}
-
-watch(showNum, (newShowNum) => {
-  if (newShowNum < portfolioList.value[0].rowCnt) {
-    showList(newShowNum);
-  } else {
-    showList(showNum.value);
   }
 });
 
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    portfolioStore.portfolioListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    portfolioStore.portfolioListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    portfolioStore.searchPortfolioListAct(page, showNum.value, 'desc', searchData);
+/**
+ * 쿼리 변경
+ * @param {변경할페이지} page
+ * @param {sort값} sort
+ * @param {검색어} keyword
+ */
+function changeQueryHandler(page, sort, keyword) {
+  if (keyword == '') {
+    router.push({
+      path: '/manager/portfolio',
+      query: {
+        page,
+        list: showNum.value,
+        sort
+      }
+    });
   } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    portfolioStore.searchPortfolioListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//등록일 sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    portfolioStore.portfolioListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    portfolioStore.searchPortfolioListAct(1, listPage.value, sortData.value, searchData);
+    router.push({
+      path: '/manager/portfolio',
+      query: {
+        page,
+        list: showNum.value,
+        sort,
+        keyword
+      }
+    });
   }
 }
 
@@ -171,25 +155,9 @@ function handleSearchValue(e) {
   searchVal.value = e.target.value;
 }
 
-//검색 버튼 클릭
-async function searchBtnClick() {
-  searchData = { [searchVal.value]: searchInputRef.value };
-  await portfolioStore
-    .searchPortfolioListAct(1, showNum.value, 'desc', searchData)
-    .then(() => {
-      paginationConstant();
-    })
-    .catch((err) => {
-      rowCnt.value = null;
-      lastPage.value = null;
-      nowPageNum.value = null;
-      listPage.value = null;
-    });
-}
-
 //갱신 버튼 클릭
 function clickRenewalHandler() {
-  portfolioStore.renewalPortfolioAct(1, showNum.value, 'desc');
+  portfolioStore.renewalPortfolioAct(1, showNum.value, sortData.value);
 }
 </script>
 <style lang="scss" scoped>

@@ -1,27 +1,27 @@
 import instance from '@/api/instance';
-const keyword = {
-  year: '2021'
-};
+
 /**
- * 연혁 리스트 조희
- * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)
+ * 연혁 리스트 조회
+ * @param {페이지} page
+ * @param {한페이지당컨텐츠수} count
+ * @param {sort값} sortData
+ * @param {키워드} keyword
+ * @returns 연혁 리스트
  */
-function fetchHistoryList(page, count, sortData) {
-  return instance.get(
-    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ year: sortData }))}`
-  );
+function fetchHistoryList(page, count, sortData, keyword) {
+  if (!keyword) {
+    return instance.get(
+      `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(JSON.stringify({ year: sortData }))}`
+    );
+  } else {
+    return instance.get(
+      `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ year: sortData })
+      )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    );
+  }
 }
-/**
- * sort한 연혁 리스트 조회
- * @param (페이지 넘버, 한 페이지 안의 게시물 수, sort값)
- */
-function fetchSearchHistoryList(page, count, sortData, keyword) {
-  return instance.get(
-    `/history/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ year: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
-  );
-}
+
 /**
  * 연헉 상세 정보 반환
  * @param 고유번호
@@ -58,8 +58,7 @@ const historyApi = {
   fetchHistoryList,
   fetchUploadHistory,
   fetchEditHistory,
-  fecthDeleteHistory,
-  fetchSearchHistoryList
+  fecthDeleteHistory
 };
 
 export default historyApi;

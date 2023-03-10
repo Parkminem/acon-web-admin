@@ -5,11 +5,16 @@
       <ResisterBtn @clickRegister="clickRegisterBtn" />
       <div class="section__top">
         <div class="section__left">
-          <ShowList />
+          <ShowList @changeList="changeQueryHandler(1, sortData, searchInputRef)" />
           <LocaleList />
           <div class="sort-box">
             <span class="">sort</span>
-            <select name="" id="" @change="sorting" class="sort-box__select">
+            <select
+              name=""
+              id=""
+              @change="changeQueryHandler(nowPageNum, $event.target.value, searchInputRef)"
+              class="sort-box__select"
+            >
               <option value="" disabled selected><span>년도</span></option>
               <option value="asc">오름차순</option>
               <option value="desc">내림차순</option>
@@ -26,12 +31,14 @@
             <input
               type="text"
               v-model="searchInputRef"
-              @keydown.enter="searchBtnClick"
+              @keydown.enter="changeQueryHandler(1, null, searchInputRef)"
               class="search-box__input-box__input"
             />
           </div>
           <div class="search-box__btn-box">
-            <button @click="searchBtnClick" class="search-box__btn-box__btn"><span>검색</span></button>
+            <button @click="changeQueryHandler(1, null, searchInputRef)" class="search-box__btn-box__btn">
+              <span>검색</span>
+            </button>
           </div>
         </div>
       </div>
@@ -56,20 +63,20 @@
         <!-- t-body -->
       </Table>
       <div class="section__bottom">
-        <AllEntries :nowPage="nowPageNum" :listPage="Number(listPage)" :rowCnt="rowCnt" />
+        <AllEntries :nowPage="Number(nowPageNum)" :listPage="Number(listPage)" :rowCnt="rowCnt" />
         <Pagination
           :lastPage="Number(lastPage)"
-          :nowPage="nowPageNum"
-          @goPage="(page) => changePage(page, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
-          @goNextPage="(page) => changePage(page, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
-          @goPrePage="(page) => changePage(page, historyStore.historyListAct, historyStore.seartchHistoryListAct)"
+          :nowPage="Number(nowPageNum)"
+          @goPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goNextPage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
+          @goPrePage="(page) => changeQueryHandler(page, sortData, searchInputRef)"
         />
       </div>
     </section>
   </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import SubTitle from '@/components/common/SubTitle.vue';
 import ResisterBtn from '@/components/utils/ResisterBtn.vue';
 import ShowList from '@/components/utils/ShowList.vue';
@@ -84,6 +91,7 @@ import { useHistory } from '@/store/history';
 import { useSelect } from '@/store/utils';
 import { theadData } from '@/utils/theadData';
 import { storeToRefs } from 'pinia';
+import router from '@/routes';
 
 const historyStore = useHistory();
 const selectStore = useSelect();
@@ -100,97 +108,58 @@ const rowCnt = ref(0);
 const lastPage = ref(0);
 let searchData;
 
-//연혁 리스트 조회
-await historyStore.historyListAct(1, 10, 'desc');
-if (historyList.value) {
-  rowCnt.value = historyList.value[0].rowcnt;
-  lastPage.value = historyList.value[0].lastpage;
-}
-
-//게시물 갯수가 바뀔 때 사용될 페이지네이션 변경 상수들
-const paginationConstant = () => {
-  nowPageNum.value = 1;
-  rowCnt.value = historyList.value[0].rowcnt;
-  lastPage.value = historyList.value[0].lastpage;
-};
-
-// 게시물 갯수 변경 함수
-function showList(num) {
-  const nowPage = historyList.value[0].nowpage;
-  listPage.value = Number(num);
-  if (!sortData.value && !searchInputRef.value) {
-    historyStore.historyListAct(nowPage, showNum.value, 'desc').then(() => {
-      paginationConstant();
-    });
-  } else if (sortData.value && !searchInputRef.value) {
-    historyStore.historyListAct(nowPage, showNum.value, sortData.value).then(() => {
-      paginationConstant();
-    });
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    historyStore.seartchHistoryListAct(nowPage, showNum.value, 'desc', searchData).then(() => {
-      paginationConstant();
+//라우터 변경 감지
+watchEffect(() => {
+  const { page, sort, keyword } = router.currentRoute.value.query;
+  if (page) nowPageNum.value = page;
+  if (sort) sortData.value = sort;
+  if (keyword) {
+    let word = { [searchVal.value]: keyword };
+    historyStore.historyListAct(nowPageNum.value, showNum.value, sortData.value, word).then(() => {
+      searchInputRef.value = keyword;
+      if (historyList.value === null) {
+        rowCnt.value = null;
+        lastPage.value = null;
+      } else {
+        rowCnt.value = historyList.value[0].rowcnt;
+        lastPage.value = historyList.value[0].lastpage;
+      }
     });
   } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    historyStore.seartchHistoryListAct(nowPage, showNum.value, sortData.value, searchData).then(() => {
-      paginationConstant();
+    historyStore.historyListAct(nowPageNum.value, showNum.value, sortData.value).then(() => {
+      searchInputRef.value = '';
+      rowCnt.value = historyList.value[0].rowcnt;
+      lastPage.value = historyList.value[0].lastpage;
     });
-  }
-}
-
-watch(showNum, (newShowNum) => {
-  if (newShowNum < historyList.value[0].rowcnt) {
-    showList(newShowNum);
-  } else {
-    showList(showNum.value);
   }
 });
 
-//검색
-async function searchBtnClick() {
-  searchData = { [searchVal.value]: searchInputRef.value };
-  await historyStore
-    .seartchHistoryListAct(1, showNum.value, 'desc', searchData)
-    .then(() => {
-      paginationConstant();
-    })
-    .catch((err) => {
-      rowCnt.value = null;
-      lastPage.value = null;
-      nowPageNum.value = null;
-      listPage.value = null;
+/**
+ * 쿼리 변경
+ * @param {변경할페이지} page
+ * @param {sort값} sort
+ * @param {검색어} keyword
+ */
+function changeQueryHandler(page, sort, keyword) {
+  if (keyword == '') {
+    router.push({
+      path: '/manager/history',
+      query: {
+        page,
+        list: showNum.value,
+        sort
+      }
     });
-}
-
-//페이지 변경
-function changePage(page) {
-  if (!sortData.value && !searchInputRef.value) {
-    historyStore.historyListAct(page, showNum.value, 'desc');
-  } else if (sortData.value && !searchInputRef.value) {
-    historyStore.historyListAct(page, showNum.value, sortData.value);
-  } else if (!sortData.value && searchInputRef.value) {
-    searchData = {
-      [searchVal.value]: searchInputRef.value
-    };
-    historyStore.seartchHistoryListAct(page, showNum.value, 'desc', searchData);
   } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    historyStore.seartchHistoryListAct(page, showNum.value, sortData.value, searchData);
-  }
-  nowPageNum.value = page;
-}
-
-//sort
-function sorting(e) {
-  sortData.value = e.target.value;
-  if (!searchInputRef.value) {
-    historyStore.historyListAct(nowPageNum.value, listPage.value, sortData.value);
-  } else {
-    searchData = { [searchVal.value]: searchInputRef.value };
-    historyStore.seartchHistoryListAct(1, listPage.value, sortData.value, searchData);
+    router.push({
+      path: '/manager/history',
+      query: {
+        page,
+        list: showNum.value,
+        sort,
+        keyword
+      }
+    });
   }
 }
 

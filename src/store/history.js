@@ -10,34 +10,19 @@ export const useHistory = defineStore('history', {
   }),
   actions: {
     /**
-     * sort 없는 연혁 리스트 조회 액션
-     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수, sort값 )
+     * 연혁 리스트 조회 액션
+     * @param {페이지} page
+     * @param {한페이지당컨텐츠수} count
+     * @param {sort값} sortData
+     * @param {키워드} keyword
      */
-    async historyListAct(page, count, sortData) {
+    async historyListAct(page, count, sortData, keyword) {
       await historyApi
-        .fetchHistoryList(page, count, sortData)
+        .fetchHistoryList(page, count, sortData, keyword)
         .then((res) => {
           this.historyList = res.data;
         })
         .catch((err) => alert('조회에 실패하였습니다.'));
-    },
-    /**
-     * 연혁 검색결과 조회
-     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수, sort값, 키워드({조건:키워드}))
-     */
-    async seartchHistoryListAct(page, count, sortData, keyword) {
-      await historyApi
-        .fetchSearchHistoryList(page, count, sortData, keyword)
-        .then((res) => {
-          this.historyList = res.data;
-        })
-        .catch((err) => {
-          if (err.response.data.code === 'N999') {
-            this.historyList = null;
-          } else {
-            alert('조회에 실패하였습니다.');
-          }
-        });
     },
     /**
      * 연혁 상세 정보 조회 액션

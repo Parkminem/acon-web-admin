@@ -11,34 +11,19 @@ export const usePromotion = defineStore('promotion', {
   actions: {
     /**
      * 프로모션 리스트 조회 액션
-     * @param (현재 페이지 넘버, 한 페이지 안의 게시물 수, sort 값)
+     * @param {페이지} page
+     * @param {한페이지당컨텐츠수} count
+     * @param {sort값} sortData
+     * @param {키워드} keyword
      */
-    async promotionListAct(page, count, sortData) {
+    async promotionListAct(page, count, sortData, keyword) {
       await promotionApi
-        .fetchPromotionList(page, count, sortData)
+        .fetchPromotionList(page, count, sortData, keyword)
         .then((res) => {
           this.promotionList = res.data;
         })
         .catch((err) => {
           alert('조회에 실패하였습니다.');
-        });
-    },
-    /**
-     * 프로모션 검색 결과 조회
-     * @param (현재페이지, 한 페이지 당 총 게시물 수 , sort 값, 키워드({조건:키워드}))
-     */
-    async searchPromotionListAct(page, count, sortData, keyword) {
-      await promotionApi
-        .fetchSearchPromotionList(page, count, sortData, keyword)
-        .then((res) => {
-          this.promotionList = res.data;
-        })
-        .catch((err) => {
-          if (err.response.data.code === 'N999') {
-            this.promotionList = null;
-          } else {
-            alert('조회에 실패하였습니다.');
-          }
         });
     },
     /**

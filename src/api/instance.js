@@ -3,7 +3,8 @@ import router from '@/routes';
 
 const instance = axios.create({
   baseURL: 'https://ideaconcert.com/admin',
-  // baseURL: 'https://222.239.218.187:9100/admin',
+  // baseURL: ' http://146.56.157.190:9100/admin',
+  //리팩토링 시 사용할 baseURL, 다 끝나고 난 후 baseURL 위의 것으로 변경
   'Content-Type': `application/json`
 });
 

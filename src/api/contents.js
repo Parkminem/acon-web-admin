@@ -2,22 +2,26 @@ import instance from '@/api/instance';
 
 /**
  * 컨텐츠 리스트 조회
- * @param 페이지넘버, 페이지 안의 게시물 수
+ * @param {페이지} page
+ * @param {한페이지당컨텐츠수} count
+ * @param {sort값} sortData
+ * @param {키워드} keyword
+ * @returns 컨텐츠 검색결과 리스트
  */
-function fetchContentsList(page, count) {
-  return instance.get(`/contents/list?nowpage=${page}&listpage=${count}`);
-}
-
-/**
- * 컨텐츠 검색 결과 조회
- * @param 페이지넘버, 페이지 안의 게시물 수
- */
-function fetchSearchContentsList(page, count, sortData, keyword) {
-  return instance.get(
-    `/contents/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
-      JSON.stringify({ regdate: sortData })
-    )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
-  );
+function fetchContentsList(page, count, sortData, keyword) {
+  if (!keyword) {
+    return instance.get(
+      `/contents/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}`
+    );
+  } else {
+    return instance.get(
+      `/contents/list?nowpage=${page}&listpage=${count}&sort=${encodeURIComponent(
+        JSON.stringify({ regdate: sortData })
+      )}&keyword=${encodeURIComponent(JSON.stringify(keyword))}`
+    );
+  }
 }
 
 /**
@@ -59,8 +63,7 @@ const contentsApi = {
   fetchDetailContents,
   fetchUploadContent,
   fetchDeleteContent,
-  fetchEditContent,
-  fetchSearchContentsList
+  fetchEditContent
 };
 
 export default contentsApi;
