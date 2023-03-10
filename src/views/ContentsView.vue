@@ -189,22 +189,6 @@ function deleteContent(pk) {
       .catch((err) => alert('삭제에 실패하였습니다.'));
   }
 }
-
-//검색 버튼 클릭
-async function searchBtnClick() {
-  searchData = { [searchVal.value]: searchInputRef.value };
-  await contentStore
-    .searchContentsListAct(1, showNum.value, 'desc', searchData)
-    .then(() => {
-      paginationConstant();
-    })
-    .catch((err) => {
-      rowCnt.value = null;
-      lastPage.value = null;
-      nowPageNum.value = null;
-      listPage.value = null;
-    });
-}
 </script>
 <style lang="scss" scoped>
 .renewalBtn {
